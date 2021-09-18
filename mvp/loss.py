@@ -60,8 +60,11 @@
 import torch
 import torch.nn.functional as F
 from torch.autograd import Variable
-import numpy as np
 from math import exp
+from torch import nn
+from torchvision import models, transforms
+from torch.autograd import Variable
+
 
 def gaussian(window_size, sigma):
     gauss = torch.Tensor([exp(-(x - window_size//2)**2/float(2*sigma**2)) for x in range(window_size)])
@@ -131,6 +134,8 @@ def ssim(img1, img2, window_size = 11, size_average = True):
     
     return _ssim(img1, img2, window, window_size, channel, size_average)
 
+
+
 class LXJ_LOSS(torch.nn.Module):
     def __init__(self, window_size = 11, size_average = True):
         super().__init__()
@@ -139,8 +144,9 @@ class LXJ_LOSS(torch.nn.Module):
         self.channel = 1
         self.window = create_window(window_size, self.channel)
         
-    def forward(self, x, y,hq):
-        print(hq)
+        
+    def forward(self, x, y,):
+
         MAE_loss = torch.mean(torch.abs(x - y))
 
         (_, channel, _, _) = x.size()
@@ -154,8 +160,9 @@ class LXJ_LOSS(torch.nn.Module):
             
             self.window = window
             self.channel = channel
-
         SSIM_loss =  _ssim(x, y, window, self.window_size, channel, self.size_average)
+
+
         loss = MAE_loss + SSIM_loss 
         return loss
 

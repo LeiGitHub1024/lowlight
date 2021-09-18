@@ -31,7 +31,7 @@ def gaussian_gamma(images, sigma):
         res[ii] = gamma_noise_im
     return res
 def stl10_loader(device):
-  data_path = "./data/stl10_binary/train_X.bin"
+  data_path = "../data/stl10_binary/train_X.bin"
   images = read_image(data_path)
   images.shape
 
@@ -61,8 +61,8 @@ def stl10_loader(device):
 #读取mbllen的pairdata，整理成需要的格式，
 def mbllen_npy():
     # image => npy
-    mbllenPath = './data/mbllen'
-    mbllenLowPath = './data/mbllen_lowlight'
+    mbllenPath = '../data/mbllen'
+    mbllenLowPath = '../data/mbllen_lowlight'
     train = []
     train_lowlight = []
     i=4000
@@ -78,15 +78,15 @@ def mbllen_npy():
         if os.path.isfile(lowlight_path) == True:
             im = np.array(Image.open(lowlight_path))
             train_lowlight.append(im)
-    np.save("./data/mb_train.npy", train) 
-    np.save("./data/mb_train_lowlight.npy", train_lowlight) 
+    np.save("../data/mb_train.npy", train) 
+    np.save("../data/mb_train_lowlight.npy", train_lowlight) 
 
     #load npy
-    image_train = np.load('./data/mb_train.npy')
+    image_train = np.load('../data/mb_train.npy')
     image_train = np.reshape(image_train, [-1, 3, 256, 256])
     image_train = np.transpose(image_train, [0, 3, 2, 1])
 
-    image_lowlight = np.load('./data/mb_train_lowlight.npy') 
+    image_lowlight = np.load('../data/mb_train_lowlight.npy') 
     image_lowlight = np.reshape(image_lowlight, [-1, 3, 256, 256])   
     image_lowlight = np.transpose(image_lowlight, [0, 3, 2, 1])
     return image_train/255, image_lowlight/255

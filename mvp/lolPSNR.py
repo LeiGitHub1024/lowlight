@@ -11,13 +11,13 @@ def lolPSNR(path,device):
   DAEmodel = DenoiseAutoEncoder().to(device)
   DAEmodel.load_state_dict(torch.load(path))
   DAEmodel.eval()
-  lolList = os.listdir('./data/lol485/high')
+  lolList = os.listdir('../data/lol485/high')
   PSNR_init = []
   PSNR_enhance = []
   PSNR_plus = []
   for imgName in tqdm(lolList):
-      high = mpimg.imread('data/lol485/high/'+imgName) # 
-      low = mpimg.imread('data/lol485/low/'+imgName) # 
+      high = mpimg.imread('../data/lol485/high/'+imgName) # 
+      low = mpimg.imread('../data/lol485/low/'+imgName) # 
       input = np.transpose(low, (2, 1, 0))
       input = torch.tensor(input, dtype=torch.float32).to(device)
       input = input.unsqueeze(0)
