@@ -4,3 +4,4 @@
 *.npy
 
 #测试一下gitpush
+mvp/data/*/
