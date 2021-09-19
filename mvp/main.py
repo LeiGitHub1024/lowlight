@@ -15,7 +15,7 @@ print("GPU:",torch.cuda.is_available())
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 print("Loading...")
-train_data,val_data = stl10_loader(device)
+train_data,val_data = mbllen_loader(device)
 
 #数据加载器
 train_loader = Data.DataLoader(dataset=train_data,batch_size=32,shuffle=True,num_workers=0)
@@ -65,8 +65,8 @@ def vgg_loss(x,y):
 
 # 可以开始训练了，
 print("Training...")
-LR = 0.0003
-epoch_num = 10
+LR = 0.0002
+epoch_num = 150
 optimizer = optim.Adam(DAEmodel.parameters(), lr=LR)
 loss_func = LXJ_LOSS()
 # nn.MSELoss()

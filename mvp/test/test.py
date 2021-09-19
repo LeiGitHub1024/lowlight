@@ -10,8 +10,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 DAEmodel = DenoiseAutoEncoder().to(device)
 DAEmodel.load_state_dict(torch.load('../autodecode.mdl'))
 DAEmodel.eval()
-path = '748.png' 
-# path = '1.jpg' 
+# path = '748.png' 
+path = '1.png' 
 
 low = mpimg.imread(path) # 
 input = np.transpose(low, (2, 1, 0))

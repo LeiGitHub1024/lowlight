@@ -2,6 +2,6 @@
 *.pth
 *.zip
 *.npy
-
+*.mdl
 data/*/
 __pycache__
