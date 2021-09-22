@@ -5,3 +5,5 @@
 *.mdl
 data/*/
 __pycache__
+datasets/*/
+uformer/log

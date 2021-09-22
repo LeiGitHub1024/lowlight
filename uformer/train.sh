@@ -14,3 +14,11 @@
 #     --train_ps 128 --train_dir /cache/SIDD/train --env 32_0701_1 \
 #     --val_dir /cache/SIDD/val --embed_dim 32 --warmup
 
+
+
+
+
+
+# python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
+#     --train_ps 128 --train_dir ../datasets/denoising/sidd/train --env 16_0701_1 \
+#     --val_dir ../datasets/denoising/sidd/train --embed_dim 16 --warmup
