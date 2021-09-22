@@ -3,6 +3,8 @@
 *.zip
 *.npy
 *.mdl
+*.out
+
 data/*/
 __pycache__
 datasets/*/
