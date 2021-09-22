@@ -6,6 +6,8 @@
 *.out
 
 data/*/
-__pycache__
 datasets/*/
+evaluate/*/
+
+__pycache__
 uformer/log
