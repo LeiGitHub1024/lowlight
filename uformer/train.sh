@@ -19,6 +19,6 @@
 
 
 
-python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
-    --train_ps 128 --train_dir ../datasets/delowlight/lol/train --env 16_0701_1 \
-    --val_dir ../datasets/delowlight/lol/train --embed_dim 16 --warmup
+nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
+    --train_ps 128 --train_dir ../datasets/delowlight/lol/train --env 32_0701_1 \
+    --val_dir ../datasets/delowlight/lol/valid --embed_dim 32 --warmup &

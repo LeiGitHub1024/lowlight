@@ -1,4 +1,3 @@
-
 import numpy as np
 import os,sys,math
 import argparse
@@ -11,7 +10,7 @@ from torch.utils.data import DataLoader
 import torch.nn.functional as F
 from ptflops import get_model_complexity_info
 
-sys.path.append('/home/ma-user/work/uformer_for_denoise')
+sys.path.append('/home/wangzd/uformer/')
 
 import scipy.io as sio
 from utils.loader import get_validation_data
@@ -24,19 +23,19 @@ from skimage.metrics import peak_signal_noise_ratio as psnr_loss
 from skimage.metrics import structural_similarity as ssim_loss
 
 parser = argparse.ArgumentParser(description='RGB denoising evaluation on the validation set of SIDD')
-parser.add_argument('--input_dir', default='../DeNoTR/SIDD/val/',
+parser.add_argument('--input_dir', default='/home/mist/lowlight/uformer/lol15',
     type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default='./results/denoising/sidd/',
+parser.add_argument('--result_dir', default='./results/data/lol15/high',
     type=str, help='Directory for results')
-parser.add_argument('--weights', default='./log/vit16_0701_1/models/model_best.pth',
+parser.add_argument('--weights', default='./log/Uformer32_0701_1/models/model_best.pth',
     type=str, help='Path to weights')
 parser.add_argument('--gpus', default='0', type=str, help='CUDA_VISIBLE_DEVICES')
 parser.add_argument('--arch', default='Uformer', type=str, help='arch')
 parser.add_argument('--batch_size', default=1, type=int, help='Batch size for dataloader')
 parser.add_argument('--save_images', action='store_true', help='Save denoised images in result directory')
-parser.add_argument('--embed_dim', type=int, default=16, help='number of data loading workers')    
+parser.add_argument('--embed_dim', type=int, default=32, help='number of data loading workers')    
 parser.add_argument('--win_size', type=int, default=8, help='number of data loading workers')
-parser.add_argument('--token_embed', type=str,default='linear', help='linear/conv token embedding')
+parser.add_argument('--token_projection', type=str,default='linear', help='linear/conv token projection')
 parser.add_argument('--token_mlp', type=str,default='leff', help='ffn/leff token mlp')
 # args for vit
 parser.add_argument('--vit_dim', type=int, default=256, help='vit hidden_dim')
@@ -109,8 +108,8 @@ with torch.no_grad():
         psnr_val_rgb.append(psnr_loss(rgb_restored, rgb_gt))
         ssim_val_rgb.append(ssim_loss(rgb_restored, rgb_gt, multichannel=True))
 
-        if args.save_images:
-            utils.save_img(os.path.join(args.result_dir,filenames[0]), img_as_ubyte(rgb_restored))
+        ##if args.save_images:
+        utils.save_img(os.path.join(args.result_dir,filenames[0]), img_as_ubyte(rgb_restored))
 
 psnr_val_rgb = sum(psnr_val_rgb)/len(test_dataset)
 ssim_val_rgb = sum(ssim_val_rgb)/len(test_dataset)
