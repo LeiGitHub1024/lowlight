@@ -8,6 +8,10 @@
 data/*/
 datasets/*/
 evaluate/*/
+lol485
+lol15
 
 __pycache__
 uformer/log
+RetinexNet-master
+KinD-master
