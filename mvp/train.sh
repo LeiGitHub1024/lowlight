@@ -14,11 +14,14 @@
 #     --train_ps 128 --train_dir /cache/SIDD/train --env 32_0701_1 \
 #     --val_dir /cache/SIDD/val --embed_dim 32 --warmup
 
+conda activate uformer
 
 
-
-
-
-nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
+python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
     --train_ps 128 --train_dir ../datasets/delowlight/lol/train --env 32_0701_1 \
-    --val_dir ../datasets/delowlight/lol/valid --embed_dim 32 --warmup &
+    --val_dir ../datasets/delowlight/lol/valid --embed_dim 32 --warmup  --nepoch=10
+
+
+# nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
+#     --train_ps 128 --train_dir ../datasets/delowlight/lol/train --env 32_0701_1 \
+#     --val_dir ../datasets/delowlight/lol/valid --embed_dim 32 --warmup &

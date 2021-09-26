@@ -18,7 +18,8 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = opt.gpu
 import torch
 torch.backends.cudnn.benchmark = True
-
+# 清理一次缓存
+torch.cuda.empty_cache()
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(device)
 import torch.nn as nn
@@ -33,7 +34,7 @@ from einops import rearrange, repeat
 import datetime
 from pdb import set_trace as stx
 
-from losses import CharbonnierLoss
+from losses import CharbonnierLoss,MyLoss,SSIM
 
 from tqdm import tqdm 
 from warmup_scheduler import GradualWarmupScheduler
@@ -110,7 +111,7 @@ else:
 
 
 ######### Loss ###########
-criterion = CharbonnierLoss().cuda()
+criterion = SSIM().cuda()
 
 ######### DataLoader ###########
 print('===> Loading datasets')
@@ -165,6 +166,7 @@ for epoch in range(start_epoch, opt.nepoch + 1):
             restored = model_restoration(input_)
             restored = torch.clamp(restored,0,1)  
             loss = criterion(restored, target)
+        print('loss:',loss.item())
         loss_scaler(
                 loss, optimizer,parameters=model_restoration.parameters())
         epoch_loss +=loss.item()
