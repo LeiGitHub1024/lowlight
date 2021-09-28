@@ -1,0 +1,956 @@
+Namespace(arch='Uformer', att_se=False, batch_size=32, checkpoint=50, dataset='SIDD', embed_dim=32, env='32_0701_1', eval_workers=8, global_skip=False, gpu='0', local_skip=False, lr_initial=1e-05, mode='denoising', nepoch=250, norm_layer='nn.LayerNorm', optimizer='adamw', pretrain_weights='./log/Uformer32/models/model_best.pth', resume=False, save_dir='/home/ma-user/work/deNoTr/log', save_images=False, token_mlp='leff', token_projection='linear', train_dir='../datasets/delowlight/lol/train', train_ps=128, train_workers=16, val_dir='../datasets/delowlight/lol/valid', vit_depth=12, vit_dim=256, vit_mlp_dim=512, vit_nheads=8, vit_patch_size=16, vit_share=False, warmup=True, warmup_epochs=3, weight_decay=0.02, win_size=8)
+Uformer(
+  embed_dim=32, token_projection=linear, token_mlp=leff,win_size=8
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (input_proj): InputProj(
+    (proj): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.01, inplace=True)
+    )
+  )
+  (output_proj): OutputProj(
+    (proj): Sequential(
+      (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+  )
+  (encoderlayer_0): BasicUformerLayer(
+    dim=32, input_resolution=(128, 128), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=32, input_resolution=(128, 128), num_heads=1, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=32, win_size=(8, 8), num_heads=1
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=32, out_features=32, bias=True)
+            (to_kv): Linear(in_features=32, out_features=64, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): Identity()
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=32, out_features=128, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=128, out_features=32, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=32, input_resolution=(128, 128), num_heads=1, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=32, win_size=(8, 8), num_heads=1
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=32, out_features=32, bias=True)
+            (to_kv): Linear(in_features=32, out_features=64, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=32, out_features=128, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=128, out_features=32, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_0): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (encoderlayer_1): BasicUformerLayer(
+    dim=64, input_resolution=(64, 64), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=64, input_resolution=(64, 64), num_heads=2, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=64, input_resolution=(64, 64), num_heads=2, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_1): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (encoderlayer_2): BasicUformerLayer(
+    dim=128, input_resolution=(32, 32), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=128, input_resolution=(32, 32), num_heads=4, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=128, input_resolution=(32, 32), num_heads=4, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_2): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (encoderlayer_3): BasicUformerLayer(
+    dim=256, input_resolution=(16, 16), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=256, input_resolution=(16, 16), num_heads=8, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=256, input_resolution=(16, 16), num_heads=8, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_3): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(256, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (conv): BasicUformerLayer(
+    dim=512, input_resolution=(8, 8), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=512, input_resolution=(8, 8), num_heads=16, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=512, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=512, out_features=512, bias=True)
+            (to_kv): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=512, out_features=512, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=512, out_features=2048, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=2048, out_features=512, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=512, input_resolution=(8, 8), num_heads=16, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=512, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=512, out_features=512, bias=True)
+            (to_kv): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=512, out_features=512, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=512, out_features=2048, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=2048, out_features=512, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_0): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_0): BasicUformerLayer(
+    dim=512, input_resolution=(16, 16), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=512, input_resolution=(16, 16), num_heads=16, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=512, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=512, out_features=512, bias=True)
+            (to_kv): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=512, out_features=512, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=512, out_features=2048, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=2048, out_features=512, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=512, input_resolution=(16, 16), num_heads=16, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=512, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=512, out_features=512, bias=True)
+            (to_kv): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=512, out_features=512, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=512, out_features=2048, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=2048, out_features=512, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_1): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(512, 128, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_1): BasicUformerLayer(
+    dim=256, input_resolution=(32, 32), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=256, input_resolution=(32, 32), num_heads=8, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=256, input_resolution=(32, 32), num_heads=8, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_2): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(256, 64, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_2): BasicUformerLayer(
+    dim=128, input_resolution=(64, 64), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=128, input_resolution=(64, 64), num_heads=4, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=128, input_resolution=(64, 64), num_heads=4, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_3): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(128, 32, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_3): BasicUformerLayer(
+    dim=64, input_resolution=(128, 128), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=64, input_resolution=(128, 128), num_heads=2, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=64, input_resolution=(128, 128), num_heads=2, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): Identity()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+    )
+  )
+)
+[Ep 1 it 14	 PSNR SIDD: 9.0317	] ----  [best_Ep_SIDD 1 best_it_SIDD 14 Best_PSNR_SIDD 9.0317] 
+[Ep 1 it 29	 PSNR SIDD: 9.4755	] ----  [best_Ep_SIDD 1 best_it_SIDD 29 Best_PSNR_SIDD 9.4755] 
+[Ep 1 it 44	 PSNR SIDD: 9.8608	] ----  [best_Ep_SIDD 1 best_it_SIDD 44 Best_PSNR_SIDD 9.8608] 
+[Ep 1 it 59	 PSNR SIDD: 10.3591	] ----  [best_Ep_SIDD 1 best_it_SIDD 59 Best_PSNR_SIDD 10.3591] 
+Epoch: 1	Time: 55.4654	Loss: 28.6395	LearningRate 0.000007
+[Ep 2 it 14	 PSNR SIDD: 11.2181	] ----  [best_Ep_SIDD 2 best_it_SIDD 14 Best_PSNR_SIDD 11.2181] 
+[Ep 2 it 29	 PSNR SIDD: 12.0263	] ----  [best_Ep_SIDD 2 best_it_SIDD 29 Best_PSNR_SIDD 12.0263] 
+[Ep 2 it 44	 PSNR SIDD: 12.7373	] ----  [best_Ep_SIDD 2 best_it_SIDD 44 Best_PSNR_SIDD 12.7373] 
+[Ep 2 it 59	 PSNR SIDD: 13.4417	] ----  [best_Ep_SIDD 2 best_it_SIDD 59 Best_PSNR_SIDD 13.4417] 
+Epoch: 2	Time: 52.7755	Loss: 21.3242	LearningRate 0.000010
+[Ep 3 it 14	 PSNR SIDD: 14.0576	] ----  [best_Ep_SIDD 3 best_it_SIDD 14 Best_PSNR_SIDD 14.0576] 
+[Ep 3 it 29	 PSNR SIDD: 14.3829	] ----  [best_Ep_SIDD 3 best_it_SIDD 29 Best_PSNR_SIDD 14.3829] 
+[Ep 3 it 44	 PSNR SIDD: 14.6560	] ----  [best_Ep_SIDD 3 best_it_SIDD 44 Best_PSNR_SIDD 14.6560] 
+[Ep 3 it 59	 PSNR SIDD: 14.8151	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+Epoch: 3	Time: 51.4040	Loss: 16.0227	LearningRate 0.000010
+[Ep 4 it 14	 PSNR SIDD: 14.7360	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 4 it 29	 PSNR SIDD: 14.6604	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 4 it 44	 PSNR SIDD: 14.6318	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 4 it 59	 PSNR SIDD: 14.5860	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+Epoch: 4	Time: 48.0375	Loss: 14.6209	LearningRate 0.000010
+[Ep 5 it 14	 PSNR SIDD: 14.5088	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 5 it 29	 PSNR SIDD: 14.4901	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 5 it 44	 PSNR SIDD: 14.5306	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 5 it 59	 PSNR SIDD: 14.5333	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+Epoch: 5	Time: 49.0186	Loss: 14.2359	LearningRate 0.000010
+[Ep 6 it 14	 PSNR SIDD: 14.6071	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 6 it 29	 PSNR SIDD: 14.6671	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 6 it 44	 PSNR SIDD: 14.7420	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+[Ep 6 it 59	 PSNR SIDD: 14.7673	] ----  [best_Ep_SIDD 3 best_it_SIDD 59 Best_PSNR_SIDD 14.8151] 
+Epoch: 6	Time: 48.2158	Loss: 12.3594	LearningRate 0.000010
+[Ep 7 it 14	 PSNR SIDD: 14.8200	] ----  [best_Ep_SIDD 7 best_it_SIDD 14 Best_PSNR_SIDD 14.8200] 
+[Ep 7 it 29	 PSNR SIDD: 14.8606	] ----  [best_Ep_SIDD 7 best_it_SIDD 29 Best_PSNR_SIDD 14.8606] 
+[Ep 7 it 44	 PSNR SIDD: 14.8530	] ----  [best_Ep_SIDD 7 best_it_SIDD 29 Best_PSNR_SIDD 14.8606] 
+[Ep 7 it 59	 PSNR SIDD: 14.8314	] ----  [best_Ep_SIDD 7 best_it_SIDD 29 Best_PSNR_SIDD 14.8606] 
+Epoch: 7	Time: 50.3487	Loss: 11.4234	LearningRate 0.000010
+[Ep 8 it 14	 PSNR SIDD: 14.8490	] ----  [best_Ep_SIDD 7 best_it_SIDD 29 Best_PSNR_SIDD 14.8606] 
+[Ep 8 it 29	 PSNR SIDD: 14.8695	] ----  [best_Ep_SIDD 8 best_it_SIDD 29 Best_PSNR_SIDD 14.8695] 
+[Ep 8 it 44	 PSNR SIDD: 14.8098	] ----  [best_Ep_SIDD 8 best_it_SIDD 29 Best_PSNR_SIDD 14.8695] 
+[Ep 8 it 59	 PSNR SIDD: 14.7647	] ----  [best_Ep_SIDD 8 best_it_SIDD 29 Best_PSNR_SIDD 14.8695] 
+Epoch: 8	Time: 49.4680	Loss: 11.3067	LearningRate 0.000010
+[Ep 9 it 14	 PSNR SIDD: 14.8206	] ----  [best_Ep_SIDD 8 best_it_SIDD 29 Best_PSNR_SIDD 14.8695] 
+[Ep 9 it 29	 PSNR SIDD: 14.8291	] ----  [best_Ep_SIDD 8 best_it_SIDD 29 Best_PSNR_SIDD 14.8695] 
+[Ep 9 it 44	 PSNR SIDD: 14.8288	] ----  [best_Ep_SIDD 8 best_it_SIDD 29 Best_PSNR_SIDD 14.8695] 
+[Ep 9 it 59	 PSNR SIDD: 14.8987	] ----  [best_Ep_SIDD 9 best_it_SIDD 59 Best_PSNR_SIDD 14.8987] 
+Epoch: 9	Time: 49.4025	Loss: 11.1413	LearningRate 0.000010
+[Ep 10 it 14	 PSNR SIDD: 14.9443	] ----  [best_Ep_SIDD 10 best_it_SIDD 14 Best_PSNR_SIDD 14.9443] 
+[Ep 10 it 29	 PSNR SIDD: 14.9765	] ----  [best_Ep_SIDD 10 best_it_SIDD 29 Best_PSNR_SIDD 14.9765] 
+[Ep 10 it 44	 PSNR SIDD: 14.9785	] ----  [best_Ep_SIDD 10 best_it_SIDD 44 Best_PSNR_SIDD 14.9785] 
+[Ep 10 it 59	 PSNR SIDD: 14.9063	] ----  [best_Ep_SIDD 10 best_it_SIDD 44 Best_PSNR_SIDD 14.9785] 
+Epoch: 10	Time: 51.1621	Loss: 11.2190	LearningRate 0.000010
+[Ep 11 it 14	 PSNR SIDD: 14.9339	] ----  [best_Ep_SIDD 10 best_it_SIDD 44 Best_PSNR_SIDD 14.9785] 
+[Ep 11 it 29	 PSNR SIDD: 14.9559	] ----  [best_Ep_SIDD 10 best_it_SIDD 44 Best_PSNR_SIDD 14.9785] 
+[Ep 11 it 44	 PSNR SIDD: 14.9786	] ----  [best_Ep_SIDD 11 best_it_SIDD 44 Best_PSNR_SIDD 14.9786] 
+[Ep 11 it 59	 PSNR SIDD: 15.0500	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+Epoch: 11	Time: 50.4447	Loss: 11.3166	LearningRate 0.000010
+[Ep 12 it 14	 PSNR SIDD: 15.0381	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+[Ep 12 it 29	 PSNR SIDD: 15.0161	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+[Ep 12 it 44	 PSNR SIDD: 15.0155	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+[Ep 12 it 59	 PSNR SIDD: 14.9782	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+Epoch: 12	Time: 49.9897	Loss: 11.1306	LearningRate 0.000010
+[Ep 13 it 14	 PSNR SIDD: 15.0147	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+[Ep 13 it 29	 PSNR SIDD: 15.0320	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+[Ep 13 it 44	 PSNR SIDD: 15.0485	] ----  [best_Ep_SIDD 11 best_it_SIDD 59 Best_PSNR_SIDD 15.0500] 
+[Ep 13 it 59	 PSNR SIDD: 15.1144	] ----  [best_Ep_SIDD 13 best_it_SIDD 59 Best_PSNR_SIDD 15.1144] 
+Epoch: 13	Time: 50.0492	Loss: 11.2857	LearningRate 0.000010
+[Ep 14 it 14	 PSNR SIDD: 15.1373	] ----  [best_Ep_SIDD 14 best_it_SIDD 14 Best_PSNR_SIDD 15.1373] 
+[Ep 14 it 29	 PSNR SIDD: 15.1766	] ----  [best_Ep_SIDD 14 best_it_SIDD 29 Best_PSNR_SIDD 15.1766] 
+[Ep 14 it 44	 PSNR SIDD: 15.1734	] ----  [best_Ep_SIDD 14 best_it_SIDD 29 Best_PSNR_SIDD 15.1766] 
+[Ep 14 it 59	 PSNR SIDD: 15.2281	] ----  [best_Ep_SIDD 14 best_it_SIDD 59 Best_PSNR_SIDD 15.2281] 
+Epoch: 14	Time: 51.5171	Loss: 11.0752	LearningRate 0.000010
+[Ep 15 it 14	 PSNR SIDD: 15.1960	] ----  [best_Ep_SIDD 14 best_it_SIDD 59 Best_PSNR_SIDD 15.2281] 
+[Ep 15 it 29	 PSNR SIDD: 15.1896	] ----  [best_Ep_SIDD 14 best_it_SIDD 59 Best_PSNR_SIDD 15.2281] 
+[Ep 15 it 44	 PSNR SIDD: 15.1457	] ----  [best_Ep_SIDD 14 best_it_SIDD 59 Best_PSNR_SIDD 15.2281] 
+[Ep 15 it 59	 PSNR SIDD: 15.1275	] ----  [best_Ep_SIDD 14 best_it_SIDD 59 Best_PSNR_SIDD 15.2281] 
+Epoch: 15	Time: 49.5554	Loss: 10.9675	LearningRate 0.000010
+[Ep 16 it 14	 PSNR SIDD: 15.2324	] ----  [best_Ep_SIDD 16 best_it_SIDD 14 Best_PSNR_SIDD 15.2324] 
+[Ep 16 it 29	 PSNR SIDD: 15.2871	] ----  [best_Ep_SIDD 16 best_it_SIDD 29 Best_PSNR_SIDD 15.2871] 
+[Ep 16 it 44	 PSNR SIDD: 15.3689	] ----  [best_Ep_SIDD 16 best_it_SIDD 44 Best_PSNR_SIDD 15.3689] 
+[Ep 16 it 59	 PSNR SIDD: 15.3802	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 15.3802] 
+Epoch: 16	Time: 52.0737	Loss: 11.0927	LearningRate 0.000010
+[Ep 17 it 14	 PSNR SIDD: 15.2895	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 15.3802] 
+[Ep 17 it 29	 PSNR SIDD: 15.2568	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 15.3802] 
+[Ep 17 it 44	 PSNR SIDD: 15.2549	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 15.3802] 
+[Ep 17 it 59	 PSNR SIDD: 15.4142	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 15.4142] 
+Epoch: 17	Time: 49.9654	Loss: 10.8512	LearningRate 0.000010
+[Ep 18 it 14	 PSNR SIDD: 15.4062	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 15.4142] 
+[Ep 18 it 29	 PSNR SIDD: 15.3545	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 15.4142] 
+[Ep 18 it 44	 PSNR SIDD: 15.3847	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 15.4142] 
+[Ep 18 it 59	 PSNR SIDD: 15.4098	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 15.4142] 
+Epoch: 18	Time: 49.5694	Loss: 10.6629	LearningRate 0.000010
+[Ep 19 it 14	 PSNR SIDD: 15.4836	] ----  [best_Ep_SIDD 19 best_it_SIDD 14 Best_PSNR_SIDD 15.4836] 
+[Ep 19 it 29	 PSNR SIDD: 15.4283	] ----  [best_Ep_SIDD 19 best_it_SIDD 14 Best_PSNR_SIDD 15.4836] 
+[Ep 19 it 44	 PSNR SIDD: 15.6749	] ----  [best_Ep_SIDD 19 best_it_SIDD 44 Best_PSNR_SIDD 15.6749] 
+[Ep 19 it 59	 PSNR SIDD: 15.7683	] ----  [best_Ep_SIDD 19 best_it_SIDD 59 Best_PSNR_SIDD 15.7683] 
+Epoch: 19	Time: 52.1109	Loss: 10.6319	LearningRate 0.000010
+[Ep 20 it 14	 PSNR SIDD: 15.7374	] ----  [best_Ep_SIDD 19 best_it_SIDD 59 Best_PSNR_SIDD 15.7683] 
+[Ep 20 it 29	 PSNR SIDD: 15.6050	] ----  [best_Ep_SIDD 19 best_it_SIDD 59 Best_PSNR_SIDD 15.7683] 
+[Ep 20 it 44	 PSNR SIDD: 15.6755	] ----  [best_Ep_SIDD 19 best_it_SIDD 59 Best_PSNR_SIDD 15.7683] 
+[Ep 20 it 59	 PSNR SIDD: 15.7530	] ----  [best_Ep_SIDD 19 best_it_SIDD 59 Best_PSNR_SIDD 15.7683] 
+Epoch: 20	Time: 48.2517	Loss: 10.4658	LearningRate 0.000010
+[Ep 21 it 14	 PSNR SIDD: 15.8376	] ----  [best_Ep_SIDD 21 best_it_SIDD 14 Best_PSNR_SIDD 15.8376] 
+[Ep 21 it 29	 PSNR SIDD: 15.9467	] ----  [best_Ep_SIDD 21 best_it_SIDD 29 Best_PSNR_SIDD 15.9467] 
+[Ep 21 it 44	 PSNR SIDD: 15.9337	] ----  [best_Ep_SIDD 21 best_it_SIDD 29 Best_PSNR_SIDD 15.9467] 
+[Ep 21 it 59	 PSNR SIDD: 16.0507	] ----  [best_Ep_SIDD 21 best_it_SIDD 59 Best_PSNR_SIDD 16.0507] 
+Epoch: 21	Time: 51.2438	Loss: 10.6112	LearningRate 0.000010
+[Ep 22 it 14	 PSNR SIDD: 16.0974	] ----  [best_Ep_SIDD 22 best_it_SIDD 14 Best_PSNR_SIDD 16.0974] 
+[Ep 22 it 29	 PSNR SIDD: 16.0640	] ----  [best_Ep_SIDD 22 best_it_SIDD 14 Best_PSNR_SIDD 16.0974] 
+[Ep 22 it 44	 PSNR SIDD: 15.9781	] ----  [best_Ep_SIDD 22 best_it_SIDD 14 Best_PSNR_SIDD 16.0974] 
+[Ep 22 it 59	 PSNR SIDD: 15.8556	] ----  [best_Ep_SIDD 22 best_it_SIDD 14 Best_PSNR_SIDD 16.0974] 
+Epoch: 22	Time: 49.3131	Loss: 10.2692	LearningRate 0.000010
+[Ep 23 it 14	 PSNR SIDD: 16.0644	] ----  [best_Ep_SIDD 22 best_it_SIDD 14 Best_PSNR_SIDD 16.0974] 
+[Ep 23 it 29	 PSNR SIDD: 15.9826	] ----  [best_Ep_SIDD 22 best_it_SIDD 14 Best_PSNR_SIDD 16.0974] 
+[Ep 23 it 44	 PSNR SIDD: 16.2993	] ----  [best_Ep_SIDD 23 best_it_SIDD 44 Best_PSNR_SIDD 16.2993] 
+[Ep 23 it 59	 PSNR SIDD: 15.5888	] ----  [best_Ep_SIDD 23 best_it_SIDD 44 Best_PSNR_SIDD 16.2993] 
+Epoch: 23	Time: 49.4220	Loss: 10.8534	LearningRate 0.000010
+[Ep 24 it 14	 PSNR SIDD: 15.5843	] ----  [best_Ep_SIDD 23 best_it_SIDD 44 Best_PSNR_SIDD 16.2993] 
+[Ep 24 it 29	 PSNR SIDD: 15.9736	] ----  [best_Ep_SIDD 23 best_it_SIDD 44 Best_PSNR_SIDD 16.2993] 
+[Ep 24 it 44	 PSNR SIDD: 16.1574	] ----  [best_Ep_SIDD 23 best_it_SIDD 44 Best_PSNR_SIDD 16.2993] 
+[Ep 24 it 59	 PSNR SIDD: 16.2969	] ----  [best_Ep_SIDD 23 best_it_SIDD 44 Best_PSNR_SIDD 16.2993] 
+Epoch: 24	Time: 49.2556	Loss: 12.9045	LearningRate 0.000010
+[Ep 25 it 14	 PSNR SIDD: 16.4386	] ----  [best_Ep_SIDD 25 best_it_SIDD 14 Best_PSNR_SIDD 16.4386] 
+[Ep 25 it 29	 PSNR SIDD: 16.4476	] ----  [best_Ep_SIDD 25 best_it_SIDD 29 Best_PSNR_SIDD 16.4476] 
+[Ep 25 it 44	 PSNR SIDD: 16.4852	] ----  [best_Ep_SIDD 25 best_it_SIDD 44 Best_PSNR_SIDD 16.4852] 
+[Ep 25 it 59	 PSNR SIDD: 16.4861	] ----  [best_Ep_SIDD 25 best_it_SIDD 59 Best_PSNR_SIDD 16.4861] 
+Epoch: 25	Time: 52.1910	Loss: 11.7569	LearningRate 0.000010
+[Ep 26 it 14	 PSNR SIDD: 16.6689	] ----  [best_Ep_SIDD 26 best_it_SIDD 14 Best_PSNR_SIDD 16.6689] 
+[Ep 26 it 29	 PSNR SIDD: 16.7329	] ----  [best_Ep_SIDD 26 best_it_SIDD 29 Best_PSNR_SIDD 16.7329] 
+[Ep 26 it 44	 PSNR SIDD: 16.8202	] ----  [best_Ep_SIDD 26 best_it_SIDD 44 Best_PSNR_SIDD 16.8202] 
+[Ep 26 it 59	 PSNR SIDD: 16.8550	] ----  [best_Ep_SIDD 26 best_it_SIDD 59 Best_PSNR_SIDD 16.8550] 
+Epoch: 26	Time: 52.7375	Loss: 10.8038	LearningRate 0.000010
+[Ep 27 it 14	 PSNR SIDD: 16.6454	] ----  [best_Ep_SIDD 26 best_it_SIDD 59 Best_PSNR_SIDD 16.8550] 
+[Ep 27 it 29	 PSNR SIDD: 16.9996	] ----  [best_Ep_SIDD 27 best_it_SIDD 29 Best_PSNR_SIDD 16.9996] 
+[Ep 27 it 44	 PSNR SIDD: 17.1252	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+[Ep 27 it 59	 PSNR SIDD: 17.0049	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+Epoch: 27	Time: 50.5389	Loss: 10.9779	LearningRate 0.000010
+[Ep 28 it 14	 PSNR SIDD: 17.0465	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+[Ep 28 it 29	 PSNR SIDD: 16.7591	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+[Ep 28 it 44	 PSNR SIDD: 16.9455	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+[Ep 28 it 59	 PSNR SIDD: 16.7092	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+Epoch: 28	Time: 48.5549	Loss: 10.5520	LearningRate 0.000010
+[Ep 29 it 14	 PSNR SIDD: 16.7295	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+[Ep 29 it 29	 PSNR SIDD: 17.0160	] ----  [best_Ep_SIDD 27 best_it_SIDD 44 Best_PSNR_SIDD 17.1252] 
+[Ep 29 it 44	 PSNR SIDD: 17.1734	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 29 it 59	 PSNR SIDD: 16.8903	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 29	Time: 50.2076	Loss: 10.9926	LearningRate 0.000010
+[Ep 30 it 14	 PSNR SIDD: 17.0773	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 30 it 29	 PSNR SIDD: 17.0069	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 30 it 44	 PSNR SIDD: 16.9807	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 30 it 59	 PSNR SIDD: 16.8893	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 30	Time: 48.8372	Loss: 10.8649	LearningRate 0.000010
+[Ep 31 it 14	 PSNR SIDD: 16.8893	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 31 it 29	 PSNR SIDD: 16.7937	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 31 it 44	 PSNR SIDD: 16.6380	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 31 it 59	 PSNR SIDD: 16.8341	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 31	Time: 48.5858	Loss: 10.5082	LearningRate 0.000010
+[Ep 32 it 14	 PSNR SIDD: 16.9143	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 32 it 29	 PSNR SIDD: 17.0736	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 32 it 44	 PSNR SIDD: 16.8597	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 32 it 59	 PSNR SIDD: 16.9510	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 32	Time: 48.4474	Loss: 10.7489	LearningRate 0.000010
+[Ep 33 it 14	 PSNR SIDD: 16.6245	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 33 it 29	 PSNR SIDD: 16.8936	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 33 it 44	 PSNR SIDD: 17.1496	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 33 it 59	 PSNR SIDD: 17.0020	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 33	Time: 48.4295	Loss: 10.4650	LearningRate 0.000010
+[Ep 34 it 14	 PSNR SIDD: 16.4910	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 34 it 29	 PSNR SIDD: 15.7092	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 34 it 44	 PSNR SIDD: 16.1602	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 34 it 59	 PSNR SIDD: 16.5999	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 34	Time: 48.6230	Loss: 11.5616	LearningRate 0.000010
+[Ep 35 it 14	 PSNR SIDD: 16.9824	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 35 it 29	 PSNR SIDD: 16.9563	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 35 it 44	 PSNR SIDD: 16.7323	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 35 it 59	 PSNR SIDD: 16.4415	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 35	Time: 48.3643	Loss: 11.0561	LearningRate 0.000010
+[Ep 36 it 14	 PSNR SIDD: 16.9576	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 36 it 29	 PSNR SIDD: 17.1182	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 36 it 44	 PSNR SIDD: 16.6241	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+[Ep 36 it 59	 PSNR SIDD: 16.6742	] ----  [best_Ep_SIDD 29 best_it_SIDD 44 Best_PSNR_SIDD 17.1734] 
+Epoch: 36	Time: 49.0721	Loss: 11.1391	LearningRate 0.000010
+[Ep 37 it 14	 PSNR SIDD: 17.2033	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 37 it 29	 PSNR SIDD: 16.8636	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 37 it 44	 PSNR SIDD: 16.5733	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 37 it 59	 PSNR SIDD: 16.8166	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 37	Time: 50.4034	Loss: 11.0213	LearningRate 0.000010
+[Ep 38 it 14	 PSNR SIDD: 16.3390	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 38 it 29	 PSNR SIDD: 16.0759	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 38 it 44	 PSNR SIDD: 15.8723	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 38 it 59	 PSNR SIDD: 16.1797	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 38	Time: 48.2269	Loss: 11.7290	LearningRate 0.000010
+[Ep 39 it 14	 PSNR SIDD: 16.5342	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 39 it 29	 PSNR SIDD: 14.6815	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 39 it 44	 PSNR SIDD: 15.0688	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 39 it 59	 PSNR SIDD: 15.3708	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 39	Time: 49.5449	Loss: 12.0846	LearningRate 0.000010
+[Ep 40 it 14	 PSNR SIDD: 14.7880	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 40 it 29	 PSNR SIDD: 13.9657	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 40 it 44	 PSNR SIDD: 14.1229	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 40 it 59	 PSNR SIDD: 14.0563	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 40	Time: 49.1162	Loss: 13.4437	LearningRate 0.000009
+[Ep 41 it 14	 PSNR SIDD: 13.6550	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 41 it 29	 PSNR SIDD: 13.1019	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 41 it 44	 PSNR SIDD: 12.4108	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 41 it 59	 PSNR SIDD: 10.3591	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 41	Time: 48.6972	Loss: 15.7891	LearningRate 0.000009
+[Ep 42 it 14	 PSNR SIDD: 11.1953	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 42 it 29	 PSNR SIDD: 11.3608	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 42 it 44	 PSNR SIDD: 11.3758	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 42 it 59	 PSNR SIDD: 11.3062	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 42	Time: 49.3417	Loss: 19.4625	LearningRate 0.000009
+[Ep 43 it 14	 PSNR SIDD: 11.2289	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 43 it 29	 PSNR SIDD: 9.7887	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 43 it 44	 PSNR SIDD: 10.3913	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 43 it 59	 PSNR SIDD: 10.4672	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 43	Time: 48.0111	Loss: 21.4166	LearningRate 0.000009
+[Ep 44 it 14	 PSNR SIDD: 10.5093	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 44 it 29	 PSNR SIDD: 9.2563	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 44 it 44	 PSNR SIDD: 9.5503	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 44 it 59	 PSNR SIDD: 9.0935	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 44	Time: 49.0034	Loss: 23.7955	LearningRate 0.000009
+[Ep 45 it 14	 PSNR SIDD: 8.8967	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 45 it 29	 PSNR SIDD: 8.9167	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 45 it 44	 PSNR SIDD: 8.8917	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 45 it 59	 PSNR SIDD: 8.5459	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 45	Time: 48.9341	Loss: 26.6533	LearningRate 0.000009
+[Ep 46 it 14	 PSNR SIDD: 6.6948	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 46 it 29	 PSNR SIDD: 7.0898	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 46 it 44	 PSNR SIDD: 7.7032	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 46 it 59	 PSNR SIDD: 7.9757	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 46	Time: 49.9521	Loss: 31.0816	LearningRate 0.000009
+[Ep 47 it 14	 PSNR SIDD: 8.0975	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 47 it 29	 PSNR SIDD: 8.1267	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 47 it 44	 PSNR SIDD: 8.1609	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 47 it 59	 PSNR SIDD: 8.0846	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 47	Time: 49.1398	Loss: 28.3083	LearningRate 0.000009
+[Ep 48 it 14	 PSNR SIDD: 8.2285	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 48 it 29	 PSNR SIDD: 8.4202	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 48 it 44	 PSNR SIDD: 7.5240	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 48 it 59	 PSNR SIDD: 6.7118	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 48	Time: 48.7781	Loss: 29.1780	LearningRate 0.000009
+[Ep 49 it 14	 PSNR SIDD: 6.6720	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 49 it 29	 PSNR SIDD: 7.0389	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 49 it 44	 PSNR SIDD: 6.9685	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 49 it 59	 PSNR SIDD: 7.1274	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 49	Time: 49.3778	Loss: 33.2107	LearningRate 0.000009
+[Ep 50 it 14	 PSNR SIDD: 7.2777	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 50 it 29	 PSNR SIDD: 7.4417	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 50 it 44	 PSNR SIDD: 7.6764	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 50 it 59	 PSNR SIDD: 7.8202	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 50	Time: 48.9150	Loss: 30.6952	LearningRate 0.000009
+[Ep 51 it 14	 PSNR SIDD: 8.0009	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 51 it 29	 PSNR SIDD: 8.0986	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 51 it 44	 PSNR SIDD: 8.2552	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 51 it 59	 PSNR SIDD: 8.2807	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 51	Time: 48.5537	Loss: 28.5389	LearningRate 0.000009
+[Ep 52 it 14	 PSNR SIDD: 7.8432	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 52 it 29	 PSNR SIDD: 7.6532	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 52 it 44	 PSNR SIDD: 7.6947	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 52 it 59	 PSNR SIDD: 7.7559	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 52	Time: 48.3419	Loss: 29.4722	LearningRate 0.000009
+[Ep 53 it 14	 PSNR SIDD: 7.9493	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 53 it 29	 PSNR SIDD: 7.8392	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 53 it 44	 PSNR SIDD: 7.7446	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 53 it 59	 PSNR SIDD: 7.6373	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 53	Time: 48.7837	Loss: 29.3715	LearningRate 0.000009
+[Ep 54 it 14	 PSNR SIDD: 7.2774	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 54 it 29	 PSNR SIDD: 7.0801	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 54 it 44	 PSNR SIDD: 7.2418	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 54 it 59	 PSNR SIDD: 7.3828	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 54	Time: 48.9535	Loss: 31.4168	LearningRate 0.000009
+[Ep 55 it 14	 PSNR SIDD: 7.3219	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 55 it 29	 PSNR SIDD: 7.4275	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 55 it 44	 PSNR SIDD: 7.6141	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 55 it 59	 PSNR SIDD: 7.5489	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 55	Time: 50.1507	Loss: 30.6602	LearningRate 0.000009
+[Ep 56 it 14	 PSNR SIDD: 7.5984	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 56 it 29	 PSNR SIDD: 7.7783	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 56 it 44	 PSNR SIDD: 7.8094	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 56 it 59	 PSNR SIDD: 7.8763	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 56	Time: 48.8306	Loss: 29.5088	LearningRate 0.000009
+[Ep 57 it 14	 PSNR SIDD: 7.4330	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 57 it 29	 PSNR SIDD: 7.4192	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 57 it 44	 PSNR SIDD: 7.3998	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 57 it 59	 PSNR SIDD: 7.4118	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 57	Time: 48.3311	Loss: 30.5151	LearningRate 0.000009
+[Ep 58 it 14	 PSNR SIDD: 7.4590	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 58 it 29	 PSNR SIDD: 7.6355	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 58 it 44	 PSNR SIDD: 7.5002	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 58 it 59	 PSNR SIDD: 7.4636	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 58	Time: 49.0957	Loss: 30.4712	LearningRate 0.000009
+[Ep 59 it 14	 PSNR SIDD: 7.4736	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 59 it 29	 PSNR SIDD: 7.6714	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 59 it 44	 PSNR SIDD: 7.6608	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 59 it 59	 PSNR SIDD: 7.5666	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+Epoch: 59	Time: 48.3340	Loss: 30.1604	LearningRate 0.000009
+[Ep 60 it 14	 PSNR SIDD: 7.6799	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
+[Ep 60 it 29	 PSNR SIDD: 7.5988	] ----  [best_Ep_SIDD 37 best_it_SIDD 14 Best_PSNR_SIDD 17.2033] 
