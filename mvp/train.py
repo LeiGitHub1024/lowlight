@@ -18,8 +18,7 @@ os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = opt.gpu
 import torch
 torch.backends.cudnn.benchmark = True
-# 清理一次缓存
-torch.cuda.empty_cache()
+
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(device)
 import torch.nn as nn
@@ -111,7 +110,7 @@ else:
 
 
 ######### Loss ###########
-criterion = SSIM().cuda()
+criterion = MyLoss().cuda()
 
 ######### DataLoader ###########
 print('===> Loading datasets')
@@ -165,8 +164,8 @@ for epoch in range(start_epoch, opt.nepoch + 1):
         with torch.cuda.amp.autocast():
             restored = model_restoration(input_)
             restored = torch.clamp(restored,0,1)  
-            loss = criterion(restored, target)
-        print('loss:',loss.item())
+            loss = criterion(restored, target, epoch)
+        # print('loss:',loss.item())
         loss_scaler(
                 loss, optimizer,parameters=model_restoration.parameters())
         epoch_loss +=loss.item()
@@ -196,7 +195,7 @@ for epoch in range(start_epoch, opt.nepoch + 1):
                                 'optimizer' : optimizer.state_dict()
                                 }, os.path.join(model_dir,"model_best.pth"))
 
-                print("[Ep %d it %d\t PSNR SIDD: %.4f\t] ----  [best_Ep_SIDD %d best_it_SIDD %d Best_PSNR_SIDD %.4f] " % (epoch, i, psnr_val_rgb,best_epoch,best_iter,best_psnr))
+                print("[Ep %d it %d\t PSNR SIDD: %.4f\t] --loss%.4f--  [best_Ep_SIDD %d best_it_SIDD %d Best_PSNR_SIDD %.4f] " % (epoch, i, psnr_val_rgb,loss.item(),best_epoch,best_iter,best_psnr))
                 with open(logname,'a') as f:
                     f.write("[Ep %d it %d\t PSNR SIDD: %.4f\t] ----  [best_Ep_SIDD %d best_it_SIDD %d Best_PSNR_SIDD %.4f] " \
                         % (epoch, i, psnr_val_rgb,best_epoch,best_iter,best_psnr)+'\n')

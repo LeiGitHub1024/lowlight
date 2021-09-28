@@ -17,10 +17,11 @@
 conda activate uformer
 
 
-python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
+nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
     --train_ps 128 --train_dir ../datasets/delowlight/lol/train --env 32_0701_1 \
-    --val_dir ../datasets/delowlight/lol/valid --embed_dim 32 --warmup  --nepoch=10
-
+    --val_dir ../datasets/delowlight/lol/valid --embed_dim 32 --warmup  --nepoch=250 \
+    --lr_initial 0.0001 &
+    # --optimizer adam
 
 # nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
 #     --train_ps 128 --train_dir ../datasets/delowlight/lol/train --env 32_0701_1 \
