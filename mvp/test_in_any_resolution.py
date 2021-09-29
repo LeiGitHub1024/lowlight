@@ -26,6 +26,8 @@ parser = argparse.ArgumentParser(description='RGB denoising evaluation on the va
 parser.add_argument('--input_dir', default='/home/mist/lowlight/mvp/lol15',type=str, help='Directory of validation images')
 parser.add_argument('--result_dir', default='./results/data/lol15/high',type=str, help='Directory for results')
 parser.add_argument('--weights', default='./log/Uformer32_0701_1/models/model_latest.pth',type=str, help='Path to weights')
+# parser.add_argument('--weights', default='../uformer32_denoising_sidd.pth',type=str, help='Path to weights')
+
 parser.add_argument('--gpus', default='0', type=str, help='CUDA_VISIBLE_DEVICES')
 parser.add_argument('--arch', default='Uformer', type=str, help='arch')
 parser.add_argument('--batch_size', default=1, type=int, help='Batch size for dataloader')
