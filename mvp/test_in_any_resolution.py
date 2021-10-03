@@ -23,9 +23,9 @@ from skimage.metrics import peak_signal_noise_ratio as psnr_loss
 from skimage.metrics import structural_similarity as ssim_loss
 
 parser = argparse.ArgumentParser(description='RGB denoising evaluation on the validation set of SIDD')
-parser.add_argument('--input_dir', default='/home/mist/lowlight/mvp/lol15',type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default='./results/data/lol15/high',type=str, help='Directory for results')
-parser.add_argument('--weights', default='./log/Uformer32_0701_1/models/model_latest.pth',type=str, help='Path to weights')
+parser.add_argument('--input_dir', default='../datasets/sid/valid',type=str, help='Directory of validation images')
+parser.add_argument('--result_dir', default='./log/Uformer32_1003_1/results/',type=str, help='Directory for results')
+parser.add_argument('--weights', default='./log/Uformer32_1003_1/models/model_epoch_250.pth',type=str, help='Path to weights')
 # parser.add_argument('--weights', default='../uformer32_denoising_sidd.pth',type=str, help='Path to weights')
 
 parser.add_argument('--gpus', default='0', type=str, help='CUDA_VISIBLE_DEVICES')
@@ -46,7 +46,7 @@ parser.add_argument('--global_skip', action='store_true', default=False, help='g
 parser.add_argument('--local_skip', action='store_true', default=False, help='local skip connection')
 parser.add_argument('--vit_share', action='store_true', default=False, help='share vit module')
 
-parser.add_argument('--train_ps', type=int, default=128, help='patch size of training sample')
+parser.add_argument('--train_ps', type=int, default=64, help='patch size of training sample')
 args = parser.parse_args()
 
 
