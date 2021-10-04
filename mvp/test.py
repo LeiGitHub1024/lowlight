@@ -25,8 +25,8 @@ from skimage.transform import resize
 
 parser = argparse.ArgumentParser(description='RGB denoising evaluation on the validation set of SIDD')
 parser.add_argument('--input_dir', default='../data/test',type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default='./log/Uformer32_1003_1/results/',type=str, help='Directory for results')
-parser.add_argument('--weights', default='./log/Uformer32_1003_1/models/model_latest.pth',type=str, help='Path to weights')
+parser.add_argument('--result_dir', default='./log/Uformer32_1004_1/results/',type=str, help='Directory for results')
+parser.add_argument('--weights', default='./log/Uformer32_1004_1/models/model_latest.pth',type=str, help='Path to weights')
 parser.add_argument('--gpus', default='0', type=str, help='CUDA_VISIBLE_DEVICES')
 parser.add_argument('--arch', default='Uformer', type=str, help='arch')
 parser.add_argument('--batch_size', default=1, type=int, help='Batch size for dataloader')
@@ -65,6 +65,7 @@ print("===>Testing using weights: ", args.weights)
 
 def tensorResize(tensor,X):
     #tensor->numpy
+    print(tensor.shape)
     np_arr = tensor.cpu().detach().numpy()
     np_arr = np_arr[0].transpose((1,2,0))
 
@@ -75,11 +76,12 @@ def tensorResize(tensor,X):
     # print(im_np_resize.shape)
 
     #numpy->tensor
+    print(im_np_resize.shape)
     return torch.from_numpy(im_np_resize)
 
 model_restoration.cuda()
 model_restoration.eval()
-factor = 16.0
+factor = 256.0
 with torch.no_grad():
     psnr_val_rgb = []
     ssim_val_rgb = []
