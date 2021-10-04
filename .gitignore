@@ -18,3 +18,5 @@ KinD-master
 
 ipynb/test
 results/
+
+#git config --global credential.helper store
