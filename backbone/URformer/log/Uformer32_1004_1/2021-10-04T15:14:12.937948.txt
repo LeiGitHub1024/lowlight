@@ -1711,3 +1711,10 @@ Epoch: 146	Time: 9.6347	Loss: 2.3208	LearningRate 0.000034
 [Ep 147 it 5	 PSNR SIDD: 17.0192	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
 [Ep 147 it 6	 PSNR SIDD: 17.0044	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
 Epoch: 147	Time: 9.5445	Loss: 2.3059	LearningRate 0.000033
+[Ep 148 it 1	 PSNR SIDD: 16.8938	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
+[Ep 148 it 2	 PSNR SIDD: 16.7574	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
+[Ep 148 it 3	 PSNR SIDD: 16.5997	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
+[Ep 148 it 4	 PSNR SIDD: 16.4908	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
+[Ep 148 it 5	 PSNR SIDD: 16.4890	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
+[Ep 148 it 6	 PSNR SIDD: 16.5797	] ----  [best_Ep_SIDD 142 best_it_SIDD 4 Best_PSNR_SIDD 17.0883] 
+Epoch: 148	Time: 9.5218	Loss: 2.5958	LearningRate 0.000032
