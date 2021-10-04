@@ -23,9 +23,9 @@ from skimage.metrics import peak_signal_noise_ratio as psnr_loss
 from skimage.metrics import structural_similarity as ssim_loss
 
 parser = argparse.ArgumentParser(description='RGB denoising evaluation on the validation set of SIDD')
-parser.add_argument('--input_dir', default='/home/mist/lowlight/datasets/illumination_KinD/train',type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default='./log/Uformer32_1003_1/results/',type=str, help='Directory for results')
-parser.add_argument('--weights', default='./log/Uformer32_1003_1/models/model_best.pth',type=str, help='Path to weights')
+parser.add_argument('--input_dir', default='/home/mist/lowlight/datasets/lol/valid',type=str, help='Directory of validation images')
+parser.add_argument('--result_dir', default='./log/Uformer32_1004_2/results/',type=str, help='Directory for results')
+parser.add_argument('--weights', default='./log/Uformer32_1004_2/models/model_best.pth',type=str, help='Path to weights')
 # parser.add_argument('--weights', default='../uformer32_denoising_sidd.pth',type=str, help='Path to weights')
 
 parser.add_argument('--gpus', default='0', type=str, help='CUDA_VISIBLE_DEVICES')
