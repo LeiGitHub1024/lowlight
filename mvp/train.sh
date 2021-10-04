@@ -17,9 +17,9 @@
 # conda activate uformer
 
 
-nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
+python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
     --train_ps 64 --train_dir ../datasets/lol/train --env 32_1004_1 \
-    --val_dir ../datasets/lol/valid --embed_dim 32 --warmup  --nepoch=250 &
+    --val_dir ../datasets/lol/valid --embed_dim 32 --warmup  --nepoch=2
     # --optimizer adam
 
 # nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
