@@ -110,7 +110,7 @@ else:
 
 
 ######### Loss ###########
-criterion = CharbonnierLoss().cuda()
+criterion = MyLoss().cuda()
 
 ######### DataLoader ###########
 print('===> Loading datasets')

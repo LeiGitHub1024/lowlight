@@ -1233,7 +1233,7 @@ class Uformer(nn.Module):
         self.resize_1 = upsample(embed_dim*8, embed_dim*4)
         self.resize_2 = upsample(embed_dim*4, embed_dim*2)
         self.resize_3 = upsample(embed_dim*2, embed_dim)
-        self.resize_4 = OutputProj(in_channel=embed_dim, out_channel=1, kernel_size=3, stride=1)
+        self.resize_4 = OutputProj(in_channel=embed_dim, out_channel=in_chans, kernel_size=3, stride=1)
 
 
 
@@ -1358,8 +1358,12 @@ class Uformer(nn.Module):
         rsz4 = self.resize_4(rsz3)
 
         if (stage == 0):
-            return rsz4
+            #print("x shape: ", x.shape, x.type())
+            #print("rsz4 shape: ", rsz4.shape, rsz4.type())
+            return x + rsz4
             
+        print("!!!!!!!!!! E R R O R !!!!!!!!!!")
+        
         # Bottleneck
         conv4 = self.conv(rsz4, mask=mask)
 
