@@ -18,8 +18,8 @@
 
 
 python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
-    --train_ps 64 --train_dir /home/mist/lowlight/datasets/sid/train --env 32_1004_1 \
-    --val_dir /home/mist/lowlight/datasets/sid/valid --embed_dim 32 --warmup  --nepoch=200
+    --train_ps 64 --train_dir /home/mist/lowlight/datasets/reflex/train --env 32_1004_3 \
+    --val_dir /home/mist/lowlight/datasets/reflex/valid --embed_dim 32 --warmup  --nepoch=200
     # --optimizer adam
 
 # nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \

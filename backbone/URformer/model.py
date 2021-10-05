@@ -1236,12 +1236,12 @@ class Uformer(nn.Module):
         self.resize_4 = OutputProj(in_channel=embed_dim, out_channel=in_chans, kernel_size=3, stride=1)
 
 
-
+        self.recover_0 = InputProj(in_channel=in_chans, out_channel=embed_dim, kernel_size=3, stride=1, act_layer=nn.LeakyReLU)
         # Bottleneck
-        self.conv = BasicUformerLayer(dim=embed_dim*16,
-                            output_dim=embed_dim*16,
-                            input_resolution=(img_size // (2 ** 4),
-                                                img_size // (2 ** 4)),
+        self.conv = BasicUformerLayer(dim=embed_dim,
+                            output_dim=embed_dim,
+                            input_resolution=(img_size,
+                                                img_size,
                             depth=depths[4],
                             num_heads=num_heads[4],
                             win_size=win_size,
@@ -1252,6 +1252,12 @@ class Uformer(nn.Module):
                             norm_layer=norm_layer,
                             use_checkpoint=use_checkpoint,
                             token_projection=token_projection,token_mlp=token_mlp,se_layer=se_layer)
+
+        self.recover_1 = dowsample(embed_dim, embed_dim*2)
+        self.recover_2 = dowsample(embed_dim*2, embed_dim*4)
+        self.recover_3 = dowsample(embed_dim*4, embed_dim*8)
+        self.recover_4 = dowsample(embed_dim*8, embed_dim*16)
+        
 
         # Decoder
         self.upsample_0 = upsample(embed_dim*16, embed_dim*8)
@@ -1362,13 +1368,18 @@ class Uformer(nn.Module):
             #print("rsz4 shape: ", rsz4.shape, rsz4.type())
             return x + rsz4
             
-        print("!!!!!!!!!! E R R O R !!!!!!!!!!")
+        rcv0 = self.recover_0(rsz4)
         
         # Bottleneck
-        conv4 = self.conv(rsz4, mask=mask)
+        conv4 = self.conv(rcv0, mask=mask)
+
+        rcv1 = self.recover_1(conv4)
+        rcv2 = self.recover_2(rcv1)
+        rcv3 = self.recover_3(rcv2)
+        rcv4 = self.recover_4(rcv3)
 
         #Decoder
-        up0 = self.upsample_0(conv4)
+        up0 = self.upsample_0(rcv4)
         deconv0 = torch.cat([up0,conv3],-1)
         deconv0 = self.decoderlayer_0(deconv0,mask=mask)
         
@@ -1386,7 +1397,7 @@ class Uformer(nn.Module):
 
         # Output Projection
         y = self.output_proj(deconv3)
-        return x + y
+        return x + rsz4, x + y
 
     def flops(self):
         flops = 0
