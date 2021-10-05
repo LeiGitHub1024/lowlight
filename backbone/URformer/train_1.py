@@ -150,7 +150,7 @@ loss_scaler = NativeScaler()
 torch.cuda.empty_cache()
 
 
-stage0_checkpoint = './log/Uformer32_1005_1_0/models/model_best.pth'
+stage0_checkpoint = './log/Uformer32_1005_2_0/models/model_best.pth'
 utils.load_checkpoint(model_restoration, stage0_checkpoint)
 for epoch in range(start_epoch, opt.nepoch + 1):
     epoch_start_time = time.time()
