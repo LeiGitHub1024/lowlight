@@ -1,6 +1,6 @@
 import os
 
-from dataset import DataLoaderTrain, DataLoaderVal, DataLoaderTest, DataLoaderTestSR
+from dataset import DataLoaderTrain_stage0, DataLoaderTrain_stage1, DataLoaderVal, DataLoaderTest, DataLoaderTestSR
 def get_training_data(rgb_dir, img_options, stage=0):
     assert os.path.exists(rgb_dir)
     if stage == 1:

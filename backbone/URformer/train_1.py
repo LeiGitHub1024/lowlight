@@ -148,6 +148,10 @@ print("\nEvaluation after every {} Iterations !!!\n".format(eval_now))
 
 loss_scaler = NativeScaler()
 torch.cuda.empty_cache()
+
+
+stage0_checkpoint = './log/Uformer32_1005_1_0/models/model_best.pth'
+utils.load_checkpoint(model_restoration, stage0_checkpoint)
 for epoch in range(start_epoch, opt.nepoch + 1):
     epoch_start_time = time.time()
     epoch_loss = 0
@@ -167,9 +171,10 @@ for epoch in range(start_epoch, opt.nepoch + 1):
             reflex, restored = model_restoration(input_, 1)
             reflex = torch.clamp(reflex,0,1)  
             restored = torch.clamp(restored,0,1)  
+            
             loss0 = criterion_0(reflex, mid, epoch)
             loss1 = criterion_1(restored, target, epoch)
-            loss = 0.2 * (epoch / ) *loss0 + loss1
+            loss = 0.2 * (1 - epoch/opt.nepoch) *loss0 + loss1
         # print('loss:',loss.item())
         loss_scaler(
                 loss, optimizer,parameters=model_restoration.parameters())
@@ -185,7 +190,7 @@ for epoch in range(start_epoch, opt.nepoch + 1):
                     input_ = data_val[1].cuda()
                     filenames = data_val[2]
                     with torch.cuda.amp.autocast():
-                        restored = model_restoration(input_, 0)
+                        reflex, restored = model_restoration(input_, 1)
                     restored = torch.clamp(restored,0,1)  
                     psnr_val_rgb.append(utils.batch_PSNR(restored, target, False).item())
 

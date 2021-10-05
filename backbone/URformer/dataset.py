@@ -12,7 +12,7 @@ transforms_aug = [method for method in dir(augment) if callable(getattr(augment,
 ##################################################################################################
 class DataLoaderTrain_stage0(Dataset):
     def __init__(self, rgb_dir, img_options=None, target_transform=None):
-        super(DataLoaderTrain, self).__init__()
+        super(DataLoaderTrain_stage0, self).__init__()
 
         self.target_transform = target_transform
         
@@ -67,7 +67,7 @@ class DataLoaderTrain_stage0(Dataset):
         
 class DataLoaderTrain_stage1(Dataset):
     def __init__(self, rgb_dir, img_options=None, target_transform=None):
-        super(DataLoaderTrain, self).__init__()
+        super(DataLoaderTrain_stage1, self).__init__()
 
         self.target_transform = target_transform
         

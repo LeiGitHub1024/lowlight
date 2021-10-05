@@ -1240,8 +1240,7 @@ class Uformer(nn.Module):
         # Bottleneck
         self.conv = BasicUformerLayer(dim=embed_dim,
                             output_dim=embed_dim,
-                            input_resolution=(img_size,
-                                                img_size,
+                            input_resolution=(img_size, img_size),
                             depth=depths[4],
                             num_heads=num_heads[4],
                             win_size=win_size,
