@@ -157,7 +157,7 @@ class VGGLoss(nn.Module):
 
 
 
-class ExposureLoss(nn.module):
+class ExposureLoss(nn.Module):
     """Exposure Loss (exp)"""
 
     def __init__(self, patch_size=16,mean_val=0.7):
@@ -198,14 +198,13 @@ class ColorLoss(nn.Module):
 
 class MyLoss(nn.Module):
     
-    def __init__(self, eps=1e-3, window_size = 11, size_average = True):
+    def __init__(self):
         super(MyLoss, self).__init__()
-        self.eps = eps
-        self.l1_module = CharbonnierLoss()
+        # self.l1_module = CharbonnierLoss()
         self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
-        self.tv_module = TVLoss()
-        self.exp_module = ExposureLoss(16, 0.7)
-        self.color_module = ColorLoss()
+        # self.tv_module = TVLoss()
+        # self.exp_module = ExposureLoss(16, 0.7)
+        # self.color_module = ColorLoss()
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
 
@@ -214,21 +213,22 @@ class MyLoss(nn.Module):
       
 
 
-        l1_loss = l1_module(x,y)
-        ssim_loss =  100*(1 - ssim_module(x, y)) #100 ssim:50-7
-        # ms_ssim_loss = 1000*(1 - ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
-        tv_loss = tv_module(x)
-        exp_loss = exp_module(x)
-        color_loss = color_module(x)
+        # l1_loss = self.l1_module(x,y)
+        ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
+        # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
+        # tv_loss = self.tv_module(x)
+        # exp_loss = self.exp_module(x)
+        # color_loss = self.color_module(x)
 
-        if epoch>100 :
-            vgg_module = VGGPerceptualLoss().cuda()
-            vgg_loss = vgg_module(x,y)
-            loss =  l1_loss + ssim_loss + vgg_loss
-        else :
-            loss =  l1_loss + ssim_loss
+        # if epoch>100 :
+        #     vgg_module = VGGPerceptualLoss().cuda()
+        #     vgg_loss = vgg_module(x,y)
+        #     loss =  l1_loss + ssim_loss + vgg_loss
+        # else :
+        #     loss =  l1_loss + ssim_loss
+
+        # loss = l1_loss
 
 
 
-
-        return loss
+        return ssim_loss
