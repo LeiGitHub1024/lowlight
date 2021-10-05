@@ -116,7 +116,7 @@ criterion_1 = MyLoss().cuda()
 ######### DataLoader ###########
 print('===> Loading datasets')
 img_options_train = {'patch_size':opt.train_ps}
-train_dataset = get_training_data(opt.train_dir, img_options_train)
+train_dataset = get_training_data(opt.train_dir, img_options_train, 1)
 train_loader = DataLoader(dataset=train_dataset, batch_size=opt.batch_size, shuffle=True, 
         num_workers=opt.train_workers, pin_memory=True, drop_last=False)
 
@@ -158,15 +158,18 @@ for epoch in range(start_epoch, opt.nepoch + 1):
         optimizer.zero_grad()
 
         target = data[0].cuda()
-        input_ = data[1].cuda()
+        mid = data[1].cuda()
+        input_ = data[2].cuda()
 
         if epoch>5:
-            target, input_ = utils.MixUp_AUG().aug(target, input_)
+            target, mid, input_ = utils.MixUp_AUG().aug(target, mid, input_)
         with torch.cuda.amp.autocast():
             reflex, restored = model_restoration(input_, 1)
             reflex = torch.clamp(reflex,0,1)  
             restored = torch.clamp(restored,0,1)  
-            loss = criterion(restored, target, epoch)
+            loss0 = criterion_0(reflex, mid, epoch)
+            loss1 = criterion_1(restored, target, epoch)
+            loss = 0.2 * (epoch / ) *loss0 + loss1
         # print('loss:',loss.item())
         loss_scaler(
                 loss, optimizer,parameters=model_restoration.parameters())

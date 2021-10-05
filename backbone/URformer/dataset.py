@@ -10,7 +10,7 @@ augment   = Augment_RGB_torch()
 transforms_aug = [method for method in dir(augment) if callable(getattr(augment, method)) if not method.startswith('_')] 
 
 ##################################################################################################
-class DataLoaderTrain(Dataset):
+class DataLoaderTrain_stage0(Dataset):
     def __init__(self, rgb_dir, img_options=None, target_transform=None):
         super(DataLoaderTrain, self).__init__()
 
@@ -64,6 +64,70 @@ class DataLoaderTrain(Dataset):
         noisy = getattr(augment, apply_trans)(noisy)        
 
         return clean, noisy, clean_filename, noisy_filename
+        
+class DataLoaderTrain_stage1(Dataset):
+    def __init__(self, rgb_dir, img_options=None, target_transform=None):
+        super(DataLoaderTrain, self).__init__()
+
+        self.target_transform = target_transform
+        
+        gt_dir = 'groundtruth'
+        reflex_dir = 'reflex'
+        input_dir = 'input'
+        
+        gt_files     = sorted(os.listdir(os.path.join(rgb_dir, gt_dir)))
+        reflex_files = sorted(os.listdir(os.path.join(rgb_dir, reflex_dir)))
+        input_files  = sorted(os.listdir(os.path.join(rgb_dir, input_dir)))
+        
+        self.gt_filenames     = [os.path.join(rgb_dir, gt_dir, x)     for x in gt_files if is_png_file(x)]
+        self.reflex_filenames = [os.path.join(rgb_dir, reflex_dir, x) for x in reflex_files if is_png_file(x)]
+        self.input_filenames  = [os.path.join(rgb_dir, input_dir, x)  for x in input_files if is_png_file(x)]
+        
+        self.img_options = img_options
+
+        self.tar_size = len(self.gt_filenames)  # get the size of target
+
+    def __len__(self):
+        return self.tar_size
+
+    def __getitem__(self, index):
+        tar_index = index % self.tar_size
+        
+        gt_img     = torch.from_numpy(np.float32(load_img(self.gt_filenames[tar_index])))
+        reflex_img = torch.from_numpy(np.float32(load_img(self.reflex_filenames[tar_index])))
+        input_img  = torch.from_numpy(np.float32(load_img(self.input_filenames[tar_index])))
+        
+        gt_img     = gt_img.permute(2,0,1)
+        reflex_img = reflex_img.permute(2,0,1)
+        input_img  = input_img.permute(2,0,1)
+
+        gt_filename     = os.path.split(self.gt_filenames[tar_index])[-1]
+        reflex_filename = os.path.split(self.reflex_filenames[tar_index])[-1]
+        input_filename  = os.path.split(self.input_filenames[tar_index])[-1]
+
+        #Crop Input and Target
+        ps = self.img_options['patch_size']
+        H = gt_img.shape[1]
+        W = gt_img.shape[2]
+        # r = np.random.randint(0, H - ps) if not H-ps else 0
+        # c = np.random.randint(0, W - ps) if not H-ps else 0
+        if H-ps==0:
+            r = 0
+            c = 0
+        else:
+            r = np.random.randint(0, H - ps)
+            c = np.random.randint(0, W - ps)
+        gt_img     = gt_img[:, r:r + ps, c:c + ps]
+        reflex_img = reflex_img[:, r:r + ps, c:c + ps]
+        input_img  = input_img[:, r:r + ps, c:c + ps]
+
+        apply_trans = transforms_aug[random.getrandbits(3)]
+
+        gt_img     = getattr(augment, apply_trans)(gt_img)
+        reflex_img = getattr(augment, apply_trans)(reflex_img)
+        input_img  = getattr(augment, apply_trans)(input_img)        
+
+        return gt_img, reflex_img, input_img, gt_filename, reflex_filename, input_filename
 
 ##################################################################################################
 
