@@ -33,7 +33,7 @@ from einops import rearrange, repeat
 import datetime
 from pdb import set_trace as stx
 
-from losses import CharbonnierLoss,MyLoss,SSIM
+from losses import MyLoss
 
 from tqdm import tqdm 
 from warmup_scheduler import GradualWarmupScheduler

@@ -1,5 +1,6 @@
 import torch
 import torchvision
+from torchvision import models, transforms
 import torch.nn as nn
 import torch.nn.functional as F
 from pytorch_msssim import ssim, ms_ssim, SSIM, MS_SSIM
@@ -40,7 +41,6 @@ class TVLoss(nn.Module):
         return t.size()[1] * t.size()[2] * t.size()[3]
 
 
-
 class CharbonnierLoss(nn.Module):
     """Charbonnier Loss (L1)"""
 
@@ -55,7 +55,7 @@ class CharbonnierLoss(nn.Module):
         return loss
 
 
-class VGGPerceptualLoss(torch.nn.Module):
+class VGGPerceptualLoss(nn.Module):
     def __init__(self, resize=True):
         super(VGGPerceptualLoss, self).__init__()
         blocks = []
@@ -98,45 +98,137 @@ class VGGPerceptualLoss(torch.nn.Module):
         return loss
 
 
+class VGGLoss(nn.Module):
+    """Computes the VGG perceptual loss between two batches of images.
+    The input and target must be 4D tensors with three channels
+    ``(B, 3, H, W)`` and must have equivalent shapes. Pixel values should be
+    normalized to the range 0–1.
+    The VGG perceptual loss is the mean squared difference between the features
+    computed for the input and target at layer :attr:`layer` (default 8, or
+    ``relu2_2``) of the pretrained model specified by :attr:`model` (either
+    ``'vgg16'`` (default) or ``'vgg19'``).
+    If :attr:`shift` is nonzero, a random shift of at most :attr:`shift`
+    pixels in both height and width will be applied to all images in the input
+    and target. The shift will only be applied when the loss function is in
+    training mode, and will not be applied if a precomputed feature map is
+    supplied as the target.
+    :attr:`reduction` can be set to ``'mean'``, ``'sum'``, or ``'none'``
+    similarly to the loss functions in :mod:`torch.nn`. The default is
+    ``'mean'``.
+    :meth:`get_features()` may be used to precompute the features for the
+    target, to speed up the case where inputs are compared against the same
+    target over and over. To use the precomputed features, pass them in as
+    :attr:`target` and set :attr:`target_is_features` to :code:`True`.
+    Instances of :class:`VGGLoss` must be manually converted to the same
+    device and dtype as their inputs.
+    """
 
-def darkLoss(img1,img2):
-    percent = 0.4
-    index = int(256*256*percent-1)
+    models = {'vgg16': models.vgg16, 'vgg19': models.vgg19}
 
-    
+    def __init__(self, model='vgg16', layer=8, shift=0, reduction='mean'):
+        super().__init__()
+        self.shift = shift
+        self.reduction = reduction
+        self.normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                              std=[0.229, 0.224, 0.225])
+        self.model = self.models[model](pretrained=True).features[:layer+1]
+        self.model.eval()
+        self.model.requires_grad_(False)
+
+    def get_features(self, input):
+        return self.model(self.normalize(input))
+
+    def train(self, mode=True):
+        self.training = mode
+
+    def forward(self, input, target, target_is_features=False):
+        if target_is_features:
+            input_feats = self.get_features(input)
+            target_feats = target
+        else:
+            sep = input.shape[0]
+            batch = torch.cat([input, target])
+            if self.shift and self.training:
+                padded = F.pad(batch, [self.shift] * 4, mode='replicate')
+                batch = transforms.RandomCrop(batch.shape[2:])(padded)
+            feats = self.get_features(batch)
+            input_feats, target_feats = feats[:sep], feats[sep:]
+        return F.mse_loss(input_feats, target_feats, reduction=self.reduction)
+
+
+
+class ExposureLoss(nn.Module):
+    """Exposure Loss (exp)"""
+
+    def __init__(self, patch_size=16,mean_val=0.7):
+        super(ExposureLoss, self).__init__()
+        self.patch_size = patch_size
+        self.mean_val = mean_val
+
+    def forward(self, x):
+        b,c,h,w = x.shape
+        x = torch.mean(x,1,keepdim=True)
+        mean = self.pool(x)
+
+        d = torch.mean(torch.pow(mean- torch.FloatTensor([self.mean_val] ).cuda(),2))
+        return torch.mean(d)
+
+
+class ColorLoss(nn.Module):
+    def __init__(self):
+        super(ColorLoss, self).__init__()
+        # print(1)
+    def forward(self, x ):
+        # self.grad = np.ones(x.shape,dtype=np.float32)
+        b,c,h,w = x.shape
+        # x_de = x.cpu().detach().numpy()
+        r,g,b = torch.split(x , 1, dim=1)
+        mean_rgb = torch.mean(x,[2,3],keepdim=True)
+        mr,mg, mb = torch.split(mean_rgb, 1, dim=1)
+        Dr = r-mr
+        Dg = g-mg
+        Db = b-mb
+        k =torch.pow( torch.pow(Dr,2) + torch.pow(Db,2) + torch.pow(Dg,2),0.5)
+        # print(k)
+        
+
+        k = torch.mean(k)
+        return k
+
 
 class MyLoss(nn.Module):
     
-    def __init__(self, eps=1e-3, window_size = 11, size_average = True):
+    def __init__(self):
         super(MyLoss, self).__init__()
-        self.eps = eps
-
-        # self.window_size = window_size
-        # self.size_average = size_average
-        # self.channel = 1
-        # self.window = create_window(window_size, self.channel)
-
-    def forward(self, x, y,epoch):
-        """Charbonnier Loss (L1) （0-1）"""  
-        diff = x - y
-        l1_loss = torch.mean(torch.sqrt((diff * diff) + (self.eps*self.eps))) #10->5
-
-        """SSIM （0-1）"""
-        ssim_module = SSIM(data_range=255, size_average=True, channel=3)
+        # self.l1_module = CharbonnierLoss()
+        self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
+        # self.tv_module = TVLoss()
+        # self.exp_module = ExposureLoss(16, 0.7)
+        # self.color_module = ColorLoss()
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
-        ssim_loss =  100*(1 - ssim_module(x, y)) #100 ssim:50-7
-        # ms_ssim_loss = 1000*(1 - ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
-        """Dark Loss"""
-        # Dark_loss = darkLoss(x,y)
 
-        vgg_module = VGGPerceptualLoss().cuda()
-        vgg_loss = vgg_module(x,y)
-        print(vgg_loss)
+    def forward(self, x, y,epoch):
 
-        loss =  l1_loss + ssim_loss  
+      
 
 
+        # l1_loss = self.l1_module(x,y)
+        ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
+        # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
+        # tv_loss = self.tv_module(x)
+        # exp_loss = self.exp_module(x)
+        # color_loss = self.color_module(x)
+
+        # if epoch>100 :
+        #     vgg_module = VGGPerceptualLoss().cuda()
+        #     vgg_loss = vgg_module(x,y)
+        #     loss =  l1_loss + ssim_loss + vgg_loss
+        # else :
+        #     loss =  l1_loss + ssim_loss
+
+        # loss = l1_loss
 
 
-        return loss
+
+        return ssim_loss
