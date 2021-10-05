@@ -165,8 +165,8 @@ for epoch in range(start_epoch, opt.nepoch + 1):
         mid = data[1].cuda()
         input_ = data[2].cuda()
 
-        if epoch>5:
-            target, mid, input_ = utils.MixUp_AUG().aug(target, mid, input_)
+        #if epoch>5:
+        #    target, mid, input_ = utils.MixUp_AUG().aug(target, mid, input_)
         with torch.cuda.amp.autocast():
             reflex, restored = model_restoration(input_, 1)
             reflex = torch.clamp(reflex,0,1)  

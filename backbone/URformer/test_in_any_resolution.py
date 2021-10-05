@@ -23,9 +23,9 @@ from skimage.metrics import peak_signal_noise_ratio as psnr_loss
 from skimage.metrics import structural_similarity as ssim_loss
 
 parser = argparse.ArgumentParser(description='RGB denoising evaluation on the validation set of SIDD')
-parser.add_argument('--input_dir', default='/home/mist/lowlight/datasets/lol_stage0/valid',type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default='./log/Uformer32_1005_1_0/results/',type=str, help='Directory for results')
-parser.add_argument('--weights', default='./log/Uformer32_1005_1_0/models/model_best.pth',type=str, help='Path to weights')
+parser.add_argument('--input_dir', default='/home/mist/lowlight/datasets/test',type=str, help='Directory of validation images')
+parser.add_argument('--result_dir', default='./log/Uformer32_1005_1_1/results/',type=str, help='Directory for results')
+parser.add_argument('--weights', default='./log/Uformer32_1005_1_1/models/model_best.pth',type=str, help='Path to weights')
 # parser.add_argument('--weights', default='../uformer32_denoising_sidd.pth',type=str, help='Path to weights')
 
 parser.add_argument('--gpus', default='0', type=str, help='CUDA_VISIBLE_DEVICES')
@@ -99,7 +99,7 @@ with torch.no_grad():
         rgb_noisy, mask = expand2square(data_test[1].cuda(), factor=128) 
         filenames = data_test[2]
 
-        rgb_restored = model_restoration(rgb_noisy, 0, 1 - mask)
+        tmp, rgb_restored = model_restoration(rgb_noisy, 1, 1 - mask)
 
         rgb_restored = torch.masked_select(rgb_restored,mask.bool()).reshape(1,3,rgb_gt.shape[0],rgb_gt.shape[1])
         rgb_restored = torch.clamp(rgb_restored,0,1).cpu().numpy().squeeze().transpose((1,2,0))
