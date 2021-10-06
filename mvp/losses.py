@@ -199,20 +199,29 @@ class ColorLoss(nn.Module):
 class ColorLoss1(nn.Module):
     def __init__(self):
         super(ColorLoss, self).__init__()
-    def forward(self, x ):
+    def forward(self, x ,y  ):
         b,c,h,w = x.shape
         #计算向量夹角和的平均值，
         #对于rgb给予权重
-        # r,g,b = torch.split(x , 1, dim=1)
+        r1,g1,b1 = torch.split(x, 1, dim=1)
+        r2,g2,b2 = torch.spiit(y, 1, dim=1)
 
-        
+        # r1 = r1*0.3
+        # g1 = g1*0.59
+        # b1 = b1*0.11
+        # r2 = r2*0.3
+        # g2 = g2*0.59
+        # b2 = b2*0.11
 
-
+        k1 = r1*r2 + g1*g2 + b1*b2  
+        k2 = torch.pow( torch.pow(r1,2) + torch.pow(g1,2) + torch.pow(b1,2),0.5)
+        k3 = torch.pow( torch.pow(r2,2) + torch.pow(g2,2) + torch.pow(b2,2),0.5)
         # k =torch.pow( torch.pow(Dr,2) + torch.pow(Db,2) + torch.pow(Dg,2),0.5)
         # print(k)
+        cos = k1 / (k2*k3)
         
 
-        k = torch.mean(k)
+        k = torch.mean(torch.arcos(cos))
         return k
 
 class MyLoss(nn.Module):
@@ -223,21 +232,20 @@ class MyLoss(nn.Module):
         self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
         self.tv_module = TVLoss()
         # self.exp_module = ExposureLoss(16, 0.7)
-        # self.color_module = ColorLoss()
+        self.color_module = ColorLoss1()
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
 
     def forward(self, x, y,epoch):
 
-      
-
+    
 
         l1_loss = self.l1_module(x,y)
         ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
         # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
         tv_loss = self.tv_module(x)
         # exp_loss = self.exp_module(x)
-        # color_loss = self.color_module(x)
+        color_loss = self.color_module(x,y)
 
         # if epoch>100 :
         #     vgg_module = VGGPerceptualLoss().cuda()
@@ -246,9 +254,9 @@ class MyLoss(nn.Module):
         # else :
         #     loss =  l1_loss + ssim_loss
 
-        loss = l1_loss + 80 * ssim_loss + 20 * tv_loss
-        if(epoch%50==0):
-            print("l1_loss:" ,l1_loss ,"ssimloss:", ssim_loss, "tv_loss:", tv_loss)
+        loss = l1_loss + 80 * ssim_loss + 10 * tv_loss + color_loss
+        if(epoch%3==1):
+            print("l1_loss:" ,l1_loss.item() ,"color_loss", color_loss.item())
 
 
         return loss
