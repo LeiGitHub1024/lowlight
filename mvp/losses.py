@@ -196,13 +196,32 @@ class ColorLoss(nn.Module):
         return k
 
 
+class ColorLoss1(nn.Module):
+    def __init__(self):
+        super(ColorLoss, self).__init__()
+    def forward(self, x ):
+        b,c,h,w = x.shape
+        #计算向量夹角和的平均值，
+        #对于rgb给予权重
+        # r,g,b = torch.split(x , 1, dim=1)
+
+        
+
+
+        # k =torch.pow( torch.pow(Dr,2) + torch.pow(Db,2) + torch.pow(Dg,2),0.5)
+        # print(k)
+        
+
+        k = torch.mean(k)
+        return k
+
 class MyLoss(nn.Module):
     
     def __init__(self):
         super(MyLoss, self).__init__()
-        # self.l1_module = CharbonnierLoss()
+        self.l1_module = CharbonnierLoss()
         self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
-        # self.tv_module = TVLoss()
+        self.tv_module = TVLoss()
         # self.exp_module = ExposureLoss(16, 0.7)
         # self.color_module = ColorLoss()
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
@@ -213,10 +232,10 @@ class MyLoss(nn.Module):
       
 
 
-        # l1_loss = self.l1_module(x,y)
+        l1_loss = self.l1_module(x,y)
         ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
         # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
-        # tv_loss = self.tv_module(x)
+        tv_loss = self.tv_module(x)
         # exp_loss = self.exp_module(x)
         # color_loss = self.color_module(x)
 
@@ -227,8 +246,9 @@ class MyLoss(nn.Module):
         # else :
         #     loss =  l1_loss + ssim_loss
 
-        # loss = l1_loss
+        loss = l1_loss + 80 * ssim_loss + 20 * tv_loss
+        if(epoch%50==0):
+            print("l1_loss:" ,l1_loss ,"ssimloss:", ssim_loss, "tv_loss:", tv_loss)
 
 
-
-        return ssim_loss
+        return loss
