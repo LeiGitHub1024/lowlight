@@ -1,0 +1,2460 @@
+Namespace(arch='Uformer', att_se=False, batch_size=16, checkpoint=50, dataset='SIDD', embed_dim=32, env='32_1005_2_1', eval_workers=8, global_skip=False, gpu='0', local_skip=False, lr_initial=0.0002, mode='denoising', nepoch=350, norm_layer='nn.LayerNorm', optimizer='adamw', pretrain_weights='./log/Uformer32/models/model_best.pth', resume=False, save_dir='/home/ma-user/work/deNoTr/log', save_images=False, token_mlp='leff', token_projection='linear', train_dir='/home/mist/lowlight/datasets/lol_stage1/train', train_ps=64, train_workers=16, val_dir='/home/mist/lowlight/datasets/lol_stage1/valid', vit_depth=12, vit_dim=256, vit_mlp_dim=512, vit_nheads=8, vit_patch_size=16, vit_share=False, warmup=True, warmup_epochs=3, weight_decay=0.02, win_size=8)
+Uformer(
+  embed_dim=32, token_projection=linear, token_mlp=leff,win_size=8
+  (pos_drop): Dropout(p=0.0, inplace=False)
+  (input_proj): InputProj(
+    (proj): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.01, inplace=True)
+    )
+  )
+  (output_proj): OutputProj(
+    (proj): Sequential(
+      (0): Conv2d(64, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+  )
+  (encoderlayer_0): BasicUformerLayer(
+    dim=32, input_resolution=(64, 64), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=32, input_resolution=(64, 64), num_heads=1, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=32, win_size=(8, 8), num_heads=1
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=32, out_features=32, bias=True)
+            (to_kv): Linear(in_features=32, out_features=64, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): Identity()
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=32, out_features=128, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=128, out_features=32, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=32, input_resolution=(64, 64), num_heads=1, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=32, win_size=(8, 8), num_heads=1
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=32, out_features=32, bias=True)
+            (to_kv): Linear(in_features=32, out_features=64, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=32, out_features=128, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=128, out_features=32, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_0): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (encoderlayer_1): BasicUformerLayer(
+    dim=64, input_resolution=(32, 32), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=64, input_resolution=(32, 32), num_heads=2, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=64, input_resolution=(32, 32), num_heads=2, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_1): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (encoderlayer_2): BasicUformerLayer(
+    dim=128, input_resolution=(16, 16), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=128, input_resolution=(16, 16), num_heads=4, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=128, input_resolution=(16, 16), num_heads=4, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_2): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (encoderlayer_3): BasicUformerLayer(
+    dim=256, input_resolution=(8, 8), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=256, input_resolution=(8, 8), num_heads=8, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=256, input_resolution=(8, 8), num_heads=8, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (dowsample_3): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(256, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (resize_0): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (resize_1): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(256, 128, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (resize_2): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(128, 64, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (resize_3): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(64, 32, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (resize_4): OutputProj(
+    (proj): Sequential(
+      (0): Conv2d(32, 3, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    )
+  )
+  (recover_0): InputProj(
+    (proj): Sequential(
+      (0): Conv2d(3, 32, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+      (1): LeakyReLU(negative_slope=0.01, inplace=True)
+    )
+  )
+  (conv): BasicUformerLayer(
+    dim=32, input_resolution=(64, 64), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=32, input_resolution=(64, 64), num_heads=16, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=32, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=32, out_features=32, bias=True)
+            (to_kv): Linear(in_features=32, out_features=64, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=32, out_features=128, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=128, out_features=32, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=32, input_resolution=(64, 64), num_heads=16, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=32, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=32, out_features=32, bias=True)
+            (to_kv): Linear(in_features=32, out_features=64, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=32, out_features=32, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((32,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=32, out_features=128, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=128)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=128, out_features=32, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (recover_1): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(32, 64, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (recover_2): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(64, 128, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (recover_3): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(128, 256, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (recover_4): Downsample(
+    (conv): Sequential(
+      (0): Conv2d(256, 512, kernel_size=(4, 4), stride=(2, 2), padding=(1, 1))
+    )
+  )
+  (upsample_0): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(512, 256, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_0): BasicUformerLayer(
+    dim=512, input_resolution=(8, 8), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=512, input_resolution=(8, 8), num_heads=16, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=512, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=512, out_features=512, bias=True)
+            (to_kv): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=512, out_features=512, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=512, out_features=2048, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=2048, out_features=512, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=512, input_resolution=(8, 8), num_heads=16, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=512, win_size=(8, 8), num_heads=16
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=512, out_features=512, bias=True)
+            (to_kv): Linear(in_features=512, out_features=1024, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=512, out_features=512, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((512,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=512, out_features=2048, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(2048, 2048, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=2048)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=2048, out_features=512, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_1): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(512, 128, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_1): BasicUformerLayer(
+    dim=256, input_resolution=(16, 16), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=256, input_resolution=(16, 16), num_heads=8, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=256, input_resolution=(16, 16), num_heads=8, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=256, win_size=(8, 8), num_heads=8
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=256, out_features=256, bias=True)
+            (to_kv): Linear(in_features=256, out_features=512, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=256, out_features=256, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((256,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=256, out_features=1024, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(1024, 1024, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=1024)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=1024, out_features=256, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_2): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(256, 64, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_2): BasicUformerLayer(
+    dim=128, input_resolution=(32, 32), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=128, input_resolution=(32, 32), num_heads=4, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=128, input_resolution=(32, 32), num_heads=4, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=128, win_size=(8, 8), num_heads=4
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=128, out_features=128, bias=True)
+            (to_kv): Linear(in_features=128, out_features=256, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=128, out_features=128, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((128,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=128, out_features=512, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=512)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=512, out_features=128, bias=True)
+          )
+        )
+      )
+    )
+  )
+  (upsample_3): Upsample(
+    (deconv): Sequential(
+      (0): ConvTranspose2d(128, 32, kernel_size=(2, 2), stride=(2, 2))
+    )
+  )
+  (decoderlayer_3): BasicUformerLayer(
+    dim=64, input_resolution=(64, 64), depth=2
+    (blocks): ModuleList(
+      (0): LeWinTransformerBlock(
+        dim=64, input_resolution=(64, 64), num_heads=2, win_size=8, shift_size=0, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): DropPath()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+      (1): LeWinTransformerBlock(
+        dim=64, input_resolution=(64, 64), num_heads=2, win_size=8, shift_size=4, mlp_ratio=4.0
+        (norm1): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (attn): WindowAttention(
+          dim=64, win_size=(8, 8), num_heads=2
+          (qkv): LinearProjection(
+            (to_q): Linear(in_features=64, out_features=64, bias=True)
+            (to_kv): Linear(in_features=64, out_features=128, bias=True)
+          )
+          (attn_drop): Dropout(p=0.0, inplace=False)
+          (proj): Linear(in_features=64, out_features=64, bias=True)
+          (se_layer): Identity()
+          (proj_drop): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+        (drop_path): Identity()
+        (norm2): LayerNorm((64,), eps=1e-05, elementwise_affine=True)
+        (mlp): LeFF(
+          (linear1): Sequential(
+            (0): Linear(in_features=64, out_features=256, bias=True)
+            (1): GELU()
+          )
+          (dwconv): Sequential(
+            (0): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1), groups=256)
+            (1): GELU()
+          )
+          (linear2): Sequential(
+            (0): Linear(in_features=256, out_features=64, bias=True)
+          )
+        )
+      )
+    )
+  )
+)
+[Ep 1 it 59	 PSNR SIDD: 16.6553	] ----  [best_Ep_SIDD 1 best_it_SIDD 59 Best_PSNR_SIDD 16.6553] 
+[Ep 1 it 119	 PSNR SIDD: 17.1834	] ----  [best_Ep_SIDD 1 best_it_SIDD 119 Best_PSNR_SIDD 17.1834] 
+[Ep 1 it 179	 PSNR SIDD: 17.9499	] ----  [best_Ep_SIDD 1 best_it_SIDD 179 Best_PSNR_SIDD 17.9499] 
+[Ep 1 it 239	 PSNR SIDD: 17.6054	] ----  [best_Ep_SIDD 1 best_it_SIDD 179 Best_PSNR_SIDD 17.9499] 
+Epoch: 1	Time: 86.9332	Loss: 119.1827	LearningRate 0.000133
+[Ep 2 it 59	 PSNR SIDD: 17.9301	] ----  [best_Ep_SIDD 1 best_it_SIDD 179 Best_PSNR_SIDD 17.9499] 
+[Ep 2 it 119	 PSNR SIDD: 18.7152	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 2 it 179	 PSNR SIDD: 18.3091	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 2 it 239	 PSNR SIDD: 18.1680	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+Epoch: 2	Time: 82.8523	Loss: 84.8326	LearningRate 0.000200
+[Ep 3 it 59	 PSNR SIDD: 18.2389	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 3 it 119	 PSNR SIDD: 17.6851	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 3 it 179	 PSNR SIDD: 18.4910	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 3 it 239	 PSNR SIDD: 17.9277	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+Epoch: 3	Time: 81.6028	Loss: 86.9637	LearningRate 0.000200
+[Ep 4 it 59	 PSNR SIDD: 18.3254	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 4 it 119	 PSNR SIDD: 18.3759	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 4 it 179	 PSNR SIDD: 18.5719	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 4 it 239	 PSNR SIDD: 18.4146	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+Epoch: 4	Time: 81.1107	Loss: 86.7144	LearningRate 0.000200
+[Ep 5 it 59	 PSNR SIDD: 17.7885	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 5 it 119	 PSNR SIDD: 18.6489	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 5 it 179	 PSNR SIDD: 18.2382	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 5 it 239	 PSNR SIDD: 18.2907	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+Epoch: 5	Time: 81.5231	Loss: 84.9331	LearningRate 0.000200
+[Ep 6 it 59	 PSNR SIDD: 18.4319	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 6 it 119	 PSNR SIDD: 18.4762	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 6 it 179	 PSNR SIDD: 18.7151	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 6 it 239	 PSNR SIDD: 18.0307	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+Epoch: 6	Time: 82.0970	Loss: 84.1866	LearningRate 0.000200
+[Ep 7 it 59	 PSNR SIDD: 17.6943	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 7 it 119	 PSNR SIDD: 17.8923	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 7 it 179	 PSNR SIDD: 18.6563	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 7 it 239	 PSNR SIDD: 18.3688	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+Epoch: 7	Time: 82.7423	Loss: 82.4460	LearningRate 0.000200
+[Ep 8 it 59	 PSNR SIDD: 18.6617	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 8 it 119	 PSNR SIDD: 18.2452	] ----  [best_Ep_SIDD 2 best_it_SIDD 119 Best_PSNR_SIDD 18.7152] 
+[Ep 8 it 179	 PSNR SIDD: 18.7589	] ----  [best_Ep_SIDD 8 best_it_SIDD 179 Best_PSNR_SIDD 18.7589] 
+[Ep 8 it 239	 PSNR SIDD: 18.5810	] ----  [best_Ep_SIDD 8 best_it_SIDD 179 Best_PSNR_SIDD 18.7589] 
+Epoch: 8	Time: 84.1828	Loss: 81.9589	LearningRate 0.000200
+[Ep 9 it 59	 PSNR SIDD: 18.5850	] ----  [best_Ep_SIDD 8 best_it_SIDD 179 Best_PSNR_SIDD 18.7589] 
+[Ep 9 it 119	 PSNR SIDD: 18.4148	] ----  [best_Ep_SIDD 8 best_it_SIDD 179 Best_PSNR_SIDD 18.7589] 
+[Ep 9 it 179	 PSNR SIDD: 17.7108	] ----  [best_Ep_SIDD 8 best_it_SIDD 179 Best_PSNR_SIDD 18.7589] 
+[Ep 9 it 239	 PSNR SIDD: 18.8356	] ----  [best_Ep_SIDD 9 best_it_SIDD 239 Best_PSNR_SIDD 18.8356] 
+Epoch: 9	Time: 82.2955	Loss: 80.0068	LearningRate 0.000200
+[Ep 10 it 59	 PSNR SIDD: 18.5865	] ----  [best_Ep_SIDD 9 best_it_SIDD 239 Best_PSNR_SIDD 18.8356] 
+[Ep 10 it 119	 PSNR SIDD: 17.8866	] ----  [best_Ep_SIDD 9 best_it_SIDD 239 Best_PSNR_SIDD 18.8356] 
+[Ep 10 it 179	 PSNR SIDD: 19.0622	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 10 it 239	 PSNR SIDD: 18.8544	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+Epoch: 10	Time: 82.4702	Loss: 78.6984	LearningRate 0.000200
+[Ep 11 it 59	 PSNR SIDD: 18.5443	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 11 it 119	 PSNR SIDD: 18.4730	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 11 it 179	 PSNR SIDD: 18.4190	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 11 it 239	 PSNR SIDD: 18.7253	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+Epoch: 11	Time: 81.5850	Loss: 80.4789	LearningRate 0.000200
+[Ep 12 it 59	 PSNR SIDD: 18.7733	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 12 it 119	 PSNR SIDD: 18.9551	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 12 it 179	 PSNR SIDD: 18.2278	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 12 it 239	 PSNR SIDD: 18.1017	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+Epoch: 12	Time: 80.9718	Loss: 79.5717	LearningRate 0.000200
+[Ep 13 it 59	 PSNR SIDD: 18.5954	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 13 it 119	 PSNR SIDD: 18.6149	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 13 it 179	 PSNR SIDD: 18.5946	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 13 it 239	 PSNR SIDD: 18.7822	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+Epoch: 13	Time: 81.2408	Loss: 77.8737	LearningRate 0.000200
+[Ep 14 it 59	 PSNR SIDD: 18.7040	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 14 it 119	 PSNR SIDD: 18.3540	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 14 it 179	 PSNR SIDD: 18.5780	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 14 it 239	 PSNR SIDD: 18.0001	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+Epoch: 14	Time: 81.2549	Loss: 78.1586	LearningRate 0.000199
+[Ep 15 it 59	 PSNR SIDD: 18.6228	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 15 it 119	 PSNR SIDD: 18.5158	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 15 it 179	 PSNR SIDD: 18.7618	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+[Ep 15 it 239	 PSNR SIDD: 18.8533	] ----  [best_Ep_SIDD 10 best_it_SIDD 179 Best_PSNR_SIDD 19.0622] 
+Epoch: 15	Time: 81.8800	Loss: 77.1841	LearningRate 0.000199
+[Ep 16 it 59	 PSNR SIDD: 19.1470	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 19.1470] 
+[Ep 16 it 119	 PSNR SIDD: 18.6780	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 19.1470] 
+[Ep 16 it 179	 PSNR SIDD: 18.1076	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 19.1470] 
+[Ep 16 it 239	 PSNR SIDD: 18.5300	] ----  [best_Ep_SIDD 16 best_it_SIDD 59 Best_PSNR_SIDD 19.1470] 
+Epoch: 16	Time: 82.8288	Loss: 79.7107	LearningRate 0.000199
+[Ep 17 it 59	 PSNR SIDD: 19.1502	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 17 it 119	 PSNR SIDD: 18.5993	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 17 it 179	 PSNR SIDD: 18.1380	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 17 it 239	 PSNR SIDD: 19.0273	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+Epoch: 17	Time: 83.6985	Loss: 77.1798	LearningRate 0.000199
+[Ep 18 it 59	 PSNR SIDD: 18.8270	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 18 it 119	 PSNR SIDD: 19.1098	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 18 it 179	 PSNR SIDD: 18.4762	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 18 it 239	 PSNR SIDD: 18.2484	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+Epoch: 18	Time: 84.3371	Loss: 76.4830	LearningRate 0.000199
+[Ep 19 it 59	 PSNR SIDD: 18.0080	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 19 it 119	 PSNR SIDD: 18.8055	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 19 it 179	 PSNR SIDD: 18.7288	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 19 it 239	 PSNR SIDD: 18.6122	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+Epoch: 19	Time: 82.4191	Loss: 76.5139	LearningRate 0.000199
+[Ep 20 it 59	 PSNR SIDD: 18.7397	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 20 it 119	 PSNR SIDD: 19.0538	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 20 it 179	 PSNR SIDD: 18.8841	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 20 it 239	 PSNR SIDD: 18.9589	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+Epoch: 20	Time: 82.6303	Loss: 78.3920	LearningRate 0.000199
+[Ep 21 it 59	 PSNR SIDD: 18.9506	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 21 it 119	 PSNR SIDD: 18.9258	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 21 it 179	 PSNR SIDD: 18.8711	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 21 it 239	 PSNR SIDD: 18.6924	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+Epoch: 21	Time: 82.3089	Loss: 74.3356	LearningRate 0.000199
+[Ep 22 it 59	 PSNR SIDD: 18.8271	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 22 it 119	 PSNR SIDD: 19.0074	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 22 it 179	 PSNR SIDD: 18.7963	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 22 it 239	 PSNR SIDD: 18.5062	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+Epoch: 22	Time: 83.1660	Loss: 72.9261	LearningRate 0.000198
+[Ep 23 it 59	 PSNR SIDD: 19.0321	] ----  [best_Ep_SIDD 17 best_it_SIDD 59 Best_PSNR_SIDD 19.1502] 
+[Ep 23 it 119	 PSNR SIDD: 19.5618	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 23 it 179	 PSNR SIDD: 18.0499	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 23 it 239	 PSNR SIDD: 19.0230	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 23	Time: 83.5022	Loss: 77.3427	LearningRate 0.000198
+[Ep 24 it 59	 PSNR SIDD: 18.8096	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 24 it 119	 PSNR SIDD: 18.7193	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 24 it 179	 PSNR SIDD: 19.4416	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 24 it 239	 PSNR SIDD: 19.5398	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 24	Time: 81.7659	Loss: 71.5423	LearningRate 0.000198
+[Ep 25 it 59	 PSNR SIDD: 18.6504	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 25 it 119	 PSNR SIDD: 18.6900	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 25 it 179	 PSNR SIDD: 18.6208	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 25 it 239	 PSNR SIDD: 18.8569	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 25	Time: 81.5873	Loss: 73.8265	LearningRate 0.000198
+[Ep 26 it 59	 PSNR SIDD: 18.4110	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 26 it 119	 PSNR SIDD: 18.3794	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 26 it 179	 PSNR SIDD: 18.9118	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 26 it 239	 PSNR SIDD: 19.0388	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 26	Time: 81.5439	Loss: 74.6146	LearningRate 0.000198
+[Ep 27 it 59	 PSNR SIDD: 18.7436	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 27 it 119	 PSNR SIDD: 17.9040	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 27 it 179	 PSNR SIDD: 18.8123	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 27 it 239	 PSNR SIDD: 18.6650	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 27	Time: 81.7188	Loss: 74.8066	LearningRate 0.000197
+[Ep 28 it 59	 PSNR SIDD: 19.0760	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 28 it 119	 PSNR SIDD: 18.8482	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 28 it 179	 PSNR SIDD: 19.0914	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 28 it 239	 PSNR SIDD: 18.4477	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 28	Time: 81.3610	Loss: 71.5303	LearningRate 0.000197
+[Ep 29 it 59	 PSNR SIDD: 19.1828	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 29 it 119	 PSNR SIDD: 18.3728	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 29 it 179	 PSNR SIDD: 19.0895	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 29 it 239	 PSNR SIDD: 18.5985	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 29	Time: 81.3704	Loss: 70.7653	LearningRate 0.000197
+[Ep 30 it 59	 PSNR SIDD: 19.1121	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 30 it 119	 PSNR SIDD: 18.6596	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 30 it 179	 PSNR SIDD: 18.5748	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 30 it 239	 PSNR SIDD: 19.0733	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 30	Time: 83.1270	Loss: 73.1765	LearningRate 0.000197
+[Ep 31 it 59	 PSNR SIDD: 19.0085	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 31 it 119	 PSNR SIDD: 18.6340	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 31 it 179	 PSNR SIDD: 18.9743	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 31 it 239	 PSNR SIDD: 18.1826	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 31	Time: 80.4445	Loss: 71.0744	LearningRate 0.000197
+[Ep 32 it 59	 PSNR SIDD: 16.4036	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 32 it 119	 PSNR SIDD: 18.7662	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 32 it 179	 PSNR SIDD: 19.0687	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 32 it 239	 PSNR SIDD: 19.1315	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 32	Time: 81.7054	Loss: 71.0937	LearningRate 0.000196
+[Ep 33 it 59	 PSNR SIDD: 18.2726	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 33 it 119	 PSNR SIDD: 19.3689	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 33 it 179	 PSNR SIDD: 19.3223	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 33 it 239	 PSNR SIDD: 19.1028	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 33	Time: 80.7105	Loss: 74.5942	LearningRate 0.000196
+[Ep 34 it 59	 PSNR SIDD: 18.6136	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 34 it 119	 PSNR SIDD: 19.2348	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 34 it 179	 PSNR SIDD: 19.0505	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 34 it 239	 PSNR SIDD: 18.3171	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 34	Time: 81.5648	Loss: 69.9466	LearningRate 0.000196
+[Ep 35 it 59	 PSNR SIDD: 18.6631	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 35 it 119	 PSNR SIDD: 18.6567	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 35 it 179	 PSNR SIDD: 19.3811	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 35 it 239	 PSNR SIDD: 19.2988	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+Epoch: 35	Time: 84.1343	Loss: 71.0594	LearningRate 0.000196
+[Ep 36 it 59	 PSNR SIDD: 19.1735	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 36 it 119	 PSNR SIDD: 18.7928	] ----  [best_Ep_SIDD 23 best_it_SIDD 119 Best_PSNR_SIDD 19.5618] 
+[Ep 36 it 179	 PSNR SIDD: 19.5957	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 36 it 239	 PSNR SIDD: 19.3505	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 36	Time: 83.0446	Loss: 70.7549	LearningRate 0.000195
+[Ep 37 it 59	 PSNR SIDD: 19.1715	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 37 it 119	 PSNR SIDD: 19.0981	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 37 it 179	 PSNR SIDD: 19.2664	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 37 it 239	 PSNR SIDD: 19.3436	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 37	Time: 83.2863	Loss: 69.8691	LearningRate 0.000195
+[Ep 38 it 59	 PSNR SIDD: 18.8893	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 38 it 119	 PSNR SIDD: 19.1479	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 38 it 179	 PSNR SIDD: 19.3936	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 38 it 239	 PSNR SIDD: 19.1152	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 38	Time: 82.0324	Loss: 69.4207	LearningRate 0.000195
+[Ep 39 it 59	 PSNR SIDD: 19.2209	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 39 it 119	 PSNR SIDD: 19.3991	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 39 it 179	 PSNR SIDD: 19.0282	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 39 it 239	 PSNR SIDD: 19.1634	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 39	Time: 83.6826	Loss: 67.5676	LearningRate 0.000194
+[Ep 40 it 59	 PSNR SIDD: 18.8169	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 40 it 119	 PSNR SIDD: 19.3227	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 40 it 179	 PSNR SIDD: 19.4680	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 40 it 239	 PSNR SIDD: 19.5261	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 40	Time: 81.6899	Loss: 70.7211	LearningRate 0.000194
+[Ep 41 it 59	 PSNR SIDD: 18.9606	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 41 it 119	 PSNR SIDD: 18.7580	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 41 it 179	 PSNR SIDD: 18.8299	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 41 it 239	 PSNR SIDD: 18.7524	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 41	Time: 81.5941	Loss: 69.4807	LearningRate 0.000194
+[Ep 42 it 59	 PSNR SIDD: 18.7236	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 42 it 119	 PSNR SIDD: 19.0459	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 42 it 179	 PSNR SIDD: 19.2303	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 42 it 239	 PSNR SIDD: 19.0645	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 42	Time: 83.6539	Loss: 69.8704	LearningRate 0.000194
+[Ep 43 it 59	 PSNR SIDD: 19.5127	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 43 it 119	 PSNR SIDD: 19.4745	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 43 it 179	 PSNR SIDD: 19.3489	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 43 it 239	 PSNR SIDD: 19.1507	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 43	Time: 83.0378	Loss: 68.8539	LearningRate 0.000193
+[Ep 44 it 59	 PSNR SIDD: 19.2794	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 44 it 119	 PSNR SIDD: 18.8718	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 44 it 179	 PSNR SIDD: 19.0737	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 44 it 239	 PSNR SIDD: 19.4739	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 44	Time: 82.5139	Loss: 67.3580	LearningRate 0.000193
+[Ep 45 it 59	 PSNR SIDD: 18.6517	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 45 it 119	 PSNR SIDD: 18.8720	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 45 it 179	 PSNR SIDD: 19.2119	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 45 it 239	 PSNR SIDD: 19.1777	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 45	Time: 81.7133	Loss: 68.7203	LearningRate 0.000193
+[Ep 46 it 59	 PSNR SIDD: 19.4905	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 46 it 119	 PSNR SIDD: 19.2772	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 46 it 179	 PSNR SIDD: 19.1769	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 46 it 239	 PSNR SIDD: 19.5768	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 46	Time: 81.7019	Loss: 68.3927	LearningRate 0.000192
+[Ep 47 it 59	 PSNR SIDD: 19.1634	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 47 it 119	 PSNR SIDD: 19.5789	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 47 it 179	 PSNR SIDD: 18.7946	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 47 it 239	 PSNR SIDD: 18.3997	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 47	Time: 81.2104	Loss: 65.5010	LearningRate 0.000192
+[Ep 48 it 59	 PSNR SIDD: 18.8644	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 48 it 119	 PSNR SIDD: 18.9177	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 48 it 179	 PSNR SIDD: 19.1106	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+[Ep 48 it 239	 PSNR SIDD: 19.2729	] ----  [best_Ep_SIDD 36 best_it_SIDD 179 Best_PSNR_SIDD 19.5957] 
+Epoch: 48	Time: 82.4943	Loss: 67.2822	LearningRate 0.000192
+[Ep 49 it 59	 PSNR SIDD: 19.6212	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 49 it 119	 PSNR SIDD: 19.5584	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 49 it 179	 PSNR SIDD: 18.9997	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 49 it 239	 PSNR SIDD: 18.8425	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 49	Time: 81.9949	Loss: 68.4036	LearningRate 0.000191
+[Ep 50 it 59	 PSNR SIDD: 19.1519	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 50 it 119	 PSNR SIDD: 18.7463	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 50 it 179	 PSNR SIDD: 19.1619	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 50 it 239	 PSNR SIDD: 18.9697	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 50	Time: 83.7908	Loss: 67.3713	LearningRate 0.000191
+[Ep 51 it 59	 PSNR SIDD: 19.4283	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 51 it 119	 PSNR SIDD: 18.7943	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 51 it 179	 PSNR SIDD: 19.2054	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 51 it 239	 PSNR SIDD: 19.3215	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 51	Time: 84.2469	Loss: 66.6970	LearningRate 0.000190
+[Ep 52 it 59	 PSNR SIDD: 18.4528	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 52 it 119	 PSNR SIDD: 19.3436	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 52 it 179	 PSNR SIDD: 19.2457	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 52 it 239	 PSNR SIDD: 18.8248	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 52	Time: 84.4471	Loss: 64.0387	LearningRate 0.000190
+[Ep 53 it 59	 PSNR SIDD: 18.5861	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 53 it 119	 PSNR SIDD: 19.1950	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 53 it 179	 PSNR SIDD: 19.0748	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 53 it 239	 PSNR SIDD: 19.4281	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 53	Time: 82.6984	Loss: 67.1478	LearningRate 0.000190
+[Ep 54 it 59	 PSNR SIDD: 19.3109	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 54 it 119	 PSNR SIDD: 19.1438	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 54 it 179	 PSNR SIDD: 19.2533	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 54 it 239	 PSNR SIDD: 19.3582	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 54	Time: 82.3158	Loss: 66.3575	LearningRate 0.000189
+[Ep 55 it 59	 PSNR SIDD: 19.1145	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 55 it 119	 PSNR SIDD: 19.2603	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 55 it 179	 PSNR SIDD: 19.5724	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 55 it 239	 PSNR SIDD: 19.3417	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 55	Time: 82.5911	Loss: 65.5691	LearningRate 0.000189
+[Ep 56 it 59	 PSNR SIDD: 18.7291	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 56 it 119	 PSNR SIDD: 19.0265	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 56 it 179	 PSNR SIDD: 18.5073	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 56 it 239	 PSNR SIDD: 19.3363	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 56	Time: 83.0337	Loss: 65.6228	LearningRate 0.000188
+[Ep 57 it 59	 PSNR SIDD: 19.1702	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 57 it 119	 PSNR SIDD: 19.2263	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 57 it 179	 PSNR SIDD: 19.1074	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 57 it 239	 PSNR SIDD: 19.5687	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 57	Time: 83.9813	Loss: 64.2732	LearningRate 0.000188
+[Ep 58 it 59	 PSNR SIDD: 18.7588	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 58 it 119	 PSNR SIDD: 18.7631	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 58 it 179	 PSNR SIDD: 19.4187	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 58 it 239	 PSNR SIDD: 19.2862	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+Epoch: 58	Time: 82.4862	Loss: 64.0735	LearningRate 0.000187
+[Ep 59 it 59	 PSNR SIDD: 19.2718	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 59 it 119	 PSNR SIDD: 18.9522	] ----  [best_Ep_SIDD 49 best_it_SIDD 59 Best_PSNR_SIDD 19.6212] 
+[Ep 59 it 179	 PSNR SIDD: 19.6848	] ----  [best_Ep_SIDD 59 best_it_SIDD 179 Best_PSNR_SIDD 19.6848] 
+[Ep 59 it 239	 PSNR SIDD: 18.9205	] ----  [best_Ep_SIDD 59 best_it_SIDD 179 Best_PSNR_SIDD 19.6848] 
+Epoch: 59	Time: 85.1104	Loss: 64.7442	LearningRate 0.000187
+[Ep 60 it 59	 PSNR SIDD: 19.4612	] ----  [best_Ep_SIDD 59 best_it_SIDD 179 Best_PSNR_SIDD 19.6848] 
+[Ep 60 it 119	 PSNR SIDD: 18.8633	] ----  [best_Ep_SIDD 59 best_it_SIDD 179 Best_PSNR_SIDD 19.6848] 
+[Ep 60 it 179	 PSNR SIDD: 18.8501	] ----  [best_Ep_SIDD 59 best_it_SIDD 179 Best_PSNR_SIDD 19.6848] 
+[Ep 60 it 239	 PSNR SIDD: 19.6577	] ----  [best_Ep_SIDD 59 best_it_SIDD 179 Best_PSNR_SIDD 19.6848] 
+Epoch: 60	Time: 81.6540	Loss: 63.1294	LearningRate 0.000187
+[Ep 61 it 59	 PSNR SIDD: 19.7968	] ----  [best_Ep_SIDD 61 best_it_SIDD 59 Best_PSNR_SIDD 19.7968] 
+[Ep 61 it 119	 PSNR SIDD: 18.8809	] ----  [best_Ep_SIDD 61 best_it_SIDD 59 Best_PSNR_SIDD 19.7968] 
+[Ep 61 it 179	 PSNR SIDD: 19.4109	] ----  [best_Ep_SIDD 61 best_it_SIDD 59 Best_PSNR_SIDD 19.7968] 
+[Ep 61 it 239	 PSNR SIDD: 19.8238	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 61	Time: 84.9983	Loss: 65.4287	LearningRate 0.000186
+[Ep 62 it 59	 PSNR SIDD: 19.1963	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 62 it 119	 PSNR SIDD: 18.8817	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 62 it 179	 PSNR SIDD: 19.0600	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 62 it 239	 PSNR SIDD: 19.6720	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 62	Time: 82.8875	Loss: 64.7074	LearningRate 0.000186
+[Ep 63 it 59	 PSNR SIDD: 19.2358	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 63 it 119	 PSNR SIDD: 19.2042	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 63 it 179	 PSNR SIDD: 19.2216	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 63 it 239	 PSNR SIDD: 19.4382	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 63	Time: 82.6413	Loss: 61.5337	LearningRate 0.000185
+[Ep 64 it 59	 PSNR SIDD: 19.6436	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 64 it 119	 PSNR SIDD: 18.8253	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 64 it 179	 PSNR SIDD: 19.3448	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 64 it 239	 PSNR SIDD: 19.5612	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 64	Time: 83.6243	Loss: 63.3104	LearningRate 0.000185
+[Ep 65 it 59	 PSNR SIDD: 19.1617	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 65 it 119	 PSNR SIDD: 19.4235	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 65 it 179	 PSNR SIDD: 19.4243	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 65 it 239	 PSNR SIDD: 19.1864	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 65	Time: 83.9451	Loss: 64.0468	LearningRate 0.000184
+[Ep 66 it 59	 PSNR SIDD: 19.3161	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 66 it 119	 PSNR SIDD: 19.4523	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 66 it 179	 PSNR SIDD: 19.2711	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 66 it 239	 PSNR SIDD: 19.5057	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 66	Time: 82.2816	Loss: 62.2413	LearningRate 0.000184
+[Ep 67 it 59	 PSNR SIDD: 19.5746	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 67 it 119	 PSNR SIDD: 18.4535	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 67 it 179	 PSNR SIDD: 19.0676	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 67 it 239	 PSNR SIDD: 19.0636	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 67	Time: 82.6750	Loss: 62.5448	LearningRate 0.000183
+[Ep 68 it 59	 PSNR SIDD: 19.2231	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 68 it 119	 PSNR SIDD: 19.2921	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 68 it 179	 PSNR SIDD: 19.3711	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 68 it 239	 PSNR SIDD: 19.3947	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 68	Time: 84.2418	Loss: 63.3180	LearningRate 0.000183
+[Ep 69 it 59	 PSNR SIDD: 18.9666	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 69 it 119	 PSNR SIDD: 19.1848	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 69 it 179	 PSNR SIDD: 19.1940	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 69 it 239	 PSNR SIDD: 19.3614	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 69	Time: 82.2711	Loss: 60.2971	LearningRate 0.000182
+[Ep 70 it 59	 PSNR SIDD: 19.0346	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 70 it 119	 PSNR SIDD: 18.7357	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 70 it 179	 PSNR SIDD: 19.3398	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 70 it 239	 PSNR SIDD: 19.2635	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 70	Time: 86.1087	Loss: 62.7021	LearningRate 0.000182
+[Ep 71 it 59	 PSNR SIDD: 19.6075	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 71 it 119	 PSNR SIDD: 19.1834	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 71 it 179	 PSNR SIDD: 19.2232	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 71 it 239	 PSNR SIDD: 18.9224	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 71	Time: 82.2554	Loss: 61.2453	LearningRate 0.000181
+[Ep 72 it 59	 PSNR SIDD: 19.4605	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 72 it 119	 PSNR SIDD: 19.4398	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 72 it 179	 PSNR SIDD: 18.8386	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 72 it 239	 PSNR SIDD: 19.4927	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 72	Time: 83.7317	Loss: 59.7050	LearningRate 0.000181
+[Ep 73 it 59	 PSNR SIDD: 19.0039	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 73 it 119	 PSNR SIDD: 19.8186	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 73 it 179	 PSNR SIDD: 18.8142	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 73 it 239	 PSNR SIDD: 19.2942	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 73	Time: 82.8583	Loss: 63.5552	LearningRate 0.000180
+[Ep 74 it 59	 PSNR SIDD: 18.8797	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 74 it 119	 PSNR SIDD: 19.2454	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 74 it 179	 PSNR SIDD: 19.8017	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 74 it 239	 PSNR SIDD: 18.8081	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 74	Time: 83.3206	Loss: 60.3919	LearningRate 0.000180
+[Ep 75 it 59	 PSNR SIDD: 19.3845	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 75 it 119	 PSNR SIDD: 18.7428	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 75 it 179	 PSNR SIDD: 19.4333	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 75 it 239	 PSNR SIDD: 18.8454	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 75	Time: 83.7908	Loss: 65.4841	LearningRate 0.000179
+[Ep 76 it 59	 PSNR SIDD: 18.7634	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 76 it 119	 PSNR SIDD: 19.5739	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 76 it 179	 PSNR SIDD: 19.4581	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 76 it 239	 PSNR SIDD: 19.4702	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 76	Time: 83.5905	Loss: 59.0365	LearningRate 0.000179
+[Ep 77 it 59	 PSNR SIDD: 18.9993	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 77 it 119	 PSNR SIDD: 19.1465	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 77 it 179	 PSNR SIDD: 19.2227	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 77 it 239	 PSNR SIDD: 19.5628	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 77	Time: 82.7711	Loss: 60.0237	LearningRate 0.000178
+[Ep 78 it 59	 PSNR SIDD: 19.6588	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 78 it 119	 PSNR SIDD: 19.6487	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 78 it 179	 PSNR SIDD: 19.6215	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 78 it 239	 PSNR SIDD: 19.4953	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+Epoch: 78	Time: 82.9370	Loss: 59.3893	LearningRate 0.000177
+[Ep 79 it 59	 PSNR SIDD: 19.7387	] ----  [best_Ep_SIDD 61 best_it_SIDD 239 Best_PSNR_SIDD 19.8238] 
+[Ep 79 it 119	 PSNR SIDD: 19.8920	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+[Ep 79 it 179	 PSNR SIDD: 19.4366	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+[Ep 79 it 239	 PSNR SIDD: 19.0814	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+Epoch: 79	Time: 83.3675	Loss: 60.2139	LearningRate 0.000177
+[Ep 80 it 59	 PSNR SIDD: 18.9435	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+[Ep 80 it 119	 PSNR SIDD: 19.5142	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+[Ep 80 it 179	 PSNR SIDD: 19.8733	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+[Ep 80 it 239	 PSNR SIDD: 18.4325	] ----  [best_Ep_SIDD 79 best_it_SIDD 119 Best_PSNR_SIDD 19.8920] 
+Epoch: 80	Time: 82.4379	Loss: 61.0296	LearningRate 0.000176
+[Ep 81 it 59	 PSNR SIDD: 19.9563	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 81 it 119	 PSNR SIDD: 19.5354	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 81 it 179	 PSNR SIDD: 19.1905	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 81 it 239	 PSNR SIDD: 19.4782	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+Epoch: 81	Time: 84.7739	Loss: 59.5558	LearningRate 0.000176
+[Ep 82 it 59	 PSNR SIDD: 19.8042	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 82 it 119	 PSNR SIDD: 18.9365	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 82 it 179	 PSNR SIDD: 19.2730	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 82 it 239	 PSNR SIDD: 18.9995	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+Epoch: 82	Time: 82.4257	Loss: 57.9497	LearningRate 0.000175
+[Ep 83 it 59	 PSNR SIDD: 19.5898	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 83 it 119	 PSNR SIDD: 19.1984	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 83 it 179	 PSNR SIDD: 19.3455	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 83 it 239	 PSNR SIDD: 19.5000	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+Epoch: 83	Time: 84.2710	Loss: 59.0974	LearningRate 0.000174
+[Ep 84 it 59	 PSNR SIDD: 19.6014	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 84 it 119	 PSNR SIDD: 19.5085	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 84 it 179	 PSNR SIDD: 19.6436	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 84 it 239	 PSNR SIDD: 19.4371	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+Epoch: 84	Time: 82.9916	Loss: 60.5827	LearningRate 0.000174
+[Ep 85 it 59	 PSNR SIDD: 19.2388	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 85 it 119	 PSNR SIDD: 19.3256	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 85 it 179	 PSNR SIDD: 18.9217	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 85 it 239	 PSNR SIDD: 19.6452	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+Epoch: 85	Time: 83.2259	Loss: 58.7245	LearningRate 0.000173
+[Ep 86 it 59	 PSNR SIDD: 19.3399	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 86 it 119	 PSNR SIDD: 19.6026	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 86 it 179	 PSNR SIDD: 19.5621	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+[Ep 86 it 239	 PSNR SIDD: 19.5027	] ----  [best_Ep_SIDD 81 best_it_SIDD 59 Best_PSNR_SIDD 19.9563] 
+Epoch: 86	Time: 82.6607	Loss: 57.9995	LearningRate 0.000173
+[Ep 87 it 59	 PSNR SIDD: 20.0591	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 87 it 119	 PSNR SIDD: 19.8384	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 87 it 179	 PSNR SIDD: 19.9570	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 87 it 239	 PSNR SIDD: 19.8618	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 87	Time: 84.1077	Loss: 57.3894	LearningRate 0.000172
+[Ep 88 it 59	 PSNR SIDD: 19.8336	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 88 it 119	 PSNR SIDD: 19.4757	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 88 it 179	 PSNR SIDD: 19.8347	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 88 it 239	 PSNR SIDD: 19.5526	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 88	Time: 84.7765	Loss: 58.8782	LearningRate 0.000171
+[Ep 89 it 59	 PSNR SIDD: 19.0680	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 89 it 119	 PSNR SIDD: 19.2316	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 89 it 179	 PSNR SIDD: 19.3265	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 89 it 239	 PSNR SIDD: 19.3586	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 89	Time: 84.0619	Loss: 58.4749	LearningRate 0.000171
+[Ep 90 it 59	 PSNR SIDD: 19.2452	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 90 it 119	 PSNR SIDD: 19.4052	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 90 it 179	 PSNR SIDD: 19.1159	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 90 it 239	 PSNR SIDD: 19.3443	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 90	Time: 83.1368	Loss: 57.7878	LearningRate 0.000170
+[Ep 91 it 59	 PSNR SIDD: 18.8803	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 91 it 119	 PSNR SIDD: 19.0116	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 91 it 179	 PSNR SIDD: 18.9371	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 91 it 239	 PSNR SIDD: 19.8226	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 91	Time: 82.6704	Loss: 58.3189	LearningRate 0.000169
+[Ep 92 it 59	 PSNR SIDD: 19.5308	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 92 it 119	 PSNR SIDD: 19.9829	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 92 it 179	 PSNR SIDD: 19.8511	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 92 it 239	 PSNR SIDD: 19.7479	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 92	Time: 81.8175	Loss: 57.5037	LearningRate 0.000169
+[Ep 93 it 59	 PSNR SIDD: 19.8761	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 93 it 119	 PSNR SIDD: 19.7797	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 93 it 179	 PSNR SIDD: 19.4681	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 93 it 239	 PSNR SIDD: 19.5904	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 93	Time: 84.7212	Loss: 56.4376	LearningRate 0.000168
+[Ep 94 it 59	 PSNR SIDD: 18.9117	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 94 it 119	 PSNR SIDD: 19.6888	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 94 it 179	 PSNR SIDD: 19.8188	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 94 it 239	 PSNR SIDD: 19.6546	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 94	Time: 83.3987	Loss: 59.6408	LearningRate 0.000167
+[Ep 95 it 59	 PSNR SIDD: 19.1871	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 95 it 119	 PSNR SIDD: 19.1874	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 95 it 179	 PSNR SIDD: 19.2988	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 95 it 239	 PSNR SIDD: 19.6552	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 95	Time: 82.4802	Loss: 56.9094	LearningRate 0.000167
+[Ep 96 it 59	 PSNR SIDD: 19.8396	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 96 it 119	 PSNR SIDD: 19.2762	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 96 it 179	 PSNR SIDD: 19.1770	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 96 it 239	 PSNR SIDD: 19.4287	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 96	Time: 87.0233	Loss: 58.4759	LearningRate 0.000166
+[Ep 97 it 59	 PSNR SIDD: 19.3711	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 97 it 119	 PSNR SIDD: 19.9753	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 97 it 179	 PSNR SIDD: 19.2583	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 97 it 239	 PSNR SIDD: 19.3205	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 97	Time: 85.6146	Loss: 57.1079	LearningRate 0.000165
+[Ep 98 it 59	 PSNR SIDD: 20.0226	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 98 it 119	 PSNR SIDD: 19.6134	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 98 it 179	 PSNR SIDD: 19.5805	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 98 it 239	 PSNR SIDD: 19.6443	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 98	Time: 82.7919	Loss: 55.8076	LearningRate 0.000165
+[Ep 99 it 59	 PSNR SIDD: 19.2800	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 99 it 119	 PSNR SIDD: 19.7439	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 99 it 179	 PSNR SIDD: 19.5348	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 99 it 239	 PSNR SIDD: 19.4256	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 99	Time: 84.2710	Loss: 57.8821	LearningRate 0.000164
+[Ep 100 it 59	 PSNR SIDD: 19.0767	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 100 it 119	 PSNR SIDD: 19.4195	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 100 it 179	 PSNR SIDD: 19.5123	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 100 it 239	 PSNR SIDD: 19.6766	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 100	Time: 82.9170	Loss: 55.8536	LearningRate 0.000163
+[Ep 101 it 59	 PSNR SIDD: 19.3933	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 101 it 119	 PSNR SIDD: 19.0708	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 101 it 179	 PSNR SIDD: 18.9345	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 101 it 239	 PSNR SIDD: 19.8050	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 101	Time: 82.5944	Loss: 56.4233	LearningRate 0.000163
+[Ep 102 it 59	 PSNR SIDD: 18.9462	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 102 it 119	 PSNR SIDD: 19.2259	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 102 it 179	 PSNR SIDD: 19.2490	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 102 it 239	 PSNR SIDD: 19.3708	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 102	Time: 82.9783	Loss: 56.3808	LearningRate 0.000162
+[Ep 103 it 59	 PSNR SIDD: 18.7960	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 103 it 119	 PSNR SIDD: 19.3363	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 103 it 179	 PSNR SIDD: 19.3569	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 103 it 239	 PSNR SIDD: 19.2267	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 103	Time: 83.8948	Loss: 55.6522	LearningRate 0.000161
+[Ep 104 it 59	 PSNR SIDD: 19.3667	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 104 it 119	 PSNR SIDD: 19.2122	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 104 it 179	 PSNR SIDD: 19.6218	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 104 it 239	 PSNR SIDD: 19.7020	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 104	Time: 84.5285	Loss: 54.7278	LearningRate 0.000161
+[Ep 105 it 59	 PSNR SIDD: 19.3146	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 105 it 119	 PSNR SIDD: 19.7179	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 105 it 179	 PSNR SIDD: 19.2587	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 105 it 239	 PSNR SIDD: 18.8870	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 105	Time: 83.2884	Loss: 55.3876	LearningRate 0.000160
+[Ep 106 it 59	 PSNR SIDD: 19.7289	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 106 it 119	 PSNR SIDD: 20.0094	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 106 it 179	 PSNR SIDD: 19.4812	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 106 it 239	 PSNR SIDD: 19.3661	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 106	Time: 84.7200	Loss: 54.9083	LearningRate 0.000159
+[Ep 107 it 59	 PSNR SIDD: 19.6937	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 107 it 119	 PSNR SIDD: 19.3556	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 107 it 179	 PSNR SIDD: 19.5714	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+[Ep 107 it 239	 PSNR SIDD: 19.3775	] ----  [best_Ep_SIDD 87 best_it_SIDD 59 Best_PSNR_SIDD 20.0591] 
+Epoch: 107	Time: 84.2241	Loss: 55.8277	LearningRate 0.000158
+[Ep 108 it 59	 PSNR SIDD: 20.1466	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 108 it 119	 PSNR SIDD: 19.5950	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 108 it 179	 PSNR SIDD: 19.7523	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 108 it 239	 PSNR SIDD: 19.2329	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+Epoch: 108	Time: 83.9173	Loss: 54.4803	LearningRate 0.000158
+[Ep 109 it 59	 PSNR SIDD: 19.7091	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 109 it 119	 PSNR SIDD: 18.8380	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 109 it 179	 PSNR SIDD: 19.3974	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 109 it 239	 PSNR SIDD: 19.8669	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+Epoch: 109	Time: 84.0009	Loss: 53.8427	LearningRate 0.000157
+[Ep 110 it 59	 PSNR SIDD: 19.7247	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 110 it 119	 PSNR SIDD: 19.3871	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 110 it 179	 PSNR SIDD: 20.0054	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 110 it 239	 PSNR SIDD: 19.5162	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+Epoch: 110	Time: 83.5456	Loss: 52.4063	LearningRate 0.000156
+[Ep 111 it 59	 PSNR SIDD: 19.8897	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 111 it 119	 PSNR SIDD: 19.1830	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 111 it 179	 PSNR SIDD: 19.2163	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 111 it 239	 PSNR SIDD: 19.3046	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+Epoch: 111	Time: 84.9473	Loss: 54.3770	LearningRate 0.000155
+[Ep 112 it 59	 PSNR SIDD: 19.4072	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 112 it 119	 PSNR SIDD: 19.5831	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 112 it 179	 PSNR SIDD: 19.3304	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 112 it 239	 PSNR SIDD: 18.9960	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+Epoch: 112	Time: 84.3549	Loss: 56.4384	LearningRate 0.000155
+[Ep 113 it 59	 PSNR SIDD: 19.4790	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 113 it 119	 PSNR SIDD: 19.5665	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 113 it 179	 PSNR SIDD: 19.2720	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 113 it 239	 PSNR SIDD: 19.3995	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+Epoch: 113	Time: 83.8665	Loss: 54.0695	LearningRate 0.000154
+[Ep 114 it 59	 PSNR SIDD: 19.4026	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 114 it 119	 PSNR SIDD: 19.6848	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 114 it 179	 PSNR SIDD: 18.6694	] ----  [best_Ep_SIDD 108 best_it_SIDD 59 Best_PSNR_SIDD 20.1466] 
+[Ep 114 it 239	 PSNR SIDD: 20.2656	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 114	Time: 84.9185	Loss: 53.4648	LearningRate 0.000153
+[Ep 115 it 59	 PSNR SIDD: 19.6704	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 115 it 119	 PSNR SIDD: 19.5271	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 115 it 179	 PSNR SIDD: 19.7081	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 115 it 239	 PSNR SIDD: 19.8428	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 115	Time: 84.0958	Loss: 52.6038	LearningRate 0.000152
+[Ep 116 it 59	 PSNR SIDD: 19.4693	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 116 it 119	 PSNR SIDD: 19.6641	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 116 it 179	 PSNR SIDD: 19.5150	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 116 it 239	 PSNR SIDD: 19.2268	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 116	Time: 83.2402	Loss: 53.3248	LearningRate 0.000152
+[Ep 117 it 59	 PSNR SIDD: 19.4636	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 117 it 119	 PSNR SIDD: 19.7776	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 117 it 179	 PSNR SIDD: 19.7693	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 117 it 239	 PSNR SIDD: 20.2080	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 117	Time: 83.5110	Loss: 51.4041	LearningRate 0.000151
+[Ep 118 it 59	 PSNR SIDD: 19.8611	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 118 it 119	 PSNR SIDD: 19.8462	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 118 it 179	 PSNR SIDD: 19.8291	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 118 it 239	 PSNR SIDD: 19.7973	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 118	Time: 86.1241	Loss: 52.1676	LearningRate 0.000150
+[Ep 119 it 59	 PSNR SIDD: 19.6168	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 119 it 119	 PSNR SIDD: 19.9563	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 119 it 179	 PSNR SIDD: 19.3610	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 119 it 239	 PSNR SIDD: 19.9539	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 119	Time: 83.6909	Loss: 54.7605	LearningRate 0.000149
+[Ep 120 it 59	 PSNR SIDD: 19.4746	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 120 it 119	 PSNR SIDD: 19.3047	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 120 it 179	 PSNR SIDD: 19.8951	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 120 it 239	 PSNR SIDD: 19.6029	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 120	Time: 82.1335	Loss: 51.3608	LearningRate 0.000148
+[Ep 121 it 59	 PSNR SIDD: 19.6674	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 121 it 119	 PSNR SIDD: 19.9478	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 121 it 179	 PSNR SIDD: 19.9774	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+[Ep 121 it 239	 PSNR SIDD: 19.9997	] ----  [best_Ep_SIDD 114 best_it_SIDD 239 Best_PSNR_SIDD 20.2656] 
+Epoch: 121	Time: 83.0240	Loss: 52.2726	LearningRate 0.000148
+[Ep 122 it 59	 PSNR SIDD: 20.4567	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 122 it 119	 PSNR SIDD: 20.1736	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 122 it 179	 PSNR SIDD: 19.8886	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 122 it 239	 PSNR SIDD: 20.1452	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 122	Time: 83.0773	Loss: 53.4924	LearningRate 0.000147
+[Ep 123 it 59	 PSNR SIDD: 19.1508	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 123 it 119	 PSNR SIDD: 19.7046	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 123 it 179	 PSNR SIDD: 19.8967	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 123 it 239	 PSNR SIDD: 19.5685	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 123	Time: 82.2623	Loss: 52.0878	LearningRate 0.000146
+[Ep 124 it 59	 PSNR SIDD: 19.7152	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 124 it 119	 PSNR SIDD: 19.3737	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 124 it 179	 PSNR SIDD: 19.5669	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 124 it 239	 PSNR SIDD: 19.4900	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 124	Time: 82.5335	Loss: 52.1173	LearningRate 0.000145
+[Ep 125 it 59	 PSNR SIDD: 19.7834	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 125 it 119	 PSNR SIDD: 19.5509	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 125 it 179	 PSNR SIDD: 19.6722	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 125 it 239	 PSNR SIDD: 19.3354	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 125	Time: 83.2715	Loss: 53.0545	LearningRate 0.000144
+[Ep 126 it 59	 PSNR SIDD: 19.5836	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 126 it 119	 PSNR SIDD: 20.1531	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 126 it 179	 PSNR SIDD: 19.6646	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 126 it 239	 PSNR SIDD: 19.7197	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 126	Time: 84.4228	Loss: 51.8689	LearningRate 0.000144
+[Ep 127 it 59	 PSNR SIDD: 19.5714	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 127 it 119	 PSNR SIDD: 19.2543	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 127 it 179	 PSNR SIDD: 19.6484	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 127 it 239	 PSNR SIDD: 19.3929	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 127	Time: 83.0734	Loss: 49.5110	LearningRate 0.000143
+[Ep 128 it 59	 PSNR SIDD: 19.4626	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 128 it 119	 PSNR SIDD: 19.4277	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 128 it 179	 PSNR SIDD: 19.4993	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 128 it 239	 PSNR SIDD: 19.9777	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 128	Time: 82.1572	Loss: 48.6851	LearningRate 0.000142
+[Ep 129 it 59	 PSNR SIDD: 19.7794	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 129 it 119	 PSNR SIDD: 20.0556	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 129 it 179	 PSNR SIDD: 20.3991	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 129 it 239	 PSNR SIDD: 19.9835	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 129	Time: 83.0108	Loss: 51.4990	LearningRate 0.000141
+[Ep 130 it 59	 PSNR SIDD: 20.1358	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 130 it 119	 PSNR SIDD: 20.0255	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 130 it 179	 PSNR SIDD: 19.4612	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 130 it 239	 PSNR SIDD: 19.5989	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 130	Time: 83.8748	Loss: 48.0845	LearningRate 0.000140
+[Ep 131 it 59	 PSNR SIDD: 19.5171	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 131 it 119	 PSNR SIDD: 19.8573	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 131 it 179	 PSNR SIDD: 19.6437	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 131 it 239	 PSNR SIDD: 19.4291	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 131	Time: 83.7518	Loss: 49.8751	LearningRate 0.000140
+[Ep 132 it 59	 PSNR SIDD: 19.4417	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 132 it 119	 PSNR SIDD: 19.6146	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 132 it 179	 PSNR SIDD: 19.4539	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 132 it 239	 PSNR SIDD: 19.5673	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 132	Time: 83.4841	Loss: 49.5266	LearningRate 0.000139
+[Ep 133 it 59	 PSNR SIDD: 19.7522	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 133 it 119	 PSNR SIDD: 20.0062	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 133 it 179	 PSNR SIDD: 20.1002	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 133 it 239	 PSNR SIDD: 19.2890	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 133	Time: 84.6452	Loss: 49.7790	LearningRate 0.000138
+[Ep 134 it 59	 PSNR SIDD: 20.1599	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 134 it 119	 PSNR SIDD: 19.5984	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 134 it 179	 PSNR SIDD: 19.2707	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 134 it 239	 PSNR SIDD: 19.6663	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 134	Time: 85.3199	Loss: 48.6705	LearningRate 0.000137
+[Ep 135 it 59	 PSNR SIDD: 20.2238	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 135 it 119	 PSNR SIDD: 20.1383	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 135 it 179	 PSNR SIDD: 19.8008	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 135 it 239	 PSNR SIDD: 20.1168	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 135	Time: 84.9810	Loss: 48.7022	LearningRate 0.000136
+[Ep 136 it 59	 PSNR SIDD: 20.4371	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 136 it 119	 PSNR SIDD: 19.5754	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 136 it 179	 PSNR SIDD: 20.0015	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 136 it 239	 PSNR SIDD: 19.8633	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 136	Time: 84.8789	Loss: 47.1370	LearningRate 0.000135
+[Ep 137 it 59	 PSNR SIDD: 20.1895	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 137 it 119	 PSNR SIDD: 20.0870	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 137 it 179	 PSNR SIDD: 20.2862	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 137 it 239	 PSNR SIDD: 19.9414	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 137	Time: 83.5576	Loss: 50.5086	LearningRate 0.000134
+[Ep 138 it 59	 PSNR SIDD: 19.8854	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 138 it 119	 PSNR SIDD: 20.1042	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 138 it 179	 PSNR SIDD: 20.2746	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 138 it 239	 PSNR SIDD: 19.6106	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 138	Time: 83.8586	Loss: 49.0917	LearningRate 0.000134
+[Ep 139 it 59	 PSNR SIDD: 20.3368	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 139 it 119	 PSNR SIDD: 19.8237	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 139 it 179	 PSNR SIDD: 19.9846	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 139 it 239	 PSNR SIDD: 19.8483	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 139	Time: 84.1193	Loss: 49.3357	LearningRate 0.000133
+[Ep 140 it 59	 PSNR SIDD: 20.1735	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 140 it 119	 PSNR SIDD: 20.1709	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 140 it 179	 PSNR SIDD: 19.7776	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 140 it 239	 PSNR SIDD: 20.4125	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 140	Time: 85.8297	Loss: 47.2576	LearningRate 0.000132
+[Ep 141 it 59	 PSNR SIDD: 20.2930	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 141 it 119	 PSNR SIDD: 20.1557	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 141 it 179	 PSNR SIDD: 19.6408	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 141 it 239	 PSNR SIDD: 20.2721	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 141	Time: 84.0840	Loss: 48.4501	LearningRate 0.000131
+[Ep 142 it 59	 PSNR SIDD: 20.0499	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 142 it 119	 PSNR SIDD: 20.3766	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 142 it 179	 PSNR SIDD: 19.9616	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 142 it 239	 PSNR SIDD: 20.3056	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+Epoch: 142	Time: 84.5146	Loss: 47.9874	LearningRate 0.000130
+[Ep 143 it 59	 PSNR SIDD: 20.3098	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 143 it 119	 PSNR SIDD: 20.0691	] ----  [best_Ep_SIDD 122 best_it_SIDD 59 Best_PSNR_SIDD 20.4567] 
+[Ep 143 it 179	 PSNR SIDD: 20.4713	] ----  [best_Ep_SIDD 143 best_it_SIDD 179 Best_PSNR_SIDD 20.4713] 
+[Ep 143 it 239	 PSNR SIDD: 20.4791	] ----  [best_Ep_SIDD 143 best_it_SIDD 239 Best_PSNR_SIDD 20.4791] 
+Epoch: 143	Time: 87.5008	Loss: 46.9843	LearningRate 0.000129
+[Ep 144 it 59	 PSNR SIDD: 19.9839	] ----  [best_Ep_SIDD 143 best_it_SIDD 239 Best_PSNR_SIDD 20.4791] 
+[Ep 144 it 119	 PSNR SIDD: 20.1132	] ----  [best_Ep_SIDD 143 best_it_SIDD 239 Best_PSNR_SIDD 20.4791] 
+[Ep 144 it 179	 PSNR SIDD: 20.5593	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 144 it 239	 PSNR SIDD: 20.1957	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 144	Time: 86.0731	Loss: 46.2051	LearningRate 0.000129
+[Ep 145 it 59	 PSNR SIDD: 20.2120	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 145 it 119	 PSNR SIDD: 20.3023	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 145 it 179	 PSNR SIDD: 19.7721	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 145 it 239	 PSNR SIDD: 20.0752	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 145	Time: 83.9120	Loss: 46.9946	LearningRate 0.000128
+[Ep 146 it 59	 PSNR SIDD: 20.2825	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 146 it 119	 PSNR SIDD: 19.6647	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 146 it 179	 PSNR SIDD: 19.7212	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 146 it 239	 PSNR SIDD: 20.0729	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 146	Time: 85.4980	Loss: 48.8491	LearningRate 0.000127
+[Ep 147 it 59	 PSNR SIDD: 19.9998	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 147 it 119	 PSNR SIDD: 20.0469	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 147 it 179	 PSNR SIDD: 19.8461	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 147 it 239	 PSNR SIDD: 19.7123	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 147	Time: 84.8305	Loss: 46.4720	LearningRate 0.000126
+[Ep 148 it 59	 PSNR SIDD: 20.0828	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 148 it 119	 PSNR SIDD: 19.7411	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 148 it 179	 PSNR SIDD: 19.9427	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 148 it 239	 PSNR SIDD: 20.1145	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 148	Time: 85.8616	Loss: 47.3121	LearningRate 0.000125
+[Ep 149 it 59	 PSNR SIDD: 19.7536	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 149 it 119	 PSNR SIDD: 19.5842	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 149 it 179	 PSNR SIDD: 19.9623	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 149 it 239	 PSNR SIDD: 19.9672	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 149	Time: 85.2528	Loss: 47.6539	LearningRate 0.000124
+[Ep 150 it 59	 PSNR SIDD: 19.8914	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 150 it 119	 PSNR SIDD: 19.8667	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 150 it 179	 PSNR SIDD: 19.6642	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 150 it 239	 PSNR SIDD: 19.9820	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 150	Time: 84.3146	Loss: 46.4246	LearningRate 0.000123
+[Ep 151 it 59	 PSNR SIDD: 20.0859	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 151 it 119	 PSNR SIDD: 20.2846	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 151 it 179	 PSNR SIDD: 19.7438	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 151 it 239	 PSNR SIDD: 19.6647	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 151	Time: 85.3736	Loss: 45.5097	LearningRate 0.000122
+[Ep 152 it 59	 PSNR SIDD: 20.2386	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 152 it 119	 PSNR SIDD: 19.9246	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 152 it 179	 PSNR SIDD: 19.5260	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 152 it 239	 PSNR SIDD: 19.8756	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 152	Time: 84.4403	Loss: 46.6741	LearningRate 0.000122
+[Ep 153 it 59	 PSNR SIDD: 20.1099	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 153 it 119	 PSNR SIDD: 20.1665	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 153 it 179	 PSNR SIDD: 19.6737	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 153 it 239	 PSNR SIDD: 19.8759	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 153	Time: 83.9593	Loss: 44.6325	LearningRate 0.000121
+[Ep 154 it 59	 PSNR SIDD: 19.8215	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 154 it 119	 PSNR SIDD: 19.5375	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 154 it 179	 PSNR SIDD: 19.9639	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 154 it 239	 PSNR SIDD: 20.0559	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 154	Time: 84.9001	Loss: 44.2568	LearningRate 0.000120
+[Ep 155 it 59	 PSNR SIDD: 19.2997	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 155 it 119	 PSNR SIDD: 19.6601	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 155 it 179	 PSNR SIDD: 20.0979	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 155 it 239	 PSNR SIDD: 19.8979	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 155	Time: 84.5515	Loss: 46.4887	LearningRate 0.000119
+[Ep 156 it 59	 PSNR SIDD: 19.9918	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 156 it 119	 PSNR SIDD: 19.5824	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 156 it 179	 PSNR SIDD: 19.7873	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 156 it 239	 PSNR SIDD: 20.0695	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 156	Time: 83.9232	Loss: 43.8772	LearningRate 0.000118
+[Ep 157 it 59	 PSNR SIDD: 20.0846	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 157 it 119	 PSNR SIDD: 20.0257	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 157 it 179	 PSNR SIDD: 20.2051	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 157 it 239	 PSNR SIDD: 20.2187	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 157	Time: 86.0170	Loss: 44.6074	LearningRate 0.000117
+[Ep 158 it 59	 PSNR SIDD: 20.2501	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 158 it 119	 PSNR SIDD: 20.2039	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 158 it 179	 PSNR SIDD: 20.0174	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 158 it 239	 PSNR SIDD: 20.2999	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 158	Time: 84.3844	Loss: 45.9276	LearningRate 0.000116
+[Ep 159 it 59	 PSNR SIDD: 19.6096	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 159 it 119	 PSNR SIDD: 19.8869	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 159 it 179	 PSNR SIDD: 19.8790	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 159 it 239	 PSNR SIDD: 19.8377	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 159	Time: 87.0041	Loss: 43.4848	LearningRate 0.000115
+[Ep 160 it 59	 PSNR SIDD: 19.8913	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 160 it 119	 PSNR SIDD: 20.1384	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 160 it 179	 PSNR SIDD: 19.6586	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 160 it 239	 PSNR SIDD: 20.1569	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 160	Time: 86.2522	Loss: 43.5885	LearningRate 0.000114
+[Ep 161 it 59	 PSNR SIDD: 20.2404	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 161 it 119	 PSNR SIDD: 19.8647	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 161 it 179	 PSNR SIDD: 19.8654	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 161 it 239	 PSNR SIDD: 20.0339	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 161	Time: 88.2148	Loss: 45.1376	LearningRate 0.000114
+[Ep 162 it 59	 PSNR SIDD: 20.1317	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 162 it 119	 PSNR SIDD: 19.9136	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 162 it 179	 PSNR SIDD: 20.2917	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 162 it 239	 PSNR SIDD: 20.0568	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 162	Time: 88.8103	Loss: 43.5284	LearningRate 0.000113
+[Ep 163 it 59	 PSNR SIDD: 19.9092	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 163 it 119	 PSNR SIDD: 19.6470	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 163 it 179	 PSNR SIDD: 19.9106	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 163 it 239	 PSNR SIDD: 20.3448	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 163	Time: 88.1478	Loss: 44.2254	LearningRate 0.000112
+[Ep 164 it 59	 PSNR SIDD: 19.9944	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 164 it 119	 PSNR SIDD: 19.6316	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 164 it 179	 PSNR SIDD: 20.0969	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 164 it 239	 PSNR SIDD: 19.9691	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 164	Time: 90.3059	Loss: 42.7025	LearningRate 0.000111
+[Ep 165 it 59	 PSNR SIDD: 19.6127	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 165 it 119	 PSNR SIDD: 19.8184	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 165 it 179	 PSNR SIDD: 19.9181	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 165 it 239	 PSNR SIDD: 19.5488	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 165	Time: 89.0213	Loss: 46.4909	LearningRate 0.000110
+[Ep 166 it 59	 PSNR SIDD: 20.1379	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 166 it 119	 PSNR SIDD: 20.0829	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 166 it 179	 PSNR SIDD: 19.9682	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 166 it 239	 PSNR SIDD: 19.3216	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 166	Time: 89.1739	Loss: 43.4889	LearningRate 0.000109
+[Ep 167 it 59	 PSNR SIDD: 19.6277	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 167 it 119	 PSNR SIDD: 20.2242	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 167 it 179	 PSNR SIDD: 20.0757	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 167 it 239	 PSNR SIDD: 20.1196	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 167	Time: 89.0772	Loss: 44.4542	LearningRate 0.000108
+[Ep 168 it 59	 PSNR SIDD: 19.7305	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 168 it 119	 PSNR SIDD: 20.0929	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 168 it 179	 PSNR SIDD: 19.6677	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 168 it 239	 PSNR SIDD: 20.0367	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 168	Time: 88.6011	Loss: 42.3766	LearningRate 0.000107
+[Ep 169 it 59	 PSNR SIDD: 20.1226	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 169 it 119	 PSNR SIDD: 19.6272	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 169 it 179	 PSNR SIDD: 19.7758	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 169 it 239	 PSNR SIDD: 20.0498	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 169	Time: 88.5962	Loss: 43.2307	LearningRate 0.000106
+[Ep 170 it 59	 PSNR SIDD: 20.2108	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 170 it 119	 PSNR SIDD: 19.5928	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 170 it 179	 PSNR SIDD: 19.5932	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 170 it 239	 PSNR SIDD: 19.7155	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 170	Time: 88.0316	Loss: 41.7994	LearningRate 0.000105
+[Ep 171 it 59	 PSNR SIDD: 19.7939	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 171 it 119	 PSNR SIDD: 19.6284	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 171 it 179	 PSNR SIDD: 19.6431	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 171 it 239	 PSNR SIDD: 19.9994	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 171	Time: 88.2584	Loss: 43.1829	LearningRate 0.000105
+[Ep 172 it 59	 PSNR SIDD: 19.9396	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 172 it 119	 PSNR SIDD: 19.9493	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 172 it 179	 PSNR SIDD: 19.6094	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 172 it 239	 PSNR SIDD: 20.2314	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 172	Time: 88.0613	Loss: 41.8827	LearningRate 0.000104
+[Ep 173 it 59	 PSNR SIDD: 19.9937	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 173 it 119	 PSNR SIDD: 19.7315	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 173 it 179	 PSNR SIDD: 20.2192	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 173 it 239	 PSNR SIDD: 20.0406	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 173	Time: 87.8057	Loss: 42.0172	LearningRate 0.000103
+[Ep 174 it 59	 PSNR SIDD: 20.3700	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 174 it 119	 PSNR SIDD: 20.2905	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 174 it 179	 PSNR SIDD: 19.8928	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 174 it 239	 PSNR SIDD: 19.5927	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+Epoch: 174	Time: 89.4480	Loss: 42.1383	LearningRate 0.000102
+[Ep 175 it 59	 PSNR SIDD: 19.9114	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 175 it 119	 PSNR SIDD: 19.9236	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 175 it 179	 PSNR SIDD: 20.1923	] ----  [best_Ep_SIDD 144 best_it_SIDD 179 Best_PSNR_SIDD 20.5593] 
+[Ep 175 it 239	 PSNR SIDD: 20.5631	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 175	Time: 88.8405	Loss: 43.8510	LearningRate 0.000101
+[Ep 176 it 59	 PSNR SIDD: 19.7802	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 176 it 119	 PSNR SIDD: 19.8991	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 176 it 179	 PSNR SIDD: 20.4112	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 176 it 239	 PSNR SIDD: 20.3225	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 176	Time: 87.4160	Loss: 41.0161	LearningRate 0.000100
+[Ep 177 it 59	 PSNR SIDD: 19.9370	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 177 it 119	 PSNR SIDD: 19.9469	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 177 it 179	 PSNR SIDD: 20.0834	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 177 it 239	 PSNR SIDD: 20.3663	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 177	Time: 88.2774	Loss: 41.9676	LearningRate 0.000099
+[Ep 178 it 59	 PSNR SIDD: 20.1502	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 178 it 119	 PSNR SIDD: 19.9936	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 178 it 179	 PSNR SIDD: 20.0774	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 178 it 239	 PSNR SIDD: 20.1589	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 178	Time: 87.6477	Loss: 41.9979	LearningRate 0.000098
+[Ep 179 it 59	 PSNR SIDD: 20.0957	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 179 it 119	 PSNR SIDD: 19.8876	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 179 it 179	 PSNR SIDD: 20.3377	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 179 it 239	 PSNR SIDD: 20.4904	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 179	Time: 88.8366	Loss: 41.6940	LearningRate 0.000097
+[Ep 180 it 59	 PSNR SIDD: 20.4420	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 180 it 119	 PSNR SIDD: 20.4318	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 180 it 179	 PSNR SIDD: 20.4684	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 180 it 239	 PSNR SIDD: 20.5105	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 180	Time: 87.7881	Loss: 38.8238	LearningRate 0.000096
+[Ep 181 it 59	 PSNR SIDD: 20.0368	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 181 it 119	 PSNR SIDD: 20.0050	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 181 it 179	 PSNR SIDD: 19.7822	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 181 it 239	 PSNR SIDD: 20.0984	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 181	Time: 87.6499	Loss: 41.1861	LearningRate 0.000096
+[Ep 182 it 59	 PSNR SIDD: 20.2701	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 182 it 119	 PSNR SIDD: 20.0075	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 182 it 179	 PSNR SIDD: 20.4869	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 182 it 239	 PSNR SIDD: 20.0401	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 182	Time: 87.2910	Loss: 39.5339	LearningRate 0.000095
+[Ep 183 it 59	 PSNR SIDD: 20.1244	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 183 it 119	 PSNR SIDD: 20.1223	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 183 it 179	 PSNR SIDD: 20.2647	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 183 it 239	 PSNR SIDD: 19.9394	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 183	Time: 87.5008	Loss: 39.4851	LearningRate 0.000094
+[Ep 184 it 59	 PSNR SIDD: 19.7977	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 184 it 119	 PSNR SIDD: 19.9757	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 184 it 179	 PSNR SIDD: 20.3042	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 184 it 239	 PSNR SIDD: 19.7315	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 184	Time: 86.9590	Loss: 39.9729	LearningRate 0.000093
+[Ep 185 it 59	 PSNR SIDD: 19.8154	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 185 it 119	 PSNR SIDD: 20.4306	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 185 it 179	 PSNR SIDD: 20.3328	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 185 it 239	 PSNR SIDD: 19.9923	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 185	Time: 87.0016	Loss: 38.0074	LearningRate 0.000092
+[Ep 186 it 59	 PSNR SIDD: 20.3048	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 186 it 119	 PSNR SIDD: 20.0809	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 186 it 179	 PSNR SIDD: 20.0126	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 186 it 239	 PSNR SIDD: 20.2493	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+Epoch: 186	Time: 87.3683	Loss: 38.9882	LearningRate 0.000091
+[Ep 187 it 59	 PSNR SIDD: 20.3043	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 187 it 119	 PSNR SIDD: 20.3552	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 187 it 179	 PSNR SIDD: 20.1697	] ----  [best_Ep_SIDD 175 best_it_SIDD 239 Best_PSNR_SIDD 20.5631] 
+[Ep 187 it 239	 PSNR SIDD: 20.5963	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+Epoch: 187	Time: 87.4429	Loss: 40.5813	LearningRate 0.000090
+[Ep 188 it 59	 PSNR SIDD: 20.1662	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+[Ep 188 it 119	 PSNR SIDD: 20.4910	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+[Ep 188 it 179	 PSNR SIDD: 20.0523	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+[Ep 188 it 239	 PSNR SIDD: 20.3025	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+Epoch: 188	Time: 85.7684	Loss: 38.4177	LearningRate 0.000089
+[Ep 189 it 59	 PSNR SIDD: 19.9042	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+[Ep 189 it 119	 PSNR SIDD: 20.2525	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+[Ep 189 it 179	 PSNR SIDD: 20.4987	] ----  [best_Ep_SIDD 187 best_it_SIDD 239 Best_PSNR_SIDD 20.5963] 
+[Ep 189 it 239	 PSNR SIDD: 20.8247	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 189	Time: 87.1049	Loss: 41.8415	LearningRate 0.000088
+[Ep 190 it 59	 PSNR SIDD: 20.2681	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 190 it 119	 PSNR SIDD: 20.3758	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 190 it 179	 PSNR SIDD: 19.8062	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 190 it 239	 PSNR SIDD: 20.3419	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 190	Time: 86.8654	Loss: 39.3279	LearningRate 0.000087
+[Ep 191 it 59	 PSNR SIDD: 20.0373	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 191 it 119	 PSNR SIDD: 19.9945	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 191 it 179	 PSNR SIDD: 20.2176	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 191 it 239	 PSNR SIDD: 20.5965	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 191	Time: 86.8801	Loss: 39.5632	LearningRate 0.000087
+[Ep 192 it 59	 PSNR SIDD: 20.2209	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 192 it 119	 PSNR SIDD: 20.2246	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 192 it 179	 PSNR SIDD: 20.3912	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 192 it 239	 PSNR SIDD: 20.6434	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 192	Time: 86.6616	Loss: 37.8502	LearningRate 0.000086
+[Ep 193 it 59	 PSNR SIDD: 20.4681	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 193 it 119	 PSNR SIDD: 20.1410	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 193 it 179	 PSNR SIDD: 20.4645	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 193 it 239	 PSNR SIDD: 20.0496	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 193	Time: 87.1309	Loss: 37.3686	LearningRate 0.000085
+[Ep 194 it 59	 PSNR SIDD: 20.4206	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 194 it 119	 PSNR SIDD: 20.2980	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 194 it 179	 PSNR SIDD: 19.9176	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 194 it 239	 PSNR SIDD: 20.0424	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 194	Time: 86.4889	Loss: 38.5512	LearningRate 0.000084
+[Ep 195 it 59	 PSNR SIDD: 19.7256	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 195 it 119	 PSNR SIDD: 20.2059	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 195 it 179	 PSNR SIDD: 20.1389	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 195 it 239	 PSNR SIDD: 19.9819	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 195	Time: 86.3386	Loss: 37.8505	LearningRate 0.000083
+[Ep 196 it 59	 PSNR SIDD: 20.1189	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 196 it 119	 PSNR SIDD: 20.1175	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 196 it 179	 PSNR SIDD: 20.3615	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 196 it 239	 PSNR SIDD: 20.0989	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 196	Time: 86.6830	Loss: 36.9493	LearningRate 0.000082
+[Ep 197 it 59	 PSNR SIDD: 20.6612	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 197 it 119	 PSNR SIDD: 20.0452	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 197 it 179	 PSNR SIDD: 19.7536	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 197 it 239	 PSNR SIDD: 20.3706	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 197	Time: 87.6158	Loss: 38.2450	LearningRate 0.000081
+[Ep 198 it 59	 PSNR SIDD: 20.3580	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 198 it 119	 PSNR SIDD: 20.0325	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 198 it 179	 PSNR SIDD: 20.5681	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 198 it 239	 PSNR SIDD: 20.2707	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 198	Time: 88.7013	Loss: 37.5912	LearningRate 0.000080
+[Ep 199 it 59	 PSNR SIDD: 20.1927	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 199 it 119	 PSNR SIDD: 20.3110	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 199 it 179	 PSNR SIDD: 20.4288	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 199 it 239	 PSNR SIDD: 20.0791	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 199	Time: 87.9123	Loss: 35.7039	LearningRate 0.000079
+[Ep 200 it 59	 PSNR SIDD: 20.2503	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 200 it 119	 PSNR SIDD: 20.0700	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 200 it 179	 PSNR SIDD: 20.1889	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 200 it 239	 PSNR SIDD: 20.1114	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 200	Time: 88.2148	Loss: 38.0918	LearningRate 0.000079
+[Ep 201 it 59	 PSNR SIDD: 20.1017	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 201 it 119	 PSNR SIDD: 20.4429	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 201 it 179	 PSNR SIDD: 20.5123	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 201 it 239	 PSNR SIDD: 20.6858	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 201	Time: 86.8725	Loss: 36.5151	LearningRate 0.000078
+[Ep 202 it 59	 PSNR SIDD: 20.0109	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 202 it 119	 PSNR SIDD: 19.9048	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 202 it 179	 PSNR SIDD: 20.0844	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 202 it 239	 PSNR SIDD: 20.4142	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 202	Time: 88.3432	Loss: 36.8866	LearningRate 0.000077
+[Ep 203 it 59	 PSNR SIDD: 20.0345	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 203 it 119	 PSNR SIDD: 20.0916	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 203 it 179	 PSNR SIDD: 20.2535	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 203 it 239	 PSNR SIDD: 20.2950	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 203	Time: 88.1934	Loss: 37.3281	LearningRate 0.000076
+[Ep 204 it 59	 PSNR SIDD: 20.1383	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 204 it 119	 PSNR SIDD: 19.8321	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 204 it 179	 PSNR SIDD: 20.4468	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 204 it 239	 PSNR SIDD: 20.5690	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 204	Time: 87.2246	Loss: 35.8476	LearningRate 0.000075
+[Ep 205 it 59	 PSNR SIDD: 20.4119	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 205 it 119	 PSNR SIDD: 20.1193	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 205 it 179	 PSNR SIDD: 19.9578	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 205 it 239	 PSNR SIDD: 20.1955	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 205	Time: 88.1042	Loss: 36.4599	LearningRate 0.000074
+[Ep 206 it 59	 PSNR SIDD: 19.9883	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 206 it 119	 PSNR SIDD: 20.2237	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 206 it 179	 PSNR SIDD: 20.2284	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 206 it 239	 PSNR SIDD: 20.4583	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 206	Time: 88.6256	Loss: 36.4676	LearningRate 0.000073
+[Ep 207 it 59	 PSNR SIDD: 20.3183	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 207 it 119	 PSNR SIDD: 19.9323	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 207 it 179	 PSNR SIDD: 19.8956	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 207 it 239	 PSNR SIDD: 20.3852	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 207	Time: 88.2837	Loss: 36.7131	LearningRate 0.000073
+[Ep 208 it 59	 PSNR SIDD: 20.5371	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 208 it 119	 PSNR SIDD: 20.5199	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 208 it 179	 PSNR SIDD: 20.6410	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 208 it 239	 PSNR SIDD: 19.6952	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 208	Time: 88.6079	Loss: 33.3599	LearningRate 0.000072
+[Ep 209 it 59	 PSNR SIDD: 20.0860	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 209 it 119	 PSNR SIDD: 20.3786	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 209 it 179	 PSNR SIDD: 20.2427	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 209 it 239	 PSNR SIDD: 20.4487	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 209	Time: 86.7267	Loss: 35.4463	LearningRate 0.000071
+[Ep 210 it 59	 PSNR SIDD: 19.9830	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 210 it 119	 PSNR SIDD: 20.7459	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 210 it 179	 PSNR SIDD: 20.2799	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 210 it 239	 PSNR SIDD: 20.0681	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 210	Time: 86.7235	Loss: 35.1253	LearningRate 0.000070
+[Ep 211 it 59	 PSNR SIDD: 20.2123	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 211 it 119	 PSNR SIDD: 19.9709	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 211 it 179	 PSNR SIDD: 20.4424	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 211 it 239	 PSNR SIDD: 19.8449	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 211	Time: 87.1250	Loss: 35.7753	LearningRate 0.000069
+[Ep 212 it 59	 PSNR SIDD: 20.0208	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 212 it 119	 PSNR SIDD: 20.1044	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 212 it 179	 PSNR SIDD: 20.4387	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 212 it 239	 PSNR SIDD: 19.9836	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 212	Time: 87.7067	Loss: 35.3548	LearningRate 0.000068
+[Ep 213 it 59	 PSNR SIDD: 20.0080	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 213 it 119	 PSNR SIDD: 20.3988	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 213 it 179	 PSNR SIDD: 20.3114	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 213 it 239	 PSNR SIDD: 19.9806	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 213	Time: 86.6052	Loss: 33.7788	LearningRate 0.000067
+[Ep 214 it 59	 PSNR SIDD: 20.1956	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 214 it 119	 PSNR SIDD: 20.2460	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 214 it 179	 PSNR SIDD: 20.1950	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 214 it 239	 PSNR SIDD: 20.1816	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 214	Time: 87.8425	Loss: 33.9474	LearningRate 0.000067
+[Ep 215 it 59	 PSNR SIDD: 19.8131	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 215 it 119	 PSNR SIDD: 19.7144	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 215 it 179	 PSNR SIDD: 20.6233	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 215 it 239	 PSNR SIDD: 19.9198	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 215	Time: 87.2803	Loss: 34.0698	LearningRate 0.000066
+[Ep 216 it 59	 PSNR SIDD: 20.2505	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 216 it 119	 PSNR SIDD: 20.1212	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 216 it 179	 PSNR SIDD: 19.9937	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 216 it 239	 PSNR SIDD: 20.2812	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 216	Time: 87.3246	Loss: 34.8767	LearningRate 0.000065
+[Ep 217 it 59	 PSNR SIDD: 20.0847	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 217 it 119	 PSNR SIDD: 20.4042	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 217 it 179	 PSNR SIDD: 20.2383	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 217 it 239	 PSNR SIDD: 19.9397	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 217	Time: 88.1509	Loss: 33.3325	LearningRate 0.000064
+[Ep 218 it 59	 PSNR SIDD: 20.4151	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 218 it 119	 PSNR SIDD: 20.3094	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 218 it 179	 PSNR SIDD: 20.2721	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 218 it 239	 PSNR SIDD: 20.4441	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 218	Time: 86.9047	Loss: 34.1927	LearningRate 0.000063
+[Ep 219 it 59	 PSNR SIDD: 20.5847	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 219 it 119	 PSNR SIDD: 20.5351	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 219 it 179	 PSNR SIDD: 20.1842	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 219 it 239	 PSNR SIDD: 20.1124	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 219	Time: 87.4970	Loss: 33.2331	LearningRate 0.000062
+[Ep 220 it 59	 PSNR SIDD: 20.2272	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 220 it 119	 PSNR SIDD: 20.3232	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 220 it 179	 PSNR SIDD: 20.3891	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 220 it 239	 PSNR SIDD: 20.4421	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 220	Time: 87.0268	Loss: 34.2980	LearningRate 0.000061
+[Ep 221 it 59	 PSNR SIDD: 20.2541	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 221 it 119	 PSNR SIDD: 19.9157	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 221 it 179	 PSNR SIDD: 20.2626	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 221 it 239	 PSNR SIDD: 20.2929	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 221	Time: 87.7377	Loss: 33.8282	LearningRate 0.000061
+[Ep 222 it 59	 PSNR SIDD: 20.3494	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 222 it 119	 PSNR SIDD: 20.4697	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 222 it 179	 PSNR SIDD: 20.2488	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 222 it 239	 PSNR SIDD: 20.3036	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 222	Time: 87.4398	Loss: 32.4665	LearningRate 0.000060
+[Ep 223 it 59	 PSNR SIDD: 20.2345	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 223 it 119	 PSNR SIDD: 20.3051	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 223 it 179	 PSNR SIDD: 20.1994	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 223 it 239	 PSNR SIDD: 20.5124	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 223	Time: 88.0079	Loss: 34.0071	LearningRate 0.000059
+[Ep 224 it 59	 PSNR SIDD: 20.2414	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 224 it 119	 PSNR SIDD: 20.4301	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 224 it 179	 PSNR SIDD: 20.3145	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 224 it 239	 PSNR SIDD: 20.3103	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 224	Time: 87.3278	Loss: 33.9340	LearningRate 0.000058
+[Ep 225 it 59	 PSNR SIDD: 20.4463	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 225 it 119	 PSNR SIDD: 20.2937	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 225 it 179	 PSNR SIDD: 20.2091	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 225 it 239	 PSNR SIDD: 20.1544	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 225	Time: 87.7742	Loss: 31.0301	LearningRate 0.000057
+[Ep 226 it 59	 PSNR SIDD: 20.5476	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 226 it 119	 PSNR SIDD: 20.1528	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 226 it 179	 PSNR SIDD: 20.4262	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+[Ep 226 it 239	 PSNR SIDD: 20.4841	] ----  [best_Ep_SIDD 189 best_it_SIDD 239 Best_PSNR_SIDD 20.8247] 
+Epoch: 226	Time: 87.0976	Loss: 31.9413	LearningRate 0.000057
+[Ep 227 it 59	 PSNR SIDD: 20.8328	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 227 it 119	 PSNR SIDD: 20.7084	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 227 it 179	 PSNR SIDD: 20.2279	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 227 it 239	 PSNR SIDD: 20.4197	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+Epoch: 227	Time: 88.5120	Loss: 31.6411	LearningRate 0.000056
+[Ep 228 it 59	 PSNR SIDD: 20.6942	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 228 it 119	 PSNR SIDD: 20.3251	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 228 it 179	 PSNR SIDD: 20.0624	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 228 it 239	 PSNR SIDD: 20.1288	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+Epoch: 228	Time: 87.4851	Loss: 32.7686	LearningRate 0.000055
+[Ep 229 it 59	 PSNR SIDD: 20.2096	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 229 it 119	 PSNR SIDD: 20.0596	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 229 it 179	 PSNR SIDD: 20.3859	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 229 it 239	 PSNR SIDD: 20.1878	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+Epoch: 229	Time: 88.7190	Loss: 32.4753	LearningRate 0.000054
+[Ep 230 it 59	 PSNR SIDD: 20.2141	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 230 it 119	 PSNR SIDD: 20.3320	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 230 it 179	 PSNR SIDD: 20.3333	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 230 it 239	 PSNR SIDD: 20.6311	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+Epoch: 230	Time: 87.3917	Loss: 31.3035	LearningRate 0.000053
+[Ep 231 it 59	 PSNR SIDD: 20.3545	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 231 it 119	 PSNR SIDD: 20.6328	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 231 it 179	 PSNR SIDD: 20.2629	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 231 it 239	 PSNR SIDD: 20.0324	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+Epoch: 231	Time: 88.0521	Loss: 30.9747	LearningRate 0.000053
+[Ep 232 it 59	 PSNR SIDD: 20.0678	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 232 it 119	 PSNR SIDD: 20.2276	] ----  [best_Ep_SIDD 227 best_it_SIDD 59 Best_PSNR_SIDD 20.8328] 
+[Ep 232 it 179	 PSNR SIDD: 20.8644	] ----  [best_Ep_SIDD 232 best_it_SIDD 179 Best_PSNR_SIDD 20.8644] 
+[Ep 232 it 239	 PSNR SIDD: 20.6316	] ----  [best_Ep_SIDD 232 best_it_SIDD 179 Best_PSNR_SIDD 20.8644] 
+Epoch: 232	Time: 88.8272	Loss: 33.4036	LearningRate 0.000052
+[Ep 233 it 59	 PSNR SIDD: 20.2477	] ----  [best_Ep_SIDD 232 best_it_SIDD 179 Best_PSNR_SIDD 20.8644] 
+[Ep 233 it 119	 PSNR SIDD: 20.6587	] ----  [best_Ep_SIDD 232 best_it_SIDD 179 Best_PSNR_SIDD 20.8644] 
+[Ep 233 it 179	 PSNR SIDD: 20.8962	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 233 it 239	 PSNR SIDD: 20.5066	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 233	Time: 88.5291	Loss: 32.2906	LearningRate 0.000051
+[Ep 234 it 59	 PSNR SIDD: 20.6161	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 234 it 119	 PSNR SIDD: 20.6028	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 234 it 179	 PSNR SIDD: 20.5740	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 234 it 239	 PSNR SIDD: 20.4754	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 234	Time: 88.4400	Loss: 31.6960	LearningRate 0.000050
+[Ep 235 it 59	 PSNR SIDD: 20.3565	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 235 it 119	 PSNR SIDD: 20.4832	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 235 it 179	 PSNR SIDD: 20.5464	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 235 it 239	 PSNR SIDD: 20.4938	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 235	Time: 88.6741	Loss: 29.9171	LearningRate 0.000049
+[Ep 236 it 59	 PSNR SIDD: 20.6618	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 236 it 119	 PSNR SIDD: 20.0804	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 236 it 179	 PSNR SIDD: 20.2880	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 236 it 239	 PSNR SIDD: 20.3856	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 236	Time: 87.1007	Loss: 30.2109	LearningRate 0.000049
+[Ep 237 it 59	 PSNR SIDD: 20.4340	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 237 it 119	 PSNR SIDD: 20.4901	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 237 it 179	 PSNR SIDD: 20.8102	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 237 it 239	 PSNR SIDD: 20.6797	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 237	Time: 87.7614	Loss: 31.8578	LearningRate 0.000048
+[Ep 238 it 59	 PSNR SIDD: 20.8268	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 238 it 119	 PSNR SIDD: 20.6135	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 238 it 179	 PSNR SIDD: 20.5470	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 238 it 239	 PSNR SIDD: 20.5092	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 238	Time: 87.9598	Loss: 29.1755	LearningRate 0.000047
+[Ep 239 it 59	 PSNR SIDD: 20.6340	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 239 it 119	 PSNR SIDD: 20.4556	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 239 it 179	 PSNR SIDD: 20.4442	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 239 it 239	 PSNR SIDD: 19.9875	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 239	Time: 87.9258	Loss: 29.5887	LearningRate 0.000046
+[Ep 240 it 59	 PSNR SIDD: 20.5435	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 240 it 119	 PSNR SIDD: 20.0755	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 240 it 179	 PSNR SIDD: 20.6234	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 240 it 239	 PSNR SIDD: 20.4875	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 240	Time: 88.6969	Loss: 31.4280	LearningRate 0.000046
+[Ep 241 it 59	 PSNR SIDD: 20.3663	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 241 it 119	 PSNR SIDD: 20.1731	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 241 it 179	 PSNR SIDD: 20.6555	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 241 it 239	 PSNR SIDD: 20.5190	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 241	Time: 89.0152	Loss: 29.5108	LearningRate 0.000045
+[Ep 242 it 59	 PSNR SIDD: 20.0841	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 242 it 119	 PSNR SIDD: 20.2395	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 242 it 179	 PSNR SIDD: 20.4856	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 242 it 239	 PSNR SIDD: 20.2961	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 242	Time: 87.7295	Loss: 29.6073	LearningRate 0.000044
+[Ep 243 it 59	 PSNR SIDD: 20.1716	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 243 it 119	 PSNR SIDD: 20.1216	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 243 it 179	 PSNR SIDD: 20.4369	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 243 it 239	 PSNR SIDD: 20.5143	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 243	Time: 86.7185	Loss: 29.5631	LearningRate 0.000043
+[Ep 244 it 59	 PSNR SIDD: 20.4646	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 244 it 119	 PSNR SIDD: 20.6716	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 244 it 179	 PSNR SIDD: 20.5522	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 244 it 239	 PSNR SIDD: 20.4177	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+Epoch: 244	Time: 87.7604	Loss: 28.2563	LearningRate 0.000043
+[Ep 245 it 59	 PSNR SIDD: 20.2289	] ----  [best_Ep_SIDD 233 best_it_SIDD 179 Best_PSNR_SIDD 20.8962] 
+[Ep 245 it 119	 PSNR SIDD: 20.9127	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 245 it 179	 PSNR SIDD: 20.7796	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 245 it 239	 PSNR SIDD: 20.3458	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 245	Time: 88.4326	Loss: 28.2829	LearningRate 0.000042
+[Ep 246 it 59	 PSNR SIDD: 20.4059	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 246 it 119	 PSNR SIDD: 20.2671	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 246 it 179	 PSNR SIDD: 20.7828	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 246 it 239	 PSNR SIDD: 20.7283	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 246	Time: 87.4783	Loss: 28.9181	LearningRate 0.000041
+[Ep 247 it 59	 PSNR SIDD: 20.6333	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 247 it 119	 PSNR SIDD: 20.2118	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 247 it 179	 PSNR SIDD: 20.4789	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 247 it 239	 PSNR SIDD: 20.4022	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 247	Time: 87.8879	Loss: 29.7094	LearningRate 0.000041
+[Ep 248 it 59	 PSNR SIDD: 20.5729	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 248 it 119	 PSNR SIDD: 20.7071	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 248 it 179	 PSNR SIDD: 20.5328	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 248 it 239	 PSNR SIDD: 20.0932	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 248	Time: 87.6773	Loss: 29.4416	LearningRate 0.000040
+[Ep 249 it 59	 PSNR SIDD: 20.4513	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 249 it 119	 PSNR SIDD: 20.6479	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 249 it 179	 PSNR SIDD: 20.4921	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 249 it 239	 PSNR SIDD: 20.4407	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 249	Time: 87.5432	Loss: 29.3661	LearningRate 0.000039
+[Ep 250 it 59	 PSNR SIDD: 20.4513	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 250 it 119	 PSNR SIDD: 20.4202	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 250 it 179	 PSNR SIDD: 20.3860	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 250 it 239	 PSNR SIDD: 20.2609	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 250	Time: 87.6547	Loss: 30.3209	LearningRate 0.000038
+[Ep 251 it 59	 PSNR SIDD: 20.3584	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 251 it 119	 PSNR SIDD: 20.7666	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 251 it 179	 PSNR SIDD: 20.6814	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 251 it 239	 PSNR SIDD: 20.6489	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 251	Time: 88.0496	Loss: 28.4089	LearningRate 0.000038
+[Ep 252 it 59	 PSNR SIDD: 20.6143	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 252 it 119	 PSNR SIDD: 20.6321	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 252 it 179	 PSNR SIDD: 20.6868	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 252 it 239	 PSNR SIDD: 20.2151	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 252	Time: 88.1368	Loss: 28.2394	LearningRate 0.000037
+[Ep 253 it 59	 PSNR SIDD: 20.5217	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 253 it 119	 PSNR SIDD: 20.3986	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 253 it 179	 PSNR SIDD: 20.7628	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 253 it 239	 PSNR SIDD: 20.5495	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 253	Time: 89.0702	Loss: 28.3112	LearningRate 0.000036
+[Ep 254 it 59	 PSNR SIDD: 20.4157	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 254 it 119	 PSNR SIDD: 20.4420	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 254 it 179	 PSNR SIDD: 20.5762	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 254 it 239	 PSNR SIDD: 20.5471	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 254	Time: 87.9623	Loss: 27.6814	LearningRate 0.000036
+[Ep 255 it 59	 PSNR SIDD: 20.5077	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 255 it 119	 PSNR SIDD: 20.7784	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 255 it 179	 PSNR SIDD: 20.6071	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 255 it 239	 PSNR SIDD: 20.6190	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 255	Time: 87.1050	Loss: 27.7674	LearningRate 0.000035
+[Ep 256 it 59	 PSNR SIDD: 20.4937	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 256 it 119	 PSNR SIDD: 20.5572	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 256 it 179	 PSNR SIDD: 20.5304	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 256 it 239	 PSNR SIDD: 20.4760	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 256	Time: 88.8995	Loss: 28.8919	LearningRate 0.000034
+[Ep 257 it 59	 PSNR SIDD: 20.5939	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 257 it 119	 PSNR SIDD: 20.5456	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 257 it 179	 PSNR SIDD: 20.6254	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 257 it 239	 PSNR SIDD: 20.7651	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 257	Time: 88.2188	Loss: 27.1691	LearningRate 0.000034
+[Ep 258 it 59	 PSNR SIDD: 20.4931	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 258 it 119	 PSNR SIDD: 20.2070	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 258 it 179	 PSNR SIDD: 20.5944	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 258 it 239	 PSNR SIDD: 20.2951	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 258	Time: 87.6891	Loss: 28.5772	LearningRate 0.000033
+[Ep 259 it 59	 PSNR SIDD: 20.7016	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 259 it 119	 PSNR SIDD: 20.6436	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 259 it 179	 PSNR SIDD: 20.4477	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 259 it 239	 PSNR SIDD: 20.6809	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 259	Time: 88.5464	Loss: 27.1344	LearningRate 0.000032
+[Ep 260 it 59	 PSNR SIDD: 20.6166	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 260 it 119	 PSNR SIDD: 20.7098	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 260 it 179	 PSNR SIDD: 20.5747	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 260 it 239	 PSNR SIDD: 20.4087	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 260	Time: 86.9940	Loss: 27.6282	LearningRate 0.000032
+[Ep 261 it 59	 PSNR SIDD: 20.3083	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 261 it 119	 PSNR SIDD: 20.3884	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 261 it 179	 PSNR SIDD: 20.5556	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 261 it 239	 PSNR SIDD: 20.5477	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 261	Time: 89.0856	Loss: 27.5399	LearningRate 0.000031
+[Ep 262 it 59	 PSNR SIDD: 20.7942	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 262 it 119	 PSNR SIDD: 20.6337	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 262 it 179	 PSNR SIDD: 20.5594	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 262 it 239	 PSNR SIDD: 20.6223	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 262	Time: 88.5375	Loss: 27.1794	LearningRate 0.000030
+[Ep 263 it 59	 PSNR SIDD: 20.5604	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 263 it 119	 PSNR SIDD: 20.3675	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 263 it 179	 PSNR SIDD: 20.6308	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 263 it 239	 PSNR SIDD: 20.6537	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 263	Time: 88.2046	Loss: 26.9303	LearningRate 0.000030
+[Ep 264 it 59	 PSNR SIDD: 20.4806	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 264 it 119	 PSNR SIDD: 20.3890	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 264 it 179	 PSNR SIDD: 20.5391	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 264 it 239	 PSNR SIDD: 20.3757	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 264	Time: 88.9844	Loss: 26.4097	LearningRate 0.000029
+[Ep 265 it 59	 PSNR SIDD: 20.4562	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 265 it 119	 PSNR SIDD: 20.5179	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 265 it 179	 PSNR SIDD: 20.4626	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 265 it 239	 PSNR SIDD: 20.2422	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 265	Time: 88.3722	Loss: 27.4060	LearningRate 0.000028
+[Ep 266 it 59	 PSNR SIDD: 20.5369	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 266 it 119	 PSNR SIDD: 20.5073	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 266 it 179	 PSNR SIDD: 20.5252	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 266 it 239	 PSNR SIDD: 20.6982	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+Epoch: 266	Time: 87.2487	Loss: 26.4186	LearningRate 0.000028
+[Ep 267 it 59	 PSNR SIDD: 20.4392	] ----  [best_Ep_SIDD 245 best_it_SIDD 119 Best_PSNR_SIDD 20.9127] 
+[Ep 267 it 119	 PSNR SIDD: 20.9160	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 267 it 179	 PSNR SIDD: 20.3044	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 267 it 239	 PSNR SIDD: 20.3339	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 267	Time: 89.6829	Loss: 26.0664	LearningRate 0.000027
+[Ep 268 it 59	 PSNR SIDD: 20.3377	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 268 it 119	 PSNR SIDD: 20.5512	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 268 it 179	 PSNR SIDD: 20.3037	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 268 it 239	 PSNR SIDD: 20.5462	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 268	Time: 88.2530	Loss: 25.8066	LearningRate 0.000027
+[Ep 269 it 59	 PSNR SIDD: 20.7783	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 269 it 119	 PSNR SIDD: 20.6394	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 269 it 179	 PSNR SIDD: 20.7658	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 269 it 239	 PSNR SIDD: 20.4320	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 269	Time: 88.4877	Loss: 25.8197	LearningRate 0.000026
+[Ep 270 it 59	 PSNR SIDD: 20.6449	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 270 it 119	 PSNR SIDD: 20.5495	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 270 it 179	 PSNR SIDD: 20.6383	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 270 it 239	 PSNR SIDD: 20.8559	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 270	Time: 88.9646	Loss: 25.4659	LearningRate 0.000025
+[Ep 271 it 59	 PSNR SIDD: 20.6971	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 271 it 119	 PSNR SIDD: 20.6555	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 271 it 179	 PSNR SIDD: 20.4750	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 271 it 239	 PSNR SIDD: 20.4047	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 271	Time: 89.7718	Loss: 25.9492	LearningRate 0.000025
+[Ep 272 it 59	 PSNR SIDD: 20.5413	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 272 it 119	 PSNR SIDD: 20.4561	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 272 it 179	 PSNR SIDD: 20.6115	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 272 it 239	 PSNR SIDD: 20.5771	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 272	Time: 92.7198	Loss: 24.5391	LearningRate 0.000024
+[Ep 273 it 59	 PSNR SIDD: 20.6777	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 273 it 119	 PSNR SIDD: 20.4586	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 273 it 179	 PSNR SIDD: 20.7434	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 273 it 239	 PSNR SIDD: 20.6076	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 273	Time: 90.7254	Loss: 25.7547	LearningRate 0.000024
+[Ep 274 it 59	 PSNR SIDD: 20.5456	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 274 it 119	 PSNR SIDD: 20.5442	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 274 it 179	 PSNR SIDD: 20.7949	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 274 it 239	 PSNR SIDD: 20.6611	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 274	Time: 92.3009	Loss: 24.3643	LearningRate 0.000023
+[Ep 275 it 59	 PSNR SIDD: 20.4345	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 275 it 119	 PSNR SIDD: 20.4942	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 275 it 179	 PSNR SIDD: 20.7097	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 275 it 239	 PSNR SIDD: 20.4919	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 275	Time: 91.2858	Loss: 25.3126	LearningRate 0.000023
+[Ep 276 it 59	 PSNR SIDD: 20.5318	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 276 it 119	 PSNR SIDD: 20.2913	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 276 it 179	 PSNR SIDD: 20.3881	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 276 it 239	 PSNR SIDD: 20.5187	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 276	Time: 91.2342	Loss: 25.0896	LearningRate 0.000022
+[Ep 277 it 59	 PSNR SIDD: 20.6144	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 277 it 119	 PSNR SIDD: 20.7316	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 277 it 179	 PSNR SIDD: 20.7363	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 277 it 239	 PSNR SIDD: 20.4179	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 277	Time: 90.9443	Loss: 24.4597	LearningRate 0.000021
+[Ep 278 it 59	 PSNR SIDD: 20.5115	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 278 it 119	 PSNR SIDD: 20.4522	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 278 it 179	 PSNR SIDD: 20.4819	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 278 it 239	 PSNR SIDD: 20.7461	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 278	Time: 90.3395	Loss: 24.3220	LearningRate 0.000021
+[Ep 279 it 59	 PSNR SIDD: 20.3944	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 279 it 119	 PSNR SIDD: 20.3018	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 279 it 179	 PSNR SIDD: 20.5955	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 279 it 239	 PSNR SIDD: 20.6035	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 279	Time: 90.4014	Loss: 24.6330	LearningRate 0.000020
+[Ep 280 it 59	 PSNR SIDD: 20.5070	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 280 it 119	 PSNR SIDD: 20.8040	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 280 it 179	 PSNR SIDD: 20.6992	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 280 it 239	 PSNR SIDD: 20.7052	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 280	Time: 90.8772	Loss: 25.1111	LearningRate 0.000020
+[Ep 281 it 59	 PSNR SIDD: 20.4866	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 281 it 119	 PSNR SIDD: 20.6456	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 281 it 179	 PSNR SIDD: 20.6867	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 281 it 239	 PSNR SIDD: 20.8777	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 281	Time: 91.6500	Loss: 24.5840	LearningRate 0.000019
+[Ep 282 it 59	 PSNR SIDD: 20.7391	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 282 it 119	 PSNR SIDD: 20.6797	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 282 it 179	 PSNR SIDD: 20.6264	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 282 it 239	 PSNR SIDD: 20.6783	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 282	Time: 90.7957	Loss: 23.7826	LearningRate 0.000019
+[Ep 283 it 59	 PSNR SIDD: 20.7670	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 283 it 119	 PSNR SIDD: 20.7580	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 283 it 179	 PSNR SIDD: 20.7874	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 283 it 239	 PSNR SIDD: 20.7755	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 283	Time: 90.5681	Loss: 24.0374	LearningRate 0.000018
+[Ep 284 it 59	 PSNR SIDD: 20.7432	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 284 it 119	 PSNR SIDD: 20.7380	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 284 it 179	 PSNR SIDD: 20.6417	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 284 it 239	 PSNR SIDD: 20.7923	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 284	Time: 91.3979	Loss: 23.5704	LearningRate 0.000018
+[Ep 285 it 59	 PSNR SIDD: 20.5668	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 285 it 119	 PSNR SIDD: 20.8217	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 285 it 179	 PSNR SIDD: 20.6734	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 285 it 239	 PSNR SIDD: 20.7570	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 285	Time: 90.9945	Loss: 23.9880	LearningRate 0.000017
+[Ep 286 it 59	 PSNR SIDD: 20.8759	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 286 it 119	 PSNR SIDD: 20.7696	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 286 it 179	 PSNR SIDD: 20.8732	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 286 it 239	 PSNR SIDD: 20.6304	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 286	Time: 90.2018	Loss: 24.4535	LearningRate 0.000017
+[Ep 287 it 59	 PSNR SIDD: 20.7414	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 287 it 119	 PSNR SIDD: 20.7384	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 287 it 179	 PSNR SIDD: 20.6396	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 287 it 239	 PSNR SIDD: 20.5761	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+Epoch: 287	Time: 90.7471	Loss: 23.3522	LearningRate 0.000016
+[Ep 288 it 59	 PSNR SIDD: 20.7038	] ----  [best_Ep_SIDD 267 best_it_SIDD 119 Best_PSNR_SIDD 20.9160] 
+[Ep 288 it 119	 PSNR SIDD: 20.9802	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 288 it 179	 PSNR SIDD: 20.6891	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 288 it 239	 PSNR SIDD: 20.6834	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 288	Time: 91.5035	Loss: 23.2795	LearningRate 0.000016
+[Ep 289 it 59	 PSNR SIDD: 20.8268	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 289 it 119	 PSNR SIDD: 20.6953	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 289 it 179	 PSNR SIDD: 20.7801	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 289 it 239	 PSNR SIDD: 20.7193	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 289	Time: 90.4496	Loss: 24.0473	LearningRate 0.000015
+[Ep 290 it 59	 PSNR SIDD: 20.7247	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 290 it 119	 PSNR SIDD: 20.5815	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 290 it 179	 PSNR SIDD: 20.6682	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 290 it 239	 PSNR SIDD: 20.6953	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 290	Time: 90.1757	Loss: 24.4631	LearningRate 0.000015
+[Ep 291 it 59	 PSNR SIDD: 20.7865	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 291 it 119	 PSNR SIDD: 20.6737	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 291 it 179	 PSNR SIDD: 20.7964	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 291 it 239	 PSNR SIDD: 20.5457	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 291	Time: 89.6287	Loss: 23.7306	LearningRate 0.000014
+[Ep 292 it 59	 PSNR SIDD: 20.6180	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 292 it 119	 PSNR SIDD: 20.7640	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 292 it 179	 PSNR SIDD: 20.5974	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 292 it 239	 PSNR SIDD: 20.6955	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 292	Time: 89.9538	Loss: 23.7737	LearningRate 0.000014
+[Ep 293 it 59	 PSNR SIDD: 20.7221	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 293 it 119	 PSNR SIDD: 20.6393	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 293 it 179	 PSNR SIDD: 20.6865	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 293 it 239	 PSNR SIDD: 20.6412	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 293	Time: 89.4041	Loss: 23.3228	LearningRate 0.000014
+[Ep 294 it 59	 PSNR SIDD: 20.6769	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 294 it 119	 PSNR SIDD: 20.6559	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 294 it 179	 PSNR SIDD: 20.7088	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 294 it 239	 PSNR SIDD: 20.7367	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 294	Time: 88.9502	Loss: 23.7787	LearningRate 0.000013
+[Ep 295 it 59	 PSNR SIDD: 20.8427	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 295 it 119	 PSNR SIDD: 20.7233	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 295 it 179	 PSNR SIDD: 20.7468	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 295 it 239	 PSNR SIDD: 20.8517	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 295	Time: 89.0993	Loss: 23.0801	LearningRate 0.000013
+[Ep 296 it 59	 PSNR SIDD: 20.7333	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 296 it 119	 PSNR SIDD: 20.7509	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 296 it 179	 PSNR SIDD: 20.6646	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 296 it 239	 PSNR SIDD: 20.7686	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 296	Time: 89.9251	Loss: 23.3573	LearningRate 0.000012
+[Ep 297 it 59	 PSNR SIDD: 20.8132	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 297 it 119	 PSNR SIDD: 20.8668	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 297 it 179	 PSNR SIDD: 20.8025	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 297 it 239	 PSNR SIDD: 20.7916	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 297	Time: 89.2233	Loss: 23.8569	LearningRate 0.000012
+[Ep 298 it 59	 PSNR SIDD: 20.8277	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 298 it 119	 PSNR SIDD: 20.9655	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 298 it 179	 PSNR SIDD: 20.8098	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+[Ep 298 it 239	 PSNR SIDD: 20.8964	] ----  [best_Ep_SIDD 288 best_it_SIDD 119 Best_PSNR_SIDD 20.9802] 
+Epoch: 298	Time: 89.8347	Loss: 23.6758	LearningRate 0.000011
+[Ep 299 it 59	 PSNR SIDD: 21.0481	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 299 it 119	 PSNR SIDD: 20.9701	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 299 it 179	 PSNR SIDD: 20.9261	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 299 it 239	 PSNR SIDD: 20.7861	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 299	Time: 90.9237	Loss: 22.8011	LearningRate 0.000011
+[Ep 300 it 59	 PSNR SIDD: 20.8307	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 300 it 119	 PSNR SIDD: 20.8467	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 300 it 179	 PSNR SIDD: 20.8965	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 300 it 239	 PSNR SIDD: 20.8374	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 300	Time: 89.2934	Loss: 22.6349	LearningRate 0.000011
+[Ep 301 it 59	 PSNR SIDD: 20.7924	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 301 it 119	 PSNR SIDD: 20.8563	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 301 it 179	 PSNR SIDD: 20.8411	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 301 it 239	 PSNR SIDD: 20.9300	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 301	Time: 89.2078	Loss: 24.3187	LearningRate 0.000010
+[Ep 302 it 59	 PSNR SIDD: 20.7719	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 302 it 119	 PSNR SIDD: 20.8375	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 302 it 179	 PSNR SIDD: 20.8157	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 302 it 239	 PSNR SIDD: 20.7555	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 302	Time: 90.9614	Loss: 21.7010	LearningRate 0.000010
+[Ep 303 it 59	 PSNR SIDD: 20.8622	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 303 it 119	 PSNR SIDD: 20.7593	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 303 it 179	 PSNR SIDD: 20.6728	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 303 it 239	 PSNR SIDD: 20.8213	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 303	Time: 90.1760	Loss: 23.0103	LearningRate 0.000010
+[Ep 304 it 59	 PSNR SIDD: 20.6562	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 304 it 119	 PSNR SIDD: 20.7929	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 304 it 179	 PSNR SIDD: 20.7927	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 304 it 239	 PSNR SIDD: 20.6402	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 304	Time: 88.5904	Loss: 23.2210	LearningRate 0.000009
+[Ep 305 it 59	 PSNR SIDD: 20.6995	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 305 it 119	 PSNR SIDD: 20.7476	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 305 it 179	 PSNR SIDD: 20.6429	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 305 it 239	 PSNR SIDD: 20.8174	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 305	Time: 89.1243	Loss: 23.5479	LearningRate 0.000009
+[Ep 306 it 59	 PSNR SIDD: 20.6858	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 306 it 119	 PSNR SIDD: 20.8081	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 306 it 179	 PSNR SIDD: 20.7519	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 306 it 239	 PSNR SIDD: 20.7996	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 306	Time: 89.7830	Loss: 22.4906	LearningRate 0.000008
+[Ep 307 it 59	 PSNR SIDD: 20.8712	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 307 it 119	 PSNR SIDD: 20.7446	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 307 it 179	 PSNR SIDD: 20.7173	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 307 it 239	 PSNR SIDD: 20.8435	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 307	Time: 89.0323	Loss: 22.3739	LearningRate 0.000008
+[Ep 308 it 59	 PSNR SIDD: 20.8385	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 308 it 119	 PSNR SIDD: 20.8264	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 308 it 179	 PSNR SIDD: 20.7075	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 308 it 239	 PSNR SIDD: 20.6187	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 308	Time: 89.3051	Loss: 22.0075	LearningRate 0.000008
+[Ep 309 it 59	 PSNR SIDD: 20.7036	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 309 it 119	 PSNR SIDD: 20.7518	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 309 it 179	 PSNR SIDD: 20.8268	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 309 it 239	 PSNR SIDD: 20.7483	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 309	Time: 89.3883	Loss: 21.4848	LearningRate 0.000007
+[Ep 310 it 59	 PSNR SIDD: 20.6574	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 310 it 119	 PSNR SIDD: 20.6804	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 310 it 179	 PSNR SIDD: 20.7552	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 310 it 239	 PSNR SIDD: 20.8353	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 310	Time: 88.7456	Loss: 22.8859	LearningRate 0.000007
+[Ep 311 it 59	 PSNR SIDD: 20.7134	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 311 it 119	 PSNR SIDD: 20.7010	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 311 it 179	 PSNR SIDD: 20.8030	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 311 it 239	 PSNR SIDD: 20.7028	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 311	Time: 88.0372	Loss: 21.8121	LearningRate 0.000007
+[Ep 312 it 59	 PSNR SIDD: 20.7432	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 312 it 119	 PSNR SIDD: 20.8309	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 312 it 179	 PSNR SIDD: 20.7645	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 312 it 239	 PSNR SIDD: 20.7592	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 312	Time: 89.9434	Loss: 21.8080	LearningRate 0.000007
+[Ep 313 it 59	 PSNR SIDD: 20.7358	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 313 it 119	 PSNR SIDD: 20.7518	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 313 it 179	 PSNR SIDD: 20.8473	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 313 it 239	 PSNR SIDD: 20.9107	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 313	Time: 89.0510	Loss: 21.5560	LearningRate 0.000006
+[Ep 314 it 59	 PSNR SIDD: 20.7715	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 314 it 119	 PSNR SIDD: 20.8302	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 314 it 179	 PSNR SIDD: 20.8451	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 314 it 239	 PSNR SIDD: 20.7917	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 314	Time: 88.7441	Loss: 20.5797	LearningRate 0.000006
+[Ep 315 it 59	 PSNR SIDD: 20.7869	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 315 it 119	 PSNR SIDD: 20.7720	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 315 it 179	 PSNR SIDD: 20.8420	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 315 it 239	 PSNR SIDD: 20.9001	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 315	Time: 89.2400	Loss: 21.3041	LearningRate 0.000006
+[Ep 316 it 59	 PSNR SIDD: 20.8873	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 316 it 119	 PSNR SIDD: 20.8030	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 316 it 179	 PSNR SIDD: 20.8103	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 316 it 239	 PSNR SIDD: 20.7669	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 316	Time: 90.4656	Loss: 21.5284	LearningRate 0.000005
+[Ep 317 it 59	 PSNR SIDD: 20.6580	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 317 it 119	 PSNR SIDD: 20.6996	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 317 it 179	 PSNR SIDD: 20.7434	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 317 it 239	 PSNR SIDD: 20.7938	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 317	Time: 91.1600	Loss: 22.8591	LearningRate 0.000005
+[Ep 318 it 59	 PSNR SIDD: 20.8673	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 318 it 119	 PSNR SIDD: 20.7505	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 318 it 179	 PSNR SIDD: 20.6960	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 318 it 239	 PSNR SIDD: 20.7200	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 318	Time: 89.3523	Loss: 21.2823	LearningRate 0.000005
+[Ep 319 it 59	 PSNR SIDD: 20.7889	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 319 it 119	 PSNR SIDD: 20.6906	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 319 it 179	 PSNR SIDD: 20.7487	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 319 it 239	 PSNR SIDD: 20.7348	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 319	Time: 88.9459	Loss: 21.2428	LearningRate 0.000005
+[Ep 320 it 59	 PSNR SIDD: 20.6538	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 320 it 119	 PSNR SIDD: 20.6602	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 320 it 179	 PSNR SIDD: 20.7193	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 320 it 239	 PSNR SIDD: 20.6595	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 320	Time: 89.3914	Loss: 21.2972	LearningRate 0.000004
+[Ep 321 it 59	 PSNR SIDD: 20.6877	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 321 it 119	 PSNR SIDD: 20.7530	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 321 it 179	 PSNR SIDD: 20.6879	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 321 it 239	 PSNR SIDD: 20.7173	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 321	Time: 89.4012	Loss: 22.3270	LearningRate 0.000004
+[Ep 322 it 59	 PSNR SIDD: 20.7372	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 322 it 119	 PSNR SIDD: 20.7132	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 322 it 179	 PSNR SIDD: 20.6946	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 322 it 239	 PSNR SIDD: 20.6645	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 322	Time: 89.4362	Loss: 20.8477	LearningRate 0.000004
+[Ep 323 it 59	 PSNR SIDD: 20.6985	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 323 it 119	 PSNR SIDD: 20.6983	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 323 it 179	 PSNR SIDD: 20.7263	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 323 it 239	 PSNR SIDD: 20.7449	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 323	Time: 90.1754	Loss: 20.9945	LearningRate 0.000004
+[Ep 324 it 59	 PSNR SIDD: 20.7699	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 324 it 119	 PSNR SIDD: 20.7580	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 324 it 179	 PSNR SIDD: 20.7633	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 324 it 239	 PSNR SIDD: 20.7552	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 324	Time: 90.2354	Loss: 20.9179	LearningRate 0.000004
+[Ep 325 it 59	 PSNR SIDD: 20.7921	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 325 it 119	 PSNR SIDD: 20.7906	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 325 it 179	 PSNR SIDD: 20.8042	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 325 it 239	 PSNR SIDD: 20.8187	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 325	Time: 89.2272	Loss: 20.6328	LearningRate 0.000003
+[Ep 326 it 59	 PSNR SIDD: 20.8300	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 326 it 119	 PSNR SIDD: 20.8126	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 326 it 179	 PSNR SIDD: 20.8196	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 326 it 239	 PSNR SIDD: 20.8097	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 326	Time: 90.2459	Loss: 21.9533	LearningRate 0.000003
+[Ep 327 it 59	 PSNR SIDD: 20.8017	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 327 it 119	 PSNR SIDD: 20.7896	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 327 it 179	 PSNR SIDD: 20.8588	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 327 it 239	 PSNR SIDD: 20.9084	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 327	Time: 89.8739	Loss: 21.8963	LearningRate 0.000003
+[Ep 328 it 59	 PSNR SIDD: 20.8961	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 328 it 119	 PSNR SIDD: 20.8699	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 328 it 179	 PSNR SIDD: 20.7920	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 328 it 239	 PSNR SIDD: 20.8121	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 328	Time: 88.6367	Loss: 21.2245	LearningRate 0.000003
+[Ep 329 it 59	 PSNR SIDD: 20.8463	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 329 it 119	 PSNR SIDD: 20.7828	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 329 it 179	 PSNR SIDD: 20.8059	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 329 it 239	 PSNR SIDD: 20.7889	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 329	Time: 89.9014	Loss: 20.9892	LearningRate 0.000003
+[Ep 330 it 59	 PSNR SIDD: 20.7672	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 330 it 119	 PSNR SIDD: 20.7606	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 330 it 179	 PSNR SIDD: 20.8131	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 330 it 239	 PSNR SIDD: 20.8482	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 330	Time: 90.0652	Loss: 21.3052	LearningRate 0.000002
+[Ep 331 it 59	 PSNR SIDD: 20.8489	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 331 it 119	 PSNR SIDD: 20.8273	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 331 it 179	 PSNR SIDD: 20.8403	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 331 it 239	 PSNR SIDD: 20.8248	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 331	Time: 88.9703	Loss: 20.8672	LearningRate 0.000002
+[Ep 332 it 59	 PSNR SIDD: 20.7641	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 332 it 119	 PSNR SIDD: 20.7599	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 332 it 179	 PSNR SIDD: 20.7890	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 332 it 239	 PSNR SIDD: 20.8205	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 332	Time: 89.6667	Loss: 21.2415	LearningRate 0.000002
+[Ep 333 it 59	 PSNR SIDD: 20.8252	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 333 it 119	 PSNR SIDD: 20.8426	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 333 it 179	 PSNR SIDD: 20.8493	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 333 it 239	 PSNR SIDD: 20.8522	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 333	Time: 89.1512	Loss: 20.6602	LearningRate 0.000002
+[Ep 334 it 59	 PSNR SIDD: 20.8792	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 334 it 119	 PSNR SIDD: 20.8609	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 334 it 179	 PSNR SIDD: 20.8528	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 334 it 239	 PSNR SIDD: 20.8149	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 334	Time: 89.3815	Loss: 20.9831	LearningRate 0.000002
+[Ep 335 it 59	 PSNR SIDD: 20.8120	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 335 it 119	 PSNR SIDD: 20.8247	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 335 it 179	 PSNR SIDD: 20.8684	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 335 it 239	 PSNR SIDD: 20.8267	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 335	Time: 88.8885	Loss: 20.4423	LearningRate 0.000002
+[Ep 336 it 59	 PSNR SIDD: 20.8042	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 336 it 119	 PSNR SIDD: 20.7952	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 336 it 179	 PSNR SIDD: 20.8211	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 336 it 239	 PSNR SIDD: 20.8521	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 336	Time: 89.6225	Loss: 20.7808	LearningRate 0.000002
+[Ep 337 it 59	 PSNR SIDD: 20.8569	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 337 it 119	 PSNR SIDD: 20.8410	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 337 it 179	 PSNR SIDD: 20.8356	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 337 it 239	 PSNR SIDD: 20.8205	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 337	Time: 90.1127	Loss: 21.1462	LearningRate 0.000002
+[Ep 338 it 59	 PSNR SIDD: 20.8295	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 338 it 119	 PSNR SIDD: 20.8212	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 338 it 179	 PSNR SIDD: 20.8228	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 338 it 239	 PSNR SIDD: 20.8319	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 338	Time: 90.5682	Loss: 21.6501	LearningRate 0.000001
+[Ep 339 it 59	 PSNR SIDD: 20.7981	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 339 it 119	 PSNR SIDD: 20.8267	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 339 it 179	 PSNR SIDD: 20.8366	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 339 it 239	 PSNR SIDD: 20.8022	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 339	Time: 89.1781	Loss: 20.5841	LearningRate 0.000001
+[Ep 340 it 59	 PSNR SIDD: 20.8037	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 340 it 119	 PSNR SIDD: 20.7980	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 340 it 179	 PSNR SIDD: 20.7782	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 340 it 239	 PSNR SIDD: 20.7881	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 340	Time: 89.5849	Loss: 20.1422	LearningRate 0.000001
+[Ep 341 it 59	 PSNR SIDD: 20.7996	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 341 it 119	 PSNR SIDD: 20.7868	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 341 it 179	 PSNR SIDD: 20.8080	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 341 it 239	 PSNR SIDD: 20.7958	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 341	Time: 90.2763	Loss: 20.2599	LearningRate 0.000001
+[Ep 342 it 59	 PSNR SIDD: 20.8069	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 342 it 119	 PSNR SIDD: 20.8078	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 342 it 179	 PSNR SIDD: 20.8193	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 342 it 239	 PSNR SIDD: 20.7998	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 342	Time: 90.4996	Loss: 21.3856	LearningRate 0.000001
+[Ep 343 it 59	 PSNR SIDD: 20.7841	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 343 it 119	 PSNR SIDD: 20.8027	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 343 it 179	 PSNR SIDD: 20.8075	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 343 it 239	 PSNR SIDD: 20.7989	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 343	Time: 90.2015	Loss: 19.6941	LearningRate 0.000001
+[Ep 344 it 59	 PSNR SIDD: 20.7924	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 344 it 119	 PSNR SIDD: 20.8195	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 344 it 179	 PSNR SIDD: 20.8345	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 344 it 239	 PSNR SIDD: 20.8215	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 344	Time: 89.8830	Loss: 20.2391	LearningRate 0.000001
+[Ep 345 it 59	 PSNR SIDD: 20.8028	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 345 it 119	 PSNR SIDD: 20.8066	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 345 it 179	 PSNR SIDD: 20.8177	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 345 it 239	 PSNR SIDD: 20.8142	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 345	Time: 90.6222	Loss: 20.9880	LearningRate 0.000001
+[Ep 346 it 59	 PSNR SIDD: 20.8201	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 346 it 119	 PSNR SIDD: 20.8266	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 346 it 179	 PSNR SIDD: 20.8215	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 346 it 239	 PSNR SIDD: 20.8185	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 346	Time: 90.7628	Loss: 20.0701	LearningRate 0.000001
+[Ep 347 it 59	 PSNR SIDD: 20.8362	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 347 it 119	 PSNR SIDD: 20.8418	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 347 it 179	 PSNR SIDD: 20.8209	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 347 it 239	 PSNR SIDD: 20.8012	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 347	Time: 90.1072	Loss: 20.8525	LearningRate 0.000001
+[Ep 348 it 59	 PSNR SIDD: 20.7986	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 348 it 119	 PSNR SIDD: 20.8010	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 348 it 179	 PSNR SIDD: 20.7975	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 348 it 239	 PSNR SIDD: 20.8020	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 348	Time: 90.5302	Loss: 20.9461	LearningRate 0.000001
+[Ep 349 it 59	 PSNR SIDD: 20.8199	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 349 it 119	 PSNR SIDD: 20.8167	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 349 it 179	 PSNR SIDD: 20.8218	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 349 it 239	 PSNR SIDD: 20.8268	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 349	Time: 90.7127	Loss: 21.3039	LearningRate 0.000001
+[Ep 350 it 59	 PSNR SIDD: 20.8162	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 350 it 119	 PSNR SIDD: 20.8052	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 350 it 179	 PSNR SIDD: 20.8052	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+[Ep 350 it 239	 PSNR SIDD: 20.8169	] ----  [best_Ep_SIDD 299 best_it_SIDD 59 Best_PSNR_SIDD 21.0481] 
+Epoch: 350	Time: 90.9480	Loss: 20.6330	LearningRate 0.000001

@@ -167,3 +167,51 @@ class MyLoss(nn.Module):
 
 
         return loss
+
+class SSIMLoss(nn.Module):
+    def __init__(self, eps=1e-3, window_size = 11, size_average = True):
+        super(SSIMLoss, self).__init__()
+        self.eps = eps
+
+    def forward(self, x, y,epoch):
+        """Charbonnier Loss (L1) （0-1）"""  
+        diff = x - y
+        l1_loss = torch.mean(torch.sqrt((diff * diff) + (self.eps*self.eps))) #10->5
+
+        """SSIM （0-1）"""
+        ssim_module = SSIM(data_range=255, size_average=True, channel=3)
+        # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
+
+        ssim_loss =  (1 - ssim_module(x, y)) #100 ssim:50-7
+        # ms_ssim_loss = 1000*(1 - ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
+        """Dark Loss"""
+        # Dark_loss = darkLoss(x,y)
+        loss =  ssim_loss  
+        return loss
+
+class L1Loss(nn.Module):
+    
+    def __init__(self, eps=1e-3, window_size = 11, size_average = True):
+        super(L1Loss, self).__init__()
+        self.eps = eps
+
+        # self.window_size = window_size
+        # self.size_average = size_average
+        # self.channel = 1
+        # self.window = create_window(window_size, self.channel)
+
+    def forward(self, x, y,epoch):
+        """Charbonnier Loss (L1) （0-1）"""  
+        diff = x - y
+        l1_loss = torch.mean(torch.sqrt((diff * diff) + (self.eps*self.eps))) #10->5
+
+        """SSIM （0-1）"""
+        ssim_module = SSIM(data_range=255, size_average=True, channel=3)
+        # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
+
+        ssim_loss =  100*(1 - ssim_module(x, y)) #100 ssim:50-7
+        # ms_ssim_loss = 1000*(1 - ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
+        """Dark Loss"""
+        # Dark_loss = darkLoss(x,y)
+        loss =  l1_loss
+        return loss
