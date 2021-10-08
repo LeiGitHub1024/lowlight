@@ -224,6 +224,31 @@ class ColorLoss1(nn.Module):
         k = torch.mean(torch.arcos(cos))
         return k
 
+class UnoinLoss(nn.Module):
+     def __init__(self):
+        super(ColorLoss, self).__init__()
+    def forward(self, x ,y):
+        
+        theta = torch.tensor([
+            [0.5, 0  , 0],
+            [0  , 0.5, 0]
+        ], dtype=torch.float)
+        grid = F.affine_grid(theta.unsqueeze(0), x.unsqueeze(0).size())
+        output = F.grid_sample(x.unsqueeze(0), grid)
+        x_affin = output[0]
+
+        theta = torch.tensor([
+            [0.5, 0  , 0],
+            [0  , 0.5, 0]
+        ], dtype=torch.float)
+        grid = F.affine_grid(theta.unsqueeze(0), y.unsqueeze(0).size())
+        output = F.grid_sample(y.unsqueeze(0), grid)
+        y_affin = output[0]
+        
+        k = torch.mean(torch.abs((x-a_affin)-(y-y_affin)))
+        return k
+
+
 class MyLoss(nn.Module):
     
     def __init__(self):
@@ -233,6 +258,7 @@ class MyLoss(nn.Module):
         self.tv_module = TVLoss()
         # self.exp_module = ExposureLoss(16, 0.7)
         self.color_module = ColorLoss1()
+        self.union_module = UninoLoss()
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
 
@@ -246,7 +272,7 @@ class MyLoss(nn.Module):
         tv_loss = self.tv_module(x)
         # exp_loss = self.exp_module(x)
         color_loss = self.color_module(x,y)
-
+        union_loss = self.union_module(x,y)
         # if epoch>100 :
         #     vgg_module = VGGPerceptualLoss().cuda()
         #     vgg_loss = vgg_module(x,y)
@@ -254,9 +280,10 @@ class MyLoss(nn.Module):
         # else :
         #     loss =  l1_loss + ssim_loss
 
-        loss = l1_loss + 80 * ssim_loss + 10 * tv_loss + color_loss
+        # loss = l1_loss + 80 * ssim_loss + 10 * tv_loss + color_loss
+        loss = l1_loss + union_loss
         if(epoch%3==1):
-            print("l1_loss:" ,l1_loss.item() ,"color_loss", color_loss.item())
+            print("l1_loss:" ,l1_loss.item() ,"union_loss", union_loss.item())
 
 
         return loss
