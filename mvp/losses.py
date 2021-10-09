@@ -224,28 +224,49 @@ class ColorLoss1(nn.Module):
         k = torch.mean(torch.arcos(cos))
         return k
 
-class UnoinLoss(nn.Module):
-     def __init__(self):
-        super(ColorLoss, self).__init__()
+class UnionLoss(nn.Module):
+    def __init__(self):
+        super(UnionLoss, self).__init__()
     def forward(self, x ,y):
-        
-        theta = torch.tensor([
-            [0.5, 0  , 0],
-            [0  , 0.5, 0]
-        ], dtype=torch.float)
-        grid = F.affine_grid(theta.unsqueeze(0), x.unsqueeze(0).size())
-        output = F.grid_sample(x.unsqueeze(0), grid)
-        x_affin = output[0]
+        b,c,h,w = x.shape
+     
+        x_roll2 = torch.roll(x,2,2)
+        y_roll2 = torch.roll(y,2,2)
+        x_roll4 = torch.roll(x,4,2)
+        y_roll4 = torch.roll(y,4,2)
+        x_roll8 = torch.roll(x,8,2)
+        y_roll8 = torch.roll(y,8,2)
+        x_roll16 = torch.roll(x,16,2)
+        y_roll16 = torch.roll(y,16,2)
+        x_roll32 = torch.roll(x,32,2)
+        y_roll32 = torch.roll(y,32,2)
+        x_roll64 = torch.roll(x,64,2)
+        y_roll64 = torch.roll(y,64,2)
+        x_roll128 = torch.roll(x,128,2)
+        y_roll128 = torch.roll(y,128,2)
 
-        theta = torch.tensor([
-            [0.5, 0  , 0],
-            [0  , 0.5, 0]
-        ], dtype=torch.float)
-        grid = F.affine_grid(theta.unsqueeze(0), y.unsqueeze(0).size())
-        output = F.grid_sample(y.unsqueeze(0), grid)
-        y_affin = output[0]
+        x_ = torch.abs(x_roll2-x) + torch.abs(x_roll4-x) + torch.abs(x_roll8-x) + torch.abs(x_roll16-x) + torch.abs(x_roll32-x) + torch.abs(x_roll64-x) + torch.abs(x_roll128-x)
+        y_ = torch.abs(y_roll2-y) + torch.abs(y_roll4-y) + torch.abs(y_roll8-y) + torch.abs(y_roll16-y) + torch.abs(y_roll32-y) + torch.abs(y_roll64-y) + torch.abs(y_roll128-y)
+
+        x_roll2 = torch.roll(x,2,3)
+        y_roll2 = torch.roll(y,2,3)
+        x_roll4 = torch.roll(x,4,3)
+        y_roll4 = torch.roll(y,4,3)
+        x_roll8 = torch.roll(x,8,3)
+        y_roll8 = torch.roll(y,8,3)
+        x_roll16 = torch.roll(x,16,3)
+        y_roll16 = torch.roll(y,16,3)
+        x_roll32 = torch.roll(x,32,3)
+        y_roll32 = torch.roll(y,32,3)
+        x_roll64 = torch.roll(x,64,3)
+        y_roll64 = torch.roll(y,64,3)
+        x_roll128 = torch.roll(x,128,3)
+        y_roll128 = torch.roll(y,128,3)
+        x__ = torch.abs(x_roll2-x) + torch.abs(x_roll4-x) + torch.abs(x_roll8-x) + torch.abs(x_roll16-x) + torch.abs(x_roll32-x) + torch.abs(x_roll64-x) + torch.abs(x_roll128-x)
+        y__ = torch.abs(y_roll2-y) + torch.abs(y_roll4-y) + torch.abs(y_roll8-y) + torch.abs(y_roll16-y) + torch.abs(y_roll32-y) + torch.abs(y_roll64-y) + torch.abs(y_roll128-y)
+
         
-        k = torch.mean(torch.abs((x-a_affin)-(y-y_affin)))
+        k = torch.mean(torch.abs(x_ - y_)/7 + torch.abs(x__ - y__)/7 )/2
         return k
 
 
@@ -254,11 +275,11 @@ class MyLoss(nn.Module):
     def __init__(self):
         super(MyLoss, self).__init__()
         self.l1_module = CharbonnierLoss()
-        self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
-        self.tv_module = TVLoss()
+        # self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
+        # self.tv_module = TVLoss()
         # self.exp_module = ExposureLoss(16, 0.7)
-        self.color_module = ColorLoss1()
-        self.union_module = UninoLoss()
+        # self.color_module = ColorLoss1()
+        self.union_module = UnionLoss()
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
 
@@ -267,11 +288,11 @@ class MyLoss(nn.Module):
     
 
         l1_loss = self.l1_module(x,y)
-        ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
+        # ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
         # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
-        tv_loss = self.tv_module(x)
+        # tv_loss = self.tv_module(x)
         # exp_loss = self.exp_module(x)
-        color_loss = self.color_module(x,y)
+        # color_loss = self.color_module(x,y)
         union_loss = self.union_module(x,y)
         # if epoch>100 :
         #     vgg_module = VGGPerceptualLoss().cuda()
