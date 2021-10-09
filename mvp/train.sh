@@ -18,8 +18,8 @@
 
 
 nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
-    --train_ps 128 --train_dir ../datasets/lol/train --env 32_1005_l180ssim20tv_200 \
-    --val_dir ../datasets/lol/valid --embed_dim 32 --warmup  --nepoch=200 &
+    --train_ps 128 --train_dir ../datasets/mit500/train --env 32_1008_l1_200 \
+    --val_dir ../datasets/mit500/valid --embed_dim 32 --warmup  --nepoch=200 &
     # --optimizer adam
 
 # nohup python3 ./train.py --arch Uformer --batch_size 32 --gpu '0' \
