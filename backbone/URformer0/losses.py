@@ -209,7 +209,7 @@ class L1Loss(nn.Module):
         ssim_module = SSIM(data_range=255, size_average=True, channel=3)
         # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
-        ssim_loss =  100*(1 - ssim_module(x, y)) #100 ssim:50-7
+        ssim_loss =  80*(1 - ssim_module(x, y)) #100 ssim:50-7
         # ms_ssim_loss = 1000*(1 - ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
         """Dark Loss"""
         # Dark_loss = darkLoss(x,y)
