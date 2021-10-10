@@ -198,7 +198,7 @@ class ColorLoss(nn.Module):
 
 class ColorLoss1(nn.Module):
     def __init__(self):
-        super(ColorLoss, self).__init__()
+        super(ColorLoss1, self).__init__()
     def forward(self, x ,y  ):
         b,c,h,w = x.shape
         #计算向量夹角和的平均值，
@@ -275,12 +275,12 @@ class MyLoss(nn.Module):
     def __init__(self):
         super(MyLoss, self).__init__()
         self.l1_module = CharbonnierLoss()
-        # self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
-        # self.tv_module = TVLoss()
-        # self.exp_module = ExposureLoss(16, 0.7)
-        # self.color_module = ColorLoss1()
+        self.ssim_module = SSIM(data_range=255, size_average=True, channel=3)
+        self.tv_module = TVLoss()
+        self.exp_module = ExposureLoss(16, 0.7)
+        self.color_module = ColorLoss1()
         self.union_module = UnionLoss()
-        # ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
+        self.ms_ssim_module = MS_SSIM(data_range=255, size_average=True, channel=3, win_size=7)
 
 
     def forward(self, x, y,epoch):
@@ -288,7 +288,7 @@ class MyLoss(nn.Module):
     
 
         l1_loss = self.l1_module(x,y)
-        # ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
+        ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
         # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
         # tv_loss = self.tv_module(x)
         # exp_loss = self.exp_module(x)
@@ -302,8 +302,8 @@ class MyLoss(nn.Module):
         #     loss =  l1_loss + ssim_loss
 
         # loss = l1_loss + 80 * ssim_loss + 10 * tv_loss + color_loss
-        loss = l1_loss + union_loss
-        if(epoch%3==1):
+        loss = l1_loss + 80 * ssim_loss
+        if(epoch%100==1):
             print("l1_loss:" ,l1_loss.item() ,"union_loss", union_loss.item())
 
 
