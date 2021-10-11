@@ -1,7 +1,7 @@
 #stage0
-python3 ./train_0.py --arch Uformer --batch_size 32 --gpu '0' \
-    --train_ps 64 --train_dir /home/mist/lowlight/datasets/lol_stage0/train --env 32_1005_2_0 \
-    --val_dir /home/mist/lowlight/datasets/lol_stage0/valid --embed_dim 32 --warmup  --nepoch=150
+nohup python3 ./train_0.py --arch Uformer --batch_size 32 --gpu '0' \
+    --train_ps 64 --train_dir /home/mist/lowlight/datasets/lol_stage0/train --env 32_1006_3_0 \
+    --val_dir /home/mist/lowlight/datasets/lol_stage0/valid --embed_dim 32 --warmup  --nepoch=400 &
 
 
 #stage1
