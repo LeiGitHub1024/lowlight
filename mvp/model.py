@@ -41,6 +41,36 @@ class ConvBlock(nn.Module):
         flops = H*W*self.in_channel*self.out_channel*(3*3+1)+H*W*self.out_channel*self.out_channel*3*3
         return flops
 
+class ConvBlock_1(nn.Module):
+    def __init__(self, in_channel, out_channel, strides=1):
+        super(ConvBlock_1, self).__init__()
+        self.strides = strides
+        self.in_channel=in_channel
+        self.out_channel=out_channel
+        self.block = nn.Sequential(
+            nn.Conv2d(in_channel, out_channel, kernel_size=3, stride=strides, padding=1),
+            nn.LeakyReLU(inplace=True),
+            
+            nn.Conv2d(out_channel, out_channel, kernel_size=3, stride=strides, padding=1),
+            nn.LeakyReLU(inplace=True),
+        )
+        self.conv11 = nn.Conv2d(in_channel, out_channel, kernel_size=1, stride=strides, padding=0)
+
+    def forward(self, x):
+        B, L, C = x.shape
+        # import pdb;pdb.set_trace()
+        H = int(math.sqrt(L))
+        W = int(math.sqrt(L))
+        x = x.transpose(1, 2).contiguous().view(B, C, H, W)
+        out1 = self.block(x).flatten(2).transpose(1,2).contiguous()
+        out2 = self.conv11(x).flatten(2).transpose(1,2).contiguous()
+        out = out1 + out2
+        return out
+
+    def flops(self, H, W): 
+        flops = H*W*self.in_channel*self.out_channel*(3*3+1)+H*W*self.out_channel*self.out_channel*3*3
+        return flops
+
 class UNet(nn.Module):
     def __init__(self, block=ConvBlock,dim=32):
         super(UNet, self).__init__()
@@ -1246,6 +1276,7 @@ class Uformer(nn.Module):
 
         # Decoder
         self.upsample_0 = upsample(embed_dim*16, embed_dim*8)
+        self.decoderblock_0 = ConvBlock_1(embed_dim*8,embed_dim*8)
         self.decoderlayer_0 = BasicUformerLayer(dim=embed_dim*16,
                             output_dim=embed_dim*16,
                             input_resolution=(img_size // (2 ** 3),
@@ -1261,6 +1292,7 @@ class Uformer(nn.Module):
                             use_checkpoint=use_checkpoint,
                             token_projection=token_projection,token_mlp=token_mlp,se_layer=se_layer)
         self.upsample_1 = upsample(embed_dim*16, embed_dim*4)
+        self.decoderblock_1 = ConvBlock_1(embed_dim*4,embed_dim*4)
         self.decoderlayer_1 = BasicUformerLayer(dim=embed_dim*8,
                             output_dim=embed_dim*8,
                             input_resolution=(img_size // (2 ** 2),
@@ -1276,6 +1308,7 @@ class Uformer(nn.Module):
                             use_checkpoint=use_checkpoint,
                             token_projection=token_projection,token_mlp=token_mlp,se_layer=se_layer)
         self.upsample_2 = upsample(embed_dim*8, embed_dim*2)
+        self.decoderblock_2 = ConvBlock_1(embed_dim*2,embed_dim*2)
         self.decoderlayer_2 = BasicUformerLayer(dim=embed_dim*4,
                             output_dim=embed_dim*4,
                             input_resolution=(img_size // 2,
@@ -1291,6 +1324,7 @@ class Uformer(nn.Module):
                             use_checkpoint=use_checkpoint,
                             token_projection=token_projection,token_mlp=token_mlp,se_layer=se_layer)
         self.upsample_3 = upsample(embed_dim*4, embed_dim)
+        self.decoderblock_3 = ConvBlock_1(embed_dim,embed_dim)
         self.decoderlayer_3 = BasicUformerLayer(dim=embed_dim*2,
                             output_dim=embed_dim*2,
                             input_resolution=(img_size,
@@ -1305,6 +1339,8 @@ class Uformer(nn.Module):
                             norm_layer=norm_layer,
                             use_checkpoint=use_checkpoint,
                             token_projection=token_projection,token_mlp=token_mlp,se_layer=se_layer)
+        
+        self.decoderblock_4 = ConvBlock_1(embed_dim*2,embed_dim*2)
 
         self.apply(self._init_weights)
 
@@ -1347,23 +1383,28 @@ class Uformer(nn.Module):
 
         #Decoder
         up0 = self.upsample_0(conv4)
+        up0 = self.decoderblock_0(up0)
         deconv0 = torch.cat([up0,conv3],-1)
         deconv0 = self.decoderlayer_0(deconv0,mask=mask)
         
         up1 = self.upsample_1(deconv0)
+        up1 = self.decoderblock_1(up1)
         deconv1 = torch.cat([up1,conv2],-1)
         deconv1 = self.decoderlayer_1(deconv1,mask=mask)
 
         up2 = self.upsample_2(deconv1)
+        up2 = self.decoderblock_2(up2)
         deconv2 = torch.cat([up2,conv1],-1)
         deconv2 = self.decoderlayer_2(deconv2,mask=mask)
 
         up3 = self.upsample_3(deconv2)
+        up3 = self.decoderblock_3(up3)
         deconv3 = torch.cat([up3,conv0],-1)
         deconv3 = self.decoderlayer_3(deconv3,mask=mask)
 
+        up4 = self.decoderblock_4(deconv3)
         # Output Projection
-        y = self.output_proj(deconv3)
+        y = self.output_proj(up4)
         return x + y
 
     def flops(self):

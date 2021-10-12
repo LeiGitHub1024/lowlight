@@ -284,9 +284,6 @@ class MyLoss(nn.Module):
 
 
     def forward(self, x, y,epoch):
-
-    
-
         l1_loss = self.l1_module(x,y)
         ssim_loss =  (1 - self.ssim_module(x, y)) #100 ssim:50-7
         # # ms_ssim_loss = 1000*(1 - self.ms_ssim_module(x,y)) #1000 ms-ssim:48 -> 3.4
@@ -302,7 +299,7 @@ class MyLoss(nn.Module):
         #     loss =  l1_loss + ssim_loss
 
         # loss = l1_loss + 80 * ssim_loss + 10 * tv_loss + color_loss
-        loss = l1_loss + 80 * ssim_loss
+        loss = l1_loss + 80 * ssim_loss 
         if(epoch%100==1):
             print("l1_loss:" ,l1_loss.item() ,"union_loss", union_loss.item())
 
