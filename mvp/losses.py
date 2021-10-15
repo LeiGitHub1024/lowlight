@@ -300,8 +300,8 @@ class MyLoss(nn.Module):
 
         # loss = l1_loss + 80 * ssim_loss + 10 * tv_loss + color_loss
         loss = l1_loss + 80 * ssim_loss 
-        if(epoch%100==1):
-            print("l1_loss:" ,l1_loss.item() ,"union_loss", union_loss.item())
+        # if(epoch%100==1):
+        #     print("l1_loss:" ,l1_loss.item() ,"union_loss", union_loss.item())
 
 
         return loss
