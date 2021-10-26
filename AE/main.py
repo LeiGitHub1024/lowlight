@@ -9,10 +9,12 @@ from lolPSNR import lolPSNR
 from loss import SSIM,LXJ_LOSS
 from torchvision import models, transforms
 from torch.autograd import Variable
+import os
 
 
 print("GPU:",torch.cuda.is_available())
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+os.environ["CUDA_VISIBLE_DEVICES"] = '1,2,3'
 
 print("Loading...")
 train_data,val_data = mbllen_loader(device)
@@ -66,10 +68,9 @@ def vgg_loss(x,y):
 # 可以开始训练了，
 print("Training...")
 LR = 0.0002
-epoch_num = 150
+epoch_num = 15
 optimizer = optim.Adam(DAEmodel.parameters(), lr=LR)
-loss_func = LXJ_LOSS()
-# nn.MSELoss()
+loss_func = nn.MSELoss()
 
 model_path = "autodecode.mdl"
 train_num, val_num = 0, 0
@@ -88,18 +89,18 @@ for epoch in tqdm(range(epoch_num)):
         train_loss_epoch += loss.item() * b_x.size(0)
         train_num += b_x.size(0)
     # 验证
-    for step, (b_x, b_y) in enumerate(val_loader):
-        DAEmodel.eval()
-        _, output = DAEmodel(b_x)
-        loss = loss_func(output, b_y)
-        val_loss_epoch += loss.item() * b_x.size(0)
-        val_num += b_x.size(0)
+    # for step, (b_x, b_y) in enumerate(val_loader):
+    #     DAEmodel.eval()
+    #     _, output = DAEmodel(b_x)
+    #     loss = loss_func(output, b_y)
+    #     val_loss_epoch += loss.item() * b_x.size(0)
+    #     val_num += b_x.size(0)
         # print(vgg_loss(output,b_y))
 
     # 计算一个epoch的损失
     train_loss = train_loss_epoch / train_num
-    val_loss = val_loss_epoch / val_num
-    print("epoch:",epoch+1," train_losss:",train_loss," val_loss:",val_loss)
+    # val_loss = val_loss_epoch / val_num
+    print("epoch:",epoch+1," train_losss:",train_loss)
    
     #保存模型
     torch.save(DAEmodel.state_dict(), model_path)

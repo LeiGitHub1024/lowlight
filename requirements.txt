@@ -14,3 +14,4 @@ timm
 ptflops
 dataclasses
 pytorch_msssim
+scikit-learn

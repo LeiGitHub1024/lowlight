@@ -34,7 +34,7 @@ import datetime
 from pdb import set_trace as stx
 
 from losses import MyLoss
-
+from ssim import SSIM
 from tqdm import tqdm 
 from warmup_scheduler import GradualWarmupScheduler
 from torch.optim.lr_scheduler import StepLR
@@ -110,7 +110,9 @@ else:
 
 
 ######### Loss ###########
-criterion = MyLoss().cuda()
+# criterion = MyLoss().cuda()
+criterion = SSIM()
+
 
 ######### DataLoader ###########
 print('===> Loading datasets')
@@ -164,7 +166,7 @@ for epoch in range(start_epoch, opt.nepoch + 1):
         with torch.cuda.amp.autocast():
             restored = model_restoration(input_)
             restored = torch.clamp(restored,0,1)  
-            loss = criterion(restored, target, epoch)
+            loss = criterion(restored, target)
         # print('loss:',loss.item())
         loss_scaler(
                 loss, optimizer,parameters=model_restoration.parameters())

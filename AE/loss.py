@@ -103,7 +103,7 @@ class SSIM(torch.nn.Module):
         super(SSIM, self).__init__()
         self.window_size = window_size
         self.size_average = size_average
-        self.channel = 1
+        self.channel = 3
         self.window = create_window(window_size, self.channel)
 
     def forward(self, img1, img2):
@@ -163,7 +163,7 @@ class LXJ_LOSS(torch.nn.Module):
         SSIM_loss =  _ssim(x, y, window, self.window_size, channel, self.size_average)
 
 
-        loss = MAE_loss + SSIM_loss 
+        loss = MAE_loss 
         return loss
 
 # def lxjloss(y_pred,y_true):

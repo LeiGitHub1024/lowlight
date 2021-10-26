@@ -1,1 +1,0 @@
-encoder部分transformer换成CNN，skip connection中添加transformer

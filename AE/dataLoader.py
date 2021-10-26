@@ -61,25 +61,25 @@ def stl10_loader(device):
 #读取mbllen的pairdata，整理成需要的格式，
 def mbllen_npy():
     # image => npy
-    mbllenPath = '../data/mbllen'
-    mbllenLowPath = '../data/mbllen_lowlight'
-    train = []
-    train_lowlight = []
-    i=4000
-    for file in tqdm(os.listdir(mbllenPath)):
-        if(i==0):
-            break
-        i =i-1
-        train_path = os.path.join(mbllenPath, file)
-        if os.path.isfile(train_path) == True:
-            im = np.array(Image.open(train_path))
-            train.append(im)
-        lowlight_path = os.path.join(mbllenLowPath, file)
-        if os.path.isfile(lowlight_path) == True:
-            im = np.array(Image.open(lowlight_path))
-            train_lowlight.append(im)
-    np.save("../data/mb_train.npy", train) 
-    np.save("../data/mb_train_lowlight.npy", train_lowlight) 
+    # mbllenPath = '../datasets/mbllen/train'
+    # mbllenLowPath = '../datasets/mbllen/train_lowlight'
+    # train = []
+    # train_lowlight = []
+    # i=500
+    # for file in tqdm(os.listdir(mbllenPath)):
+    #     if(i==0):
+    #         break
+    #     i =i-1
+    #     train_path = os.path.join(mbllenPath, file)
+    #     if os.path.isfile(train_path) == True:
+    #         im = np.array(Image.open(train_path))
+    #         train.append(im)
+    #     lowlight_path = os.path.join(mbllenLowPath, file)
+    #     if os.path.isfile(lowlight_path) == True:
+    #         im = np.array(Image.open(lowlight_path))
+    #         train_lowlight.append(im)
+    # np.save("../data/mb_train.npy", train) 
+    # np.save("../data/mb_train_lowlight.npy", train_lowlight) 
 
     #load npy
     image_train = np.load('../data/mb_train.npy')

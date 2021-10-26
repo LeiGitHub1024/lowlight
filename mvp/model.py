@@ -1727,7 +1727,7 @@ class Lformer(nn.Module):
 
 
 #删掉所有的transformer
-class Lformer(nn.Module):
+class MyUnet(nn.Module):
     def __init__(self, img_size=128, in_chans=3,
                  embed_dim=32, depths=[2, 2, 2, 2, 2, 2, 2, 2, 2], num_heads=[1, 2, 4, 8, 16, 16, 8, 4, 2],
                  win_size=8, mlp_ratio=4., qkv_bias=True, qk_scale=None,
@@ -1762,8 +1762,7 @@ class Lformer(nn.Module):
         # Encoder
         self.encoderlayer_0 = BasicUformerLayer(dim=embed_dim,
                             output_dim=embed_dim,
-                            input_resolution=(img_size,
-                                                img_size),
+                            input_resolution=(img_size,img_size),
                             depth=depths[0],
                             num_heads=num_heads[0],
                             win_size=win_size,
