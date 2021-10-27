@@ -25,10 +25,10 @@ from skimage.transform import resize
 
 parser = argparse.ArgumentParser(description='RGB denoising evaluation on the validation set of SIDD')
 parser.add_argument('--input_dir', default='../datasets/ain1',type=str, help='Directory of validation images')
-parser.add_argument('--result_dir', default='./log/Lformer1013_no_trans/ain1/',type=str, help='Directory for results')
-parser.add_argument('--weights', default='./log/Lformer1013_no_trans/models/model_latest.pth',type=str, help='Path to weights')
+parser.add_argument('--result_dir', default='./log/MyUnet1025_unet_ps256_l1_lol/results/ain1/',type=str, help='Directory for results')
+parser.add_argument('--weights', default='./log/MyUnet1025_unet_ps256_l1_lol/models/model_latest.pth',type=str, help='Path to weights')
 parser.add_argument('--gpus', default='0,1,2,3', type=str, help='CUDA_VISIBLE_DEVICES')
-parser.add_argument('--arch', default='Lformer', type=str, help='arch')
+parser.add_argument('--arch', default='MyUnet', type=str, help='arch')
 parser.add_argument('--batch_size', default=1, type=int, help='Batch size for dataloader')
 parser.add_argument('--save_images', action='store_true', help='Save denoised images in result directory')
 parser.add_argument('--embed_dim', type=int, default=32, help='number of data loading workers')    

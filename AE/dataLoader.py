@@ -115,5 +115,35 @@ def mbllen_loader(device):
 
 
 
+def lol_loader(device):
+    # # image => npy
+    # mbllenPath = '../datasets/lol/train/groundtruth'
+    # mbllenLowPath = '../datasets/lol/train/input'
+    # train = []
+    # train_lowlight = []
+    # # i=5000
+    # for file in tqdm(os.listdir(mbllenPath)):
+    #     # if(i==0):
+    #     #     break
+    #     # i =i-1
+    #     train_path = os.path.join(mbllenPath, file)
+    #     if os.path.isfile(train_path) == True:
+    #         im = np.array(Image.open(train_path))
+    #         train.append(im)
+    #     lowlight_path = os.path.join(mbllenLowPath, file)
+    #     if os.path.isfile(lowlight_path) == True:
+    #         im = np.array(Image.open(lowlight_path))
+    #         train_lowlight.append(im)
+    # np.save("../data/lol_train.npy", train) 
+    # np.save("../data/lol_train_lowlight.npy", train_lowlight) 
 
+    #load npy
+    image_train = np.load('../data/lol_train.npy')
+    image_train = np.reshape(image_train, [-1, 3, 256, 256])
+    image_train = np.transpose(image_train, [0, 3, 2, 1])
+
+    image_lowlight = np.load('../data/lol_train_lowlight.npy') 
+    image_lowlight = np.reshape(image_lowlight, [-1, 3, 256, 256])   
+    image_lowlight = np.transpose(image_lowlight, [0, 3, 2, 1])
+    return image_train/255., image_lowlight/255.
         

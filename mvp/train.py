@@ -1,46 +1,41 @@
 import os
 import sys
+import argparse
+import options
+import utils
+import torch
+import torch.optim as optim
+from torch.utils.data import DataLoader
+import random
+import time
+import numpy as np
+import datetime
+from losses import MyLoss
+from ssim import SSIM_Loss
+from tqdm import tqdm 
+from warmup_scheduler import GradualWarmupScheduler
+from torch.optim.lr_scheduler import StepLR
+from timm.utils import NativeScaler
+from utils.loader import get_training_data,get_validation_data
 
 # add dir
 dir_name = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(dir_name,'./auxiliary/'))
 print(dir_name)
 
-import argparse
-import options
 ######### parser ###########
 opt = options.Options().init(argparse.ArgumentParser(description='image denoising')).parse_args()
 print(opt)
 
-import utils
+
 ######### Set GPUs ###########
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
 os.environ["CUDA_VISIBLE_DEVICES"] = opt.gpu
-import torch
 torch.backends.cudnn.benchmark = True
 
 # device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 # print(device)
-import torch.nn as nn
-import torch.optim as optim
-from torch.utils.data import DataLoader
-from natsort import natsorted
-import glob
-import random
-import time
-import numpy as np
-from einops import rearrange, repeat
-import datetime
-from pdb import set_trace as stx
 
-from losses import MyLoss
-from ssim import SSIM
-from tqdm import tqdm 
-from warmup_scheduler import GradualWarmupScheduler
-from torch.optim.lr_scheduler import StepLR
-from timm.utils import NativeScaler
-
-from utils.loader import  get_training_data,get_validation_data
 
 ######### Logs dir ###########
 log_dir = os.path.join(dir_name,'log', opt.arch+opt.env)
@@ -111,7 +106,8 @@ else:
 
 ######### Loss ###########
 # criterion = MyLoss().cuda()
-criterion = SSIM()
+
+criterion = SSIM_Loss(data_range=1.0, size_average=True, channel=3)
 
 
 ######### DataLoader ###########
@@ -144,7 +140,7 @@ print('===> Start Epoch {} End Epoch {}'.format(start_epoch,opt.nepoch))
 best_psnr = 0
 best_epoch = 0
 best_iter = 0
-eval_now = len(train_loader)//4
+eval_now = len(train_loader)//3
 print("\nEvaluation after every {} Iterations !!!\n".format(eval_now))
 
 loss_scaler = NativeScaler()
@@ -163,13 +159,12 @@ for epoch in range(start_epoch, opt.nepoch + 1):
 
         if epoch>5:
             target, input_ = utils.MixUp_AUG().aug(target, input_)
-        with torch.cuda.amp.autocast():
-            restored = model_restoration(input_)
-            restored = torch.clamp(restored,0,1)  
-            loss = criterion(restored, target)
+        # with torch.cuda.amp.autocast(): #这个东西有毒，导致ssim loss 无法正常运行
+        restored = model_restoration(input_)
+        restored = torch.clamp(restored,0,1)  
+        loss = criterion(restored, target)
         # print('loss:',loss.item())
-        loss_scaler(
-                loss, optimizer,parameters=model_restoration.parameters())
+        loss_scaler(loss, optimizer,parameters=model_restoration.parameters())
         epoch_loss +=loss.item()
 
         #### Evaluation ####
@@ -181,8 +176,8 @@ for epoch in range(start_epoch, opt.nepoch + 1):
                     target = data_val[0].cuda()
                     input_ = data_val[1].cuda()
                     filenames = data_val[2]
-                    with torch.cuda.amp.autocast():
-                        restored = model_restoration(input_)
+                    # with torch.cuda.amp.autocast(): #这个东西有毒，导致ssim loss 无法正常运行
+                    restored = model_restoration(input_)
                     restored = torch.clamp(restored,0,1)  
                     psnr_val_rgb.append(utils.batch_PSNR(restored, target, False).item())
 

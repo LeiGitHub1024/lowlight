@@ -54,17 +54,16 @@ def load_optim(optimizer, weights):
     return lr
 
 def get_arch(opt):
-    from model import UNet,Uformer,Uformer_Cross,Uformer_CatCross,Lformer,MyUnet
+    from model import UNet,Uformer,Uformer_Cross,Uformer_CatCross,Lformer,AutoEncoder
     arch = opt.arch
 
     print('You choose '+arch+'...')
     if arch == 'UNet':
         model_restoration = UNet(dim=opt.embed_dim)
-    if arch == 'Lformer':
+    elif arch == 'AutoEncoder':
+        model_restoration = AutoEncoder(dim=opt.embed_dim)
+    elif arch == 'Lformer':
         model_restoration = Lformer(img_size=opt.train_ps,embed_dim=opt.embed_dim,win_size=opt.win_size,token_projection=opt.token_projection,token_mlp=opt.token_mlp)
-    if arch == 'MyUnet':
-        model_restoration = MyUnet(img_size=opt.train_ps,embed_dim=opt.embed_dim,win_size=opt.win_size,token_projection=opt.token_projection,token_mlp=opt.token_mlp)
-        
     elif arch == 'Uformer':
         model_restoration = Uformer(img_size=opt.train_ps,embed_dim=opt.embed_dim,win_size=opt.win_size,token_projection=opt.token_projection,token_mlp=opt.token_mlp)
     elif arch == 'Uformer16':
