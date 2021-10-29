@@ -1198,7 +1198,7 @@ class Uformer(nn.Module):
                  drop_rate=0., attn_drop_rate=0., drop_path_rate=0.1,
                  norm_layer=nn.LayerNorm, patch_norm=True,
                  use_checkpoint=False, token_projection='linear', token_mlp='ffn', se_layer=False,
-                 dowsample=Downsample, upsample=Upsample, **kwargs):
+                 dowsample=Downsample, upsample=MyUpsample, **kwargs):
         super().__init__()
 
         self.num_enc_layers = len(depths)//2
