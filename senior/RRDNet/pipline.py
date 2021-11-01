@@ -63,18 +63,26 @@ def pipline_retinex(net, img):
     return res_img, illum_img, adjust_illu_img, reflect_img, noise_img
 
 
-if __name__ == '__main__':
+# Init Model
+net = RRDNet()
+net = net.to(conf.device)
 
-    # Init Model
-    net = RRDNet()
-    net = net.to(conf.device)
+import argparse
+parser = argparse.ArgumentParser()
+parser.add_argument('--input', '-i',default='./test')
+parser.add_argument('--result', '-r',default='./res')
+args = parser.parse_args()
 
+
+print("~~~~~~~~~~~~~~RRDNet, 速度极慢，请保持耐心~~~~~~~~~~~~~~~")
+for file in os.listdir(args.input):
+    file_path = os.path.join(args.input, file)
     # Test
-    img = Image.open(conf.test_image_path)
+    img = Image.open(file_path)
 
     res_img, illum_img, adjust_illu_img, reflect_img, noise_img = pipline_retinex(net, img)
-    res_img.save('./test/result.jpg')
-    illum_img.save('./test/illumination.jpg')
-    adjust_illu_img.save('./test/adjust_illumination.jpg')
-    reflect_img.save('./test/reflectance.jpg')
-    noise_img.save('./test/noise_map.jpg')
+    res_img.save(args.result+"/"+file)
+    # illum_img.save('./test/illumination.jpg')
+    # adjust_illu_img.save('./test/adjust_illumination.jpg')
+    # reflect_img.save('./test/reflectance.jpg')
+    # noise_img.save('./test/noise_map.jpg')
