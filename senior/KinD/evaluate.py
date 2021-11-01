@@ -114,4 +114,4 @@ for idx in range(len(eval_low_data)):
 # fuse with the original input to avoid over-exposure
     fusion2 = decom_i_low*input_low_eval + (1-decom_i_low)*fusion4
     #print(fusion2.shape)
-    save_images(os.path.join(sample_dir, '%s_kindle.png' % (name)), fusion2)
+    save_images(os.path.join(sample_dir, '%s.png' % (name)), fusion2)
