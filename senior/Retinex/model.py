@@ -245,5 +245,5 @@ class lowlight_enhance(object):
                 save_images(os.path.join(save_dir, name + "_R_low." + suffix), R_low)
                 save_images(os.path.join(save_dir, name + "_I_low." + suffix), I_low)
                 save_images(os.path.join(save_dir, name + "_I_delta." + suffix), I_delta)
-            save_images(os.path.join(save_dir, name + "_S."   + suffix), S)
+            save_images(os.path.join(save_dir, name + "."   + suffix), S)
 
