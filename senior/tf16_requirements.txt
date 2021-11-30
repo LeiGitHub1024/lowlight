@@ -1,0 +1,9 @@
+Tensorflow==1.6.0
+Keras==2.2.0
+Opencv-python==3.4.2.16
+pillow==8.2.0
+scikit-image
+h5py<3.0.0
+
+
+#python==3.6
