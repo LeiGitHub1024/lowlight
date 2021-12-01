@@ -4,6 +4,7 @@
 *.npy
 *.mdl
 *.out
+*.pkl
 
 data/*/
 datasets/*/
